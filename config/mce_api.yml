@@ -1,0 +1,15 @@
+global:
+  listen_port: 4000
+  admin_jwt_secret: secret
+  db_url: general-user:password@tcp(db:3306)/mce_main?parseTime=true&charset=utf8
+  admin_key_file: /app/storage/admin_key.txt
+database:
+  type: mysql
+  user: general-user
+  password: password
+  host: db
+  port: 3306
+  name: mce_main
+  options:
+    parseTime: 'true'
+    charset: 'utf8'

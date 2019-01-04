@@ -1,0 +1,64 @@
+version: '3.4'
+
+services:
+  mce_api:
+    environment:
+      MCE_ENV: ${MCE_ENV}
+      GO111MODULE: 'on'
+    build:
+      context: ./
+      dockerfile: ./docker/mce_api/Dockerfile
+    depends_on:
+      - "db"
+    volumes:
+      - go_cache:/go/pkg/mod
+      # src
+      - ./src/api.mce:/go/src/mingchuan.me
+      # start script
+      - ./docker/mce_api/start.sh:/app/start.sh
+      # config
+      - ./config/mce_api.yml:/app/config.yml
+      # admin key
+      - ./storage/mce_api:/app/storage
+    ports:
+      - "4000"
+  mce_site:
+    build:
+      context: ./
+      dockerfile: ./docker/mce_site/Dockerfile
+    environment:
+      NODE_ENV: ${MCE_ENV}
+    volumes: 
+      - ./src/web.mce:/app/web.mce
+      - ./docker/mce_site/start.sh:/app/start.sh
+    ports:
+      - "3000"
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306"
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+  caddy:
+    image: abiosoft/caddy
+    ports:
+      - "80:80"
+      - "2015:2015"
+      - "443:443"
+    environment:
+      CADDY_HOST: ${CADDY_HOST}
+      CADDY_TLS: ${CADDY_TLS}
+      ACME_AGREE: 'true'
+    volumes:
+      - ./config/Caddyfile:/etc/Caddyfile
+      - ./storage/caddy:/root/.caddy
+volumes:
+  db_data:
+  go_cache:

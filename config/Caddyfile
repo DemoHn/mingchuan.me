@@ -1,0 +1,9 @@
+{$CADDY_HOST}
+
+tls {$CADDY_TLS}
+
+log stdout
+errors stdout
+
+proxy / mce_site:3000
+proxy /api mce_api:4000
