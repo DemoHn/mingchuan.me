@@ -1,6 +1,9 @@
 package config
 
 import (
+	"os"
+	"regexp"
+
 	"mingchuan.me/pkg/configparser"
 )
 
@@ -20,18 +23,19 @@ func Init(configPath string) IConfig {
 	if gConfig == nil {
 		config := configparser.New("yaml")
 		// set macro parser
-		/*config.SetMacroParser(func(key string, item interface{}) interface{} {
+		config.SetMacroParser(func(key string, item interface{}) interface{} {
 			// replace $HOME -> <homeDir>
 			re := regexp.MustCompile("\\$\\{([^{}]+)\\}")
 			// if item is string to replace
 			if itemStr, ok := item.(string); ok {
-
-				rawKey := re.FindStringSubmatch(itemStr)[1]
-				return re.ReplaceAllString(itemStr, os.Getenv(rawKey))
+				return re.ReplaceAllStringFunc(itemStr, func(src string) string {
+					rawKey := re.FindStringSubmatch(src)[1]
+					return os.Getenv(rawKey)
+				})
 			}
 
 			return item
-		})*/
+		})
 
 		config.Load(configPath)
 		gConfig = config
