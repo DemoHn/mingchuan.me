@@ -7,7 +7,7 @@ GOCLEAN=$(GOCMD) clean
 GOBUILD=$(GOCMD) build
 GOTEST=$(GOCMD) test
 
-BINARY=/app/mce
+BINARY=/app/bin/mce
 BINPATH=$(BINARY)
 LDFLAGS=-ldflags "-s -w"
 GOPATH=/go

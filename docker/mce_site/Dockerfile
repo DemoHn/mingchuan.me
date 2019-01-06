@@ -4,12 +4,10 @@ FROM node:11-alpine
 RUN apk update && apk upgrade && \
   apk add bash
 
-# build deps
-WORKDIR /app/web.mce
+RUN mkdir -p /app/src /app/dist
 
-ENV NODE_ENV=production
+WORKDIR /app/src
 
-ENV HOST 0.0.0.0
 # add start script
 EXPOSE 3000
 CMD ["bash", "/app/start.sh"]

@@ -18,8 +18,11 @@ services:
       - go_cache:/go/pkg/mod
       # src
       - ./src/api.mce:/go/src/mingchuan.me
-      # start script
+      # build & start script
+      - ./docker/mce_api/build.sh:/app/build.sh
       - ./docker/mce_api/start.sh:/app/start.sh
+      # build artifacts
+      - ./build/mce_api:/app/bin
       # config
       - ./config/mce_api.yml:/app/config.yml
       # admin key
@@ -32,9 +35,14 @@ services:
       dockerfile: ./docker/mce_site/Dockerfile
     environment:
       NODE_ENV: ${MCE_ENV}
-    volumes: 
-      - ./src/web.mce:/app/web.mce
+      HOST: '0.0.0.0'
+    volumes:
+      - ./src/web.mce:/app/src
+      # build & start scripts
+      - ./docker/mce_site/build.sh:/app/build.sh
       - ./docker/mce_site/start.sh:/app/start.sh
+      # build artifacts
+      - ./build/mce_web:/app/dist
     ports:
       - "3000"
   db:

@@ -1,10 +1,14 @@
 #!/bin/bash
+echo "[start] mce_site"
 echo "NODE_ENV = $NODE_ENV"
 
-yarn
 if [ "$NODE_ENV" = "development" ]
 then
+  bash /app/build.sh
   yarn dev
+elif [ "$NODE_ENV" = "build" ]
+then
+  bash /app/build.sh
 else
-  yarn build && yarn start
+  yarn start
 fi

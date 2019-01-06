@@ -1,4 +1,7 @@
 /pkg
+/build
+
 /storage/*
 !/storage/.gitkeep
+
 .env
