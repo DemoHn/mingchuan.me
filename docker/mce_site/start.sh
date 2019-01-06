@@ -10,5 +10,8 @@ elif [ "$NODE_ENV" = "build" ]
 then
   bash /app/build.sh
 else
+  # install node_modules
+  yarn
+  cp -r /app/dist/.nuxt /app/src
   yarn start
 fi
