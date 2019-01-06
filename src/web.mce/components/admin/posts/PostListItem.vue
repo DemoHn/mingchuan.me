@@ -3,9 +3,7 @@
     <m-title-col>
       <a-tag v-if="isDraft" color="red">草稿</a-tag>
       <nuxt-link :to="`/admin/posts/edit/${id}`">
-        <m-title-content>
-            {{ title }}
-        </m-title-content>
+        <m-title-content> {{ title }} </m-title-content>
       </nuxt-link>
     </m-title-col>
     <m-date-col>
@@ -16,15 +14,15 @@
 </template>
 
 <script>
-import styled from "vue-styled-components";
-import { Tag } from "ant-design-vue";
-import moment from "moment";
+import styled from 'vue-styled-components'
+import { Tag } from 'ant-design-vue'
+import moment from 'moment'
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
-`;
+`
 
 const TitleCol = styled.div`
   display: flex;
@@ -32,7 +30,7 @@ const TitleCol = styled.div`
   align-items: center;
   marginmargin-right: 3rem;
   min-width: 0;
-`;
+`
 
 const TitleContent = styled.div`
   font-size: 16px;
@@ -42,40 +40,40 @@ const TitleContent = styled.div`
   overflow: hidden;
   white-space: nowrap;
   flex: 1;
-`;
+`
 
 const DateCol = styled.div`
   display: flex;
   flex-basis: auto;
   flex: 0 0 210px;
   flex-direction: column;
-`;
+`
 
 const DateContent = styled.div`
   width: 100%;
   text-align: right;
   font-size: 13px;
   color: #bbbbbb;
-`;
+`
 
-const timeFormat = "YYYY-MM-DD HH:mm:ss";
+const timeFormat = 'YYYY-MM-DD HH:mm:ss'
 
 export default {
-  name: "PostListItem",
+  name: 'PostListItem',
   components: {
-    "m-container": Container,
-    "m-title-col": TitleCol,
-    "m-title-content": TitleContent,
-    "m-date-col": DateCol,
-    "m-date-content": DateContent,
-    "a-tag": Tag
+    'm-container': Container,
+    'm-title-col': TitleCol,
+    'm-title-content': TitleContent,
+    'm-date-col': DateCol,
+    'm-date-content': DateContent,
+    'a-tag': Tag
   },
   computed: {
     formatCreatedAt() {
-      return moment(this.createdAt).format(timeFormat);
+      return moment(this.createdAt * 1000).format(timeFormat)
     },
     formatUpdatedAt() {
-      return moment(this.updatedAt).format(timeFormat);
+      return moment(this.updatedAt * 1000).format(timeFormat)
     }
   },
   props: {
@@ -96,6 +94,5 @@ export default {
       type: Number
     }
   }
-};
+}
 </script>
-

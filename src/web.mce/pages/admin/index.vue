@@ -10,7 +10,7 @@ import AdminMenu from '~/components/admin/AdminMenu'
 export default {
   layout: 'admin',
   components: {
-    [AdminMenu.name]: AdminMenu
+    'admin-menu': AdminMenu
   }
 }
 </script>

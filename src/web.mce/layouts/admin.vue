@@ -5,14 +5,12 @@
         <div class="header">
           <div class="logo">mingchuan.me</div>
           <div class="text-button" @click="logout">
-            <a-icon type="poweroff"/>
+            <a-icon type="poweroff" />
           </div>
         </div>
       </a-layout-header>
       <a-layout-content class="content_container">
-        <a-layout class="inner_layout">
-          <nuxt />
-        </a-layout>
+        <a-layout class="inner_layout"> <nuxt /> </a-layout>
       </a-layout-content>
       <a-layout-footer>
         <div class="footer">mingchuan.me - {{ currentYear }}</div>
@@ -28,16 +26,16 @@ const { Header, Content, Footer } = Layout
 
 export default {
   components: {
-    [Layout.name]: Layout,
-    [Icon.name]: Icon,
+    'a-layout': Layout,
+    'a-icon': Icon,
     // layout components
-    [Header.name]: Header,
-    [Content.name]: Content,
-    [Footer.name]: Footer,
+    'a-layout-header': Header,
+    'a-layout-content': Content,
+    'a-layout-footer': Footer
   },
   data() {
     return {
-      currentYear: (new Date()).getFullYear(),
+      currentYear: new Date().getFullYear()
     }
   },
   methods: {

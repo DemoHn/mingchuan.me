@@ -15,12 +15,12 @@ export default {
   layout: 'default',
   data() {
     return {
-      currentTime: Date.now(),
+      currentTime: Date.now()
     }
   },
   computed: {
     displayTime() {
-      return moment(this.currentTime).format("YYYY/MM/DD HH:mm:ss")
+      return moment(this.currentTime).format('YYYY/MM/DD HH:mm:ss')
     }
   },
   mounted() {
@@ -33,7 +33,6 @@ export default {
 </script>
 
 <style scoped>
-
 .container {
   min-height: 100vh;
   display: flex;
@@ -58,6 +57,4 @@ export default {
   font-size: 1.5rem;
   color: #396245;
 }
-
 </style>
-

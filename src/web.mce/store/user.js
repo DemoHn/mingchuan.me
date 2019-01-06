@@ -2,7 +2,7 @@ import authService from '../services/auth'
 
 export const state = () => ({
   user: null,
-  jwt: null,
+  jwt: null
 })
 
 export const mutations = {
