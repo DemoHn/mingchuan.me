@@ -11,9 +11,10 @@ div.container {
   justify-content: center;
 
   div.content {
-    width: 1024px;
+    width: 900px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    color: #111;
   }
 }
 </style>

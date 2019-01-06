@@ -30,7 +30,7 @@ export default {
   listPost: async function() {
     const { request } = this
     const result = await request('get', 'PUBLIC', '/posts/')
-    console.log(result)
+
     return result.data.posts.map(item => {
       const model = {
         isDraft: item.status === 'DRAFTED',
@@ -42,6 +42,21 @@ export default {
 
       return model
     })
+  },
+  getOnePublicPost: async function(postID) {
+    const { request } = this
+    const result = await request('get', 'PUBLIC', `/posts/${postID}`)
+
+    const data = result.data
+    const model = {
+      id: data.id,
+      title: data.title,
+      content: data.content,
+      updatedAt: new Date(data.updatedAt * 1000).getTime(),
+      createdAt: new Date(data.createdAt * 1000).getTime()
+    }
+
+    return model
   },
   getOnePost: async function(postID) {
     const { request } = this

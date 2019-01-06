@@ -2,7 +2,8 @@ import axios from 'axios'
 import _ from 'lodash'
 
 function getBaseUrl() {
-  return '/api/v1'
+  const urlPath = '/api/v1'
+  return process.server ? `${process.env.SITE_BASE_URL}${urlPath}` : urlPath
 }
 
 async function basicRequest(
