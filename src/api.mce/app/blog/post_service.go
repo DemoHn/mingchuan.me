@@ -23,53 +23,18 @@ func (blog *BlogService) CreatePost(
 	if errV := blog.validateNewPost(title, content, initialStatus); errV != nil {
 		return newPost, errV
 	}
-	// create transaction
-	finish := false
-	tx := blog.DB.Begin()
-	defer func() {
-		if finish != true {
-			tx.Rollback()
-		}
-	}()
-	// error checking
-	if tx.Error != nil {
-		return newPost, errors.SQLExecutionError(tx.Error)
-	}
-	// 1. create post
+
 	newPost = Article{
 		Title:      title,
 		Content:    content,
 		Status:     initialStatus,
 		Permission: initialPermission,
 	}
-	if err = tx.Create(&newPost).Error; err != nil {
-		return newPost, errors.SQLExecutionError(err)
-	}
-	// 2. create event log
-	var articleEvent ArticleEvent
-	switch initialStatus {
-	case Published:
-		articleEvent = PublishPost
-	default:
-		articleEvent = SaveDraft
-	}
 
-	newEvent := ArticleEventLog{
-		ArticleID:     newPost.ID,
-		ArticleEvent:  articleEvent,
-		NewStatus:     initialStatus,
-		NewPermission: initialPermission,
-		CreatedAt:     time.Now(),
-	}
-	if err = tx.Create(&newEvent).Error; err != nil {
+	if err = blog.PostRepo.Create(&newPost); err != nil {
 		return newPost, errors.SQLExecutionError(err)
 	}
 
-	if err = tx.Commit().Error; err != nil {
-		return newPost, errors.SQLExecutionError(err)
-	}
-
-	finish = true
 	return newPost, nil
 }
 

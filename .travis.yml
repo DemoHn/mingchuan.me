@@ -10,6 +10,10 @@ notifications:
 env:
   - MCE_ENV=build
 
+addons:
+  ssh_known_hosts:
+    - mingchuan.me
+
 script:
   - docker-compose build mce_site mce_api
   - docker-compose run mce_api bash /app/build.sh
