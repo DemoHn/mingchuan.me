@@ -4,7 +4,6 @@ echo "NODE_ENV = $NODE_ENV"
 
 # clear old build
 rm -rf /app/dist/.nuxt
-yarn
 if [ "$NODE_ENV" != "development" ]
 then
   yarn build

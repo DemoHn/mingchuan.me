@@ -32,7 +32,7 @@ services:
       context: ./
       dockerfile: ./docker/mce_site/Dockerfile
     environment:
-      NODE_ENV: ${MCE_ENV}
+      MCE_ENV: ${MCE_ENV}
       HOST: '0.0.0.0'
     volumes:
       - ./src/web.mce:/app/src
@@ -70,5 +70,5 @@ services:
       - ./config/Caddyfile:/etc/Caddyfile
       - ./storage/caddy:/root/.caddy
 volumes:
-  db_data:
   go_cache:
+  db_data:
