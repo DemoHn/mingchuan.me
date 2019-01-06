@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="container">
-    <login-form @submit="handleSubmit" :loginPending="isLoginPending"></login-form>
+    <login-form
+      @submit="handleSubmit"
+      :loginPending="isLoginPending"
+    ></login-form>
   </div>
 </template>
 
@@ -15,7 +18,7 @@ export default {
   },
   data() {
     return {
-      isLoginPending: false,
+      isLoginPending: false
     }
   },
   methods: {

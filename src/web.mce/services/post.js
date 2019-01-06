@@ -1,6 +1,6 @@
 export default {
   // TODO: use apiBuilder
-  createPost: async function (postData) {
+  createPost: async function(postData) {
     const { request } = this
     const { title, content, isDraft } = postData
     const result = await request('post', 'ADMIN', '/admin/posts/', {
@@ -13,7 +13,7 @@ export default {
     })
     return result
   },
-  updatePost: async function (id, postData) {
+  updatePost: async function(id, postData) {
     const { request } = this
     const { title, content, isDraft } = postData
     const result = await request('patch', 'ADMIN', `/admin/posts/${id}`, {
@@ -27,7 +27,7 @@ export default {
     return result
   },
   // TODO [for backend]: more professional API!
-  listPost: async function () {
+  listPost: async function() {
     const { request } = this
     const result = await request('get', 'PUBLIC', '/posts/')
     console.log(result)
@@ -36,14 +36,14 @@ export default {
         isDraft: item.status === 'DRAFTED',
         title: item.title,
         id: item.id,
-        createdAt: (new Date(item.createdAt)).getTime(),
-        updatedAt: (new Date(item.updatedAt)).getTime()
+        createdAt: new Date(item.createdAt).getTime(),
+        updatedAt: new Date(item.updatedAt).getTime()
       }
 
       return model
     })
   },
-  getOnePost: async function (postID) {
+  getOnePost: async function(postID) {
     const { request } = this
     const result = await request('get', 'ADMIN', `/admin/posts/${postID}`)
     const data = result.data
@@ -51,7 +51,7 @@ export default {
     const model = {
       id: data.id,
       title: data.title,
-      content: data.content,
+      content: data.content
     }
 
     return model

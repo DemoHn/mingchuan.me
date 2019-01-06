@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="tag">
-      <div class="title">Heya, I'm Mingchuan</div>
+      <div class="title">Hi, This is Mingchuan</div>
       <div><i>This site is under construction</i></div>
       <div class="time">{{ displayTime }}</div>
     </div>
