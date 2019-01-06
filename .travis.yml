@@ -8,9 +8,9 @@ notifications:
   email: true
 
 script:
-  - docker-compose build
-  - MCE_ENV=build docker-compose up
+  - docker-compose build mce_site mce_api
+  - MCE_ENV=build docker-compose up mce_site mce_api
 
 before_deploy:
-  - cd $TRAVIS_BUILD_DIR  
+  - cd $TRAVIS_BUILD_DIR
   - tar -cvzf build.tar.gz build
