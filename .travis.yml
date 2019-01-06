@@ -1,0 +1,16 @@
+services:
+  - docker
+
+git:
+  depth: 1
+
+notifications:
+  email: true
+
+script:
+  - docker-compose build
+  - MCE_ENV=build docker-compose up
+
+before_deploy:
+  - cd $TRAVIS_BUILD_DIR  
+  - tar -cvzf build.tar.gz build
