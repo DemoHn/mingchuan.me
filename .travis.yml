@@ -5,6 +5,9 @@ git:
 notifications:
   email: true
 
+env:
+  - MCE_ENV=build DEBUG=0  
+
 script:
   - docker-compose build mce_site mce_api
   - docker-compose run mce_api bash /app/build.sh

@@ -1,12 +1,14 @@
 #!/bin/bash
 echo "[build] mce_site"
-echo "NODE_ENV = $NODE_ENV"
+
+# install deps
+yarn
 
 # clear old build
 rm -rf /app/dist/.nuxt
-if [ "$NODE_ENV" != "development" ]
-then
-  yarn build
-  # move artifacts manually to dist/ folder 
-  cp -r .nuxt /app/dist
-fi
+
+# build
+NODE_ENV=production yarn build
+
+# move artifacts manually to dist/ folder 
+cp -r .nuxt /app/dist
