@@ -12,6 +12,8 @@ services:
     build:
       context: ./
       dockerfile: ./docker/mce_api/Dockerfile
+    depends_on:
+      - db
     volumes:
       - go_cache:/go/pkg/mod
       # src
