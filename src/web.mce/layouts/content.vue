@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <div class="frame">
     <div class="content"><nuxt /></div>
   </div>
 </template>
 
 <style lang="less" scoped>
-div.container {
+div.frame {
   min-height: 100vh;
   display: flex;
   justify-content: center;

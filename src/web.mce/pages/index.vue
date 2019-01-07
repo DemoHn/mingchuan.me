@@ -1,60 +1,46 @@
 <template>
   <div class="container">
-    <div class="tag">
-      <div class="title">Hi, This is Mingchuan</div>
-      <div><i>This site is under construction</i></div>
-      <div class="time">{{ displayTime }}</div>
+    <div class="container-h">
+      <div class="logo">mingchuan.me</div>
+      <div class="motto">這個世界的異鄉人</div>
+      <post-list></post-list>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
-
+import PostList from '~/components/PostList'
 export default {
-  layout: 'default',
-  data() {
-    return {
-      currentTime: Date.now()
-    }
+  components: {
+    'post-list': PostList
   },
-  computed: {
-    displayTime() {
-      return moment(this.currentTime).format('YYYY/MM/DD HH:mm:ss')
-    }
-  },
-  mounted() {
-    const self = this
-    setInterval(() => {
-      self.currentTime = Date.now()
-    }, 500)
-  }
+  layout: 'content'
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .container {
-  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-}
+  height: 100vh;
 
-.container .tag {
-  font-size: 1.4rem;
-}
+  .container-h {
+    display: flex;
+    flex-direction: column;
+    width: 600px;
 
-.container div {
-  margin-bottom: 0.8rem;
-}
+    div.logo {
+      font-family: 'OCR-A';
+      font-size: 48px;
+      color: #222;
+      letter-spacing: -2px;
+    }
 
-.container .title {
-  font-size: 3rem;
-}
-
-.container .time {
-  font-size: 1.5rem;
-  color: #396245;
+    div.motto {
+      font-size: 20px;
+      color: #666;
+      letter-spacing: 3px;
+    }
+  }
 }
 </style>
