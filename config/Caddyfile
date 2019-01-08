@@ -5,5 +5,5 @@ tls {$CADDY_TLS}
 log stdout
 errors stdout
 
-proxy / host.docker.internal:3000
+proxy / mce_site:3000
 proxy /api mce_api:4000
