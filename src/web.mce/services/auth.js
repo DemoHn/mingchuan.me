@@ -8,20 +8,20 @@ export default {
     const result = await request('post', 'PUBLIC', '/accounts/login', {
       data: {
         name: username,
-        password,
+        password
       }
     })
 
     const { jwt } = result.data
     return jwt
   },
-  requestRegister: async(username, password, adminKey) => {
+  requestRegister: async (username, password, adminKey) => {
     const request = buildRequest(null)
     const result = await request('post', 'PUBLIC', '/accounts/register-admin', {
       data: {
         name: username,
         password,
-        adminKey,
+        adminKey
       }
     })
 
@@ -30,7 +30,7 @@ export default {
   },
   // both from window.localStorage
   // make sure this function is run from frontend
-  storeSession: (jwt) => {
+  storeSession: jwt => {
     if (process.browser) {
       const localStorage = window.localStorage
       localStorage.setItem('secret', jwt)
@@ -56,9 +56,8 @@ export default {
     return null
   },
 
-  getSessionFromCookie: (req) => {
-    if (!req.headers.cookie)
-      return null
+  getSessionFromCookie: req => {
+    if (!req.headers.cookie) return null
     // parse cookies
     const cookiesStr = req.headers.cookie.split(';')
 
@@ -70,8 +69,7 @@ export default {
     return cookieDict['secret']
   },
 
-  getUserFromJwt: (jwt) => {
+  getUserFromJwt: jwt => {
     return jwtDecode(jwt)
   }
 }
-

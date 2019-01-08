@@ -22,6 +22,7 @@ type BlogValidations struct {
 // BlogService - blog service main data struct
 type BlogService struct {
 	*gorm.DB
+	*PostRepo
 	Version     uint16
 	Validations BlogValidations
 }
@@ -29,7 +30,8 @@ type BlogService struct {
 // NewService - new blog service object
 func NewService(db *gorm.DB) *BlogService {
 	return &BlogService{
-		DB: db,
+		DB:       db,
+		PostRepo: NewPostRepo(db),
 		// Hardcore version number
 		Version: BlogServiceVersion,
 		// init validations

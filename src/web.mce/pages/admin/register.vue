@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="container">
-    <register-form @submit="handleSubmit" :registerPending="isRegisterPending"></register-form>
+    <register-form
+      @submit="handleSubmit"
+      :registerPending="isRegisterPending"
+    ></register-form>
   </div>
 </template>
 
@@ -15,7 +18,7 @@ export default {
   },
   data() {
     return {
-      isRegisterPending: false,
+      isRegisterPending: false
     }
   },
   methods: {

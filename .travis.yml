@@ -10,10 +10,14 @@ notifications:
 env:
   - MCE_ENV=build
 
+addons:
+  ssh_known_hosts:
+    - mingchuan.me
+
 script:
   - docker-compose build mce_site mce_api
-  - docker-compose run mce_api bash /app/build.sh
-  - docker-compose run mce_site bash /app/build.sh
+  - docker-compose run mce_api /app/build.sh
+  - docker-compose run mce_site /app/build.sh
 
 before_deploy:
   - openssl aes-256-cbc -K $encrypted_b30053e1ddd1_key -iv $encrypted_b30053e1ddd1_iv -in deploy_rsa.enc -out /tmp/deploy_rsa -d

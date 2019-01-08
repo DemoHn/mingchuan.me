@@ -1,14 +1,14 @@
 <script>
-import { Layout, Menu, Icon } from "ant-design-vue";
-import _ from "lodash";
-const { Sider, Content } = Layout;
-import adminMenuData from "./menu-config.json";
+import { Layout, Menu, Icon } from 'ant-design-vue'
+import _ from 'lodash'
+const { Sider, Content } = Layout
+import adminMenuData from './menu-config.json'
 
 // UI logic
-const $source = adminMenuData;
+const $source = adminMenuData
 
 const mapMenuItems = (h, parentKey) => item => {
-  const $key = parentKey ? parentKey + "$" + item.key : item.key;
+  const $key = parentKey ? parentKey + '$' + item.key : item.key
   if (item.children && item.children.length > 0) {
     return (
       <a-sub-menu key={$key}>
@@ -18,7 +18,7 @@ const mapMenuItems = (h, parentKey) => item => {
         </span>
         {item.children.map(mapMenuItems(h, $key))}
       </a-sub-menu>
-    );
+    )
   } else {
     return (
       <a-menu-item key={$key}>
@@ -27,9 +27,9 @@ const mapMenuItems = (h, parentKey) => item => {
           <span>{item.name}</span>
         </nuxt-link>
       </a-menu-item>
-    );
+    )
   }
-};
+}
 
 // <AdminMenuList /> component
 const AdminMenuList = {
@@ -59,21 +59,21 @@ const AdminMenuList = {
       >
         {$source.map(mapMenuItems(h))}
       </a-menu>
-    );
+    )
   }
-};
+}
 
 const AdminMenu = {
-  name: "adminMenu",
+  name: 'adminMenu',
   props: {
     defaultKeys: Object
   },
   computed: {
     defaultOpenKeys() {
-      return _.get(this.defaultKeys, "defaultOpenKeys") || [];
+      return _.get(this.defaultKeys, 'defaultOpenKeys') || []
     },
     defaultSelectedKeys() {
-      return _.get(this.defaultKeys, "defaultSelectedKeys") || [];
+      return _.get(this.defaultKeys, 'defaultSelectedKeys') || []
     }
   },
   components: {
@@ -97,11 +97,11 @@ const AdminMenu = {
         </a-layout-sider>
         <a-layout-content>{this.$slots.default}</a-layout-content>
       </a-layout>
-    );
+    )
   }
-};
+}
 
-export default AdminMenu;
+export default AdminMenu
 </script>
 
 <style lang="less" scoped>
