@@ -11,7 +11,11 @@ module.exports = {
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
-  css: ['ant-design-vue/dist/antd.css', 'quill/dist/quill.snow.css'],
+  css: [
+    'ant-design-vue/dist/antd.css',
+    'quill/dist/quill.snow.css',
+    '~assets/fonts/fonts-include.css'
+  ],
   router: {
     middleware: 'main'
   },

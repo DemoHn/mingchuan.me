@@ -15,12 +15,6 @@ html {
   box-sizing: border-box;
 }
 
-@font-face{
-  font-family: 'OCR-A';
-  src: url('./assets/fonts/OCR-A.ttf');  
-  font-weight: normal;
-  font-style: normal;
-}
 *,
 *:before,
 *:after {
