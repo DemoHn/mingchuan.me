@@ -3,12 +3,13 @@ version: '3.4'
 services:
   mce_api:
     environment:
-      GO111MODULE: 'on'
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
       MCE_ENV: ${MCE_ENV}
       DEBUG: ${DEBUG}
+      https_proxy: http://host.docker.internal:8001
+      http_proxy: http://host.docker.internal:8001
     build:
       context: ./
       dockerfile: ./docker/mce_api/Dockerfile
