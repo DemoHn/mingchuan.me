@@ -1,14 +1,22 @@
 import axios from 'axios'
-import _ from 'lodash';
+import _ from 'lodash'
 
 function getBaseUrl() {
-  return '/api/v1'
+  const urlPath = '/api/v1'
+  return process.server ? `${process.env.SITE_BASE_URL}${urlPath}` : urlPath
 }
 
-async function basicRequest(baseUrl, authJwt, reqMethod, authSchema, reqUrl, params) {
+async function basicRequest(
+  baseUrl,
+  authJwt,
+  reqMethod,
+  authSchema,
+  reqUrl,
+  params
+) {
   const url = `${baseUrl}${reqUrl}`
   const headers = {
-    'Auth-Schema': authSchema,
+    'Auth-Schema': authSchema
   }
 
   // only non-public APIs would add authJwt
@@ -16,15 +24,20 @@ async function basicRequest(baseUrl, authJwt, reqMethod, authSchema, reqUrl, par
     headers['Authorization'] = `Bearer ${authJwt}`
   }
 
-  const finalParams = Object.assign({}, {
-    method: reqMethod,
-    headers,
-  }, { url }, params)
+  const finalParams = Object.assign(
+    {},
+    {
+      method: reqMethod,
+      headers
+    },
+    { url },
+    params
+  )
   const resp = await axios.request(finalParams)
   return resp
 }
 
-export default (store) => {
+export default store => {
   // define request value
   const request = (reqMethod, authSchema, reqUrl, params) => {
     const baseUrl = getBaseUrl()
@@ -33,7 +46,7 @@ export default (store) => {
     return basicRequest(baseUrl, authJwt, reqMethod, authSchema, reqUrl, params)
   }
 
-  return (apiCollection) => {
+  return apiCollection => {
     const buildAPI = {}
     Object.keys(apiCollection).forEach(key => {
       const $func = apiCollection[key]
@@ -43,7 +56,7 @@ export default (store) => {
   }
 }
 
-export const buildRequest = (authJwt) => {
+export const buildRequest = authJwt => {
   const request = (reqMethod, authSchema, reqUrl, params) => {
     const baseUrl = getBaseUrl()
 

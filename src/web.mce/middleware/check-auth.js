@@ -1,6 +1,6 @@
 import authService from '../services/auth'
 
-export default function (context) {
+export default function(context) {
   const { redirect, store, req } = context
   const jwt = process.client
     ? authService.getSessionFromLocalStorage()

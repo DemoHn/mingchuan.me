@@ -1,63 +1,70 @@
 <template>
   <div class="container">
-    <div class="tag">
-      <div class="title">Heya, I'm Mingchuan</div>
-      <div><i>This site is under construction</i></div>
-      <div class="time">{{ displayTime }}</div>
+    <div class="container-h">
+      <div class="logo">mingchuan.me</div>
+      <div class="motto">這個世界的異鄉人</div>
+      <post-list :list="postList"></post-list>
     </div>
   </div>
 </template>
 
 <script>
 import moment from 'moment'
+import PostList from '~/components/PostList'
+// API
+import apiBuilder from '~/helpers/apiBuilder'
+import postService from '~/services/post'
 
 export default {
-  layout: 'default',
+  components: {
+    'post-list': PostList
+  },
+  layout: 'content',
   data() {
     return {
-      currentTime: Date.now(),
+      postList: []
     }
   },
-  computed: {
-    displayTime() {
-      return moment(this.currentTime).format("YYYY/MM/DD HH:mm:ss")
-    }
-  },
-  mounted() {
-    const self = this
-    setInterval(() => {
-      self.currentTime = Date.now()
-    }, 500)
+  async asyncData(context) {
+    const { store } = context
+
+    const postAPI = apiBuilder(store)(postService)
+    const rawPostList = await postAPI.listPublicPosts(5)
+
+    const postList = rawPostList.map(list => ({
+      link: `/posts/${list.id}`,
+      title: list.title,
+      date: moment(list.createdAt * 1000).format('YYYY-MM-DD')
+    }))
+    return { postList }
   }
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
 .container {
-  min-height: 100vh;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-}
+  height: 100vh;
 
-.container .tag {
-  font-size: 1.4rem;
-}
+  .container-h {
+    display: flex;
+    flex-direction: column;
+    width: 750px;
 
-.container div {
-  margin-bottom: 0.8rem;
-}
+    div.logo {
+      font-family: 'OCR-A';
+      font-size: 48px;
+      color: #222;
+      letter-spacing: -2px;
+    }
 
-.container .title {
-  font-size: 3rem;
+    div.motto {
+      font-size: 20px;
+      color: #666;
+      letter-spacing: 3px;
+      margin-bottom: 24px;
+    }
+  }
 }
-
-.container .time {
-  font-size: 1.5rem;
-  color: #396245;
-}
-
 </style>
-

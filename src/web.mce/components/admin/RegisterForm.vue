@@ -1,55 +1,89 @@
 <template>
   <div class="form">
-    <a-form layout="horizontal" class="login-form"
+    <a-form
+      layout="horizontal"
+      class="login-form"
       @submit="handleSubmit"
-      :autoFormCreate="(form) => {this.form = form}">
-
-      <a-form-item>
-        <div class="title">Admin Register</div>
-      </a-form-item>
+      :autoFormCreate="
+        form => {
+          this.form = form
+        }
+      "
+    >
+      <a-form-item> <div class="title">Admin Register</div> </a-form-item>
       <a-form-item
         fieldDecoratorId="username"
-        :fieldDecoratorOptions="{ rules: [{ required: true, message: 'Please input your username!' }]}">
+        :fieldDecoratorOptions="{
+          rules: [{ required: true, message: 'Please input your username!' }]
+        }"
+      >
         <a-input
           size="large"
           placeholder="UserName"
           ref="usernameInput"
-          v-model="usernameContent">
+          v-model="usernameContent"
+        >
           <a-icon slot="prefix" type="user" />
-          <a-icon v-if="usernameContent" slot="suffix" type="close-circle" @click="clearUsernameContent" />
+          <a-icon
+            v-if="usernameContent"
+            slot="suffix"
+            type="close-circle"
+            @click="clearUsernameContent"
+          />
         </a-input>
       </a-form-item>
-      <a-form-item
-        fieldDecoratorId="password">
+      <a-form-item fieldDecoratorId="password">
         <a-input
           size="large"
           placeholder="PassWord"
           type="password"
           ref="passowrdInput"
-          v-model="passwordContent">
+          v-model="passwordContent"
+        >
           <a-icon slot="prefix" type="lock" />
-          <a-icon v-if="passwordContent" slot="suffix" type="close-circle" @click="clearPasswordContent"/>
+          <a-icon
+            v-if="passwordContent"
+            slot="suffix"
+            type="close-circle"
+            @click="clearPasswordContent"
+          />
         </a-input>
       </a-form-item>
-      <a-form-item
-        fieldDecoratorId="adminKey">
+      <a-form-item fieldDecoratorId="adminKey">
         <a-input
           size="large"
           placeholder="Admin Key"
           type="input"
           ref="adminKeyInput"
-          v-model="adminKeyContent">
+          v-model="adminKeyContent"
+        >
           <a-icon slot="prefix" type="lock" />
-          <a-icon v-if="adminKeyContent" slot="suffix" type="close-circle" @click="clearAdminKeyContent"/>
+          <a-icon
+            v-if="adminKeyContent"
+            slot="suffix"
+            type="close-circle"
+            @click="clearAdminKeyContent"
+          />
         </a-input>
       </a-form-item>
       <a-form-item>
-        <a-button v-if="!registerPending" type="primary" class="login-form-button" size="large"
-          htmlType="submit">
+        <a-button
+          v-if="!registerPending"
+          type="primary"
+          class="login-form-button"
+          size="large"
+          htmlType="submit"
+        >
           Register
         </a-button>
-        <a-button v-else type="primary" class="login-form-button" size="large" disabled>
-          <a-icon type="loading"/> Registering..
+        <a-button
+          v-else
+          type="primary"
+          class="login-form-button"
+          size="large"
+          disabled
+        >
+          <a-icon type="loading" /> Registering..
         </a-button>
       </a-form-item>
     </a-form>
@@ -63,42 +97,41 @@ const { Item } = Form
 
 export default {
   components: {
-    [Button.name]: Button,
-    [Form.name]: Form,
-    [Item.name]: Item,
-    [Icon.name]: Icon,
-    [Input.name]: Input,
+    'a-button': Button,
+    'a-form': Form,
+    'a-form-item': Item,
+    'a-icon': Icon,
+    'a-input': Input
   },
   props: {
     registerPending: {
       type: Boolean,
       required: true,
-      default: false,
-    },
+      default: false
+    }
   },
   data() {
     return {
       usernameContent: '',
       passwordContent: '',
-      adminKeyContent: '',
+      adminKeyContent: ''
     }
   },
   methods: {
     clearUsernameContent() {
       this.$refs.usernameInput.focus()
       this.usernameContent = ''
-      this.form.setFieldsValue({username: ''})
-
+      this.form.setFieldsValue({ username: '' })
     },
     clearPasswordContent() {
       this.$refs.passowrdInput.focus()
       this.passwordContent = ''
-      this.form.setFieldsValue({password: ''})
+      this.form.setFieldsValue({ password: '' })
     },
     clearAdminKeyContent() {
       this.$refs.adminKeyContent.focus()
       this.adminKeyContent = ''
-      this.form.setFieldsValue({adminKey: ''})
+      this.form.setFieldsValue({ adminKey: '' })
     },
     async handleSubmit(e) {
       e.preventDefault()
@@ -107,16 +140,14 @@ export default {
       this.$emit('submit', {
         username,
         password,
-        adminKey,
+        adminKey
       })
     }
-  },
+  }
 }
-
 </script>
 
 <style lang="less" scoped>
-
 .form {
   display: flex;
   min-height: 300px;
@@ -139,4 +170,3 @@ export default {
   }
 }
 </style>
-

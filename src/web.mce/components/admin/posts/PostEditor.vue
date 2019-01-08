@@ -1,18 +1,28 @@
 <template>
   <section class="container">
     <section class="title">
-      <input class="input-title" placeholder="来个标题吧" type="text" v-model="qTitle">
+      <input
+        class="input-title"
+        placeholder="来个标题吧"
+        type="text"
+        v-model="qTitle"
+      />
     </section>
     <section class="content">
-      <div class="quill-editor"
+      <div
+        class="quill-editor"
         :content="qContent"
         @change="onEditorChange($event)"
-        v-quill="editorOption">
-      </div>
+        v-quill="editorOption"
+      ></div>
     </section>
     <section class="footer">
-      <a-button type="primary" class="tool-button" @click="() => save(false)">发布</a-button>
-      <a-button class="tool-button" @click="() => save(true)">保存为草稿</a-button>
+      <a-button type="primary" class="tool-button" @click="() => save(false)"
+        >发布</a-button
+      >
+      <a-button class="tool-button" @click="() => save(true)"
+        >保存为草稿</a-button
+      >
     </section>
   </section>
 </template>
@@ -23,17 +33,17 @@ import { Button } from 'ant-design-vue'
 export default {
   name: 'PostEditor',
   components: {
-    [Button.name]: Button,
+    'a-button': Button
   },
   props: {
     title: {
-      type: String,
+      type: String
     },
     content: {
-      type: String,
+      type: String
     }
   },
-  data () {
+  data() {
     return {
       qTitle: this.title,
       qContent: this.content,
@@ -42,11 +52,11 @@ export default {
         placeholder: '写点什么吧...',
         modules: {
           toolbar: [
-            [{ 'font': [] }],
+            [{ font: [] }],
             ['bold', 'italic', 'underline', 'strike'],
             ['blockquote', 'code-block'],
-            [{ 'align': [] }],
-            [{ 'color': [] }, { 'background': [] }],
+            [{ align: [] }],
+            [{ color: [] }, { background: [] }]
           ]
         }
       }
@@ -65,12 +75,11 @@ export default {
       const resultData = {
         title: this.qTitle,
         content: this.qContent,
-        isDraft,
+        isDraft
       }
 
       this.$emit('save', resultData)
-    },
-
+    }
   }
 }
 </script>
@@ -92,7 +101,7 @@ export default {
     line-height: 1.5;
 
     p {
-      margin-bottom:  1.2 * @containerFont;
+      margin-bottom: 1.2 * @containerFont;
     }
   }
 }
@@ -119,7 +128,7 @@ export default {
       outline: none;
       border: none;
 
-      &::placeholder{
+      &::placeholder {
         opacity: 0.6;
       }
     }
