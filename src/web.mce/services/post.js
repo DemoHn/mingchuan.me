@@ -27,9 +27,12 @@ export default {
     return result
   },
   // TODO [for backend]: more professional API!
-  listPost: async function() {
+  listPost: async function(limit, cursor) {
     const { request } = this
-    const result = await request('get', 'ADMIN', '/admin/posts/')
+    const result = await request('get', 'ADMIN', '/admin/posts/', {
+      cursor,
+      limit
+    })
 
     return result.data.posts.map(item => {
       const model = {
@@ -46,10 +49,8 @@ export default {
   listPublicPosts: async function(limit, cursor) {
     const { request } = this
     const result = await request('get', 'PUBLIC', '/posts', {
-      query: {
-        cursor,
-        limit
-      }
+      cursor,
+      limit
     })
 
     return result.data.posts.map(item => {
