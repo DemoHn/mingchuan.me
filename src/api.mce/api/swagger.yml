@@ -20,7 +20,7 @@ paths:
   /accounts/register-admin:
     post:
       summary: Register a new admin account.
-      tags: 
+      tags:
         - account
       produces:
         - application/json
@@ -49,7 +49,7 @@ paths:
   /accounts/login:
     post:
       summary: Retrieve login JWT to admin panel.
-      tags: 
+      tags:
         - account
       produces:
         - application/json
@@ -78,7 +78,7 @@ paths:
   '/posts/{id}':
     get:
       summary: get one **public** post
-      tags: 
+      tags:
         - blog
       produces:
         - application/json
@@ -115,7 +115,7 @@ paths:
       consumes:
         - application/json
       parameters:
-        - name: cursor        
+        - name: cursor
           in: query
           type: string
         - name: limit
@@ -198,7 +198,7 @@ paths:
   '/admin/posts/{id}/publish':
     post:
       summary: publish a post
-      tags: 
+      tags:
         - blog
       produces:
         - application/json
@@ -223,10 +223,10 @@ paths:
           description: service error (fatal)
           schema:
             $ref: '#/definitions/ServiceError'
-  '/admin/posts/{id}':  
+  '/admin/posts/{id}':
     get:
       summary: get one post (all)
-      tags: 
+      tags:
         - blog
       produces:
         - application/json
@@ -253,7 +253,7 @@ paths:
             $ref: '#/definitions/ServiceError'
     delete:
       summary: delete one post
-      tags: 
+      tags:
         - blog
       produces:
         - application/json
@@ -311,7 +311,7 @@ paths:
             $ref: '#/definitions/ServiceError'
   /admin/todos:
     get:
-      summary: list all TODO items      
+      summary: list all TODO items
       tags:
         - todo
       produces:
@@ -434,7 +434,7 @@ paths:
         200:
           description: success
           schema:
-           $ref: '#/definitions/HealthResponse'                
+           $ref: '#/definitions/HealthResponse'
         400:
           description: service error
           schema:
@@ -442,7 +442,7 @@ paths:
         500:
           description: service error (fatal)
           schema:
-            $ref: '#/definitions/ServiceError'  
+            $ref: '#/definitions/ServiceError'
 definitions:
   AccountPayload:
     type: object
@@ -482,7 +482,7 @@ definitions:
     properties:
       jwt:
         type: string
-        description: JWT secret for authorization.                
+        description: JWT secret for authorization.
         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMCJ9.Da7PRbpbmzLGqEMWoI8lD71kiSDW5vrS0X7MBvxYi9Q
   CreatePostPayload:
     type: object
@@ -531,7 +531,7 @@ definitions:
         example: PUBLIC
         enum:
           - PUBLIC
-          - PRIVATE  	
+          - PRIVATE
   Post:
     type: object
     properties:

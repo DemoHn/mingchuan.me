@@ -29,11 +29,31 @@ export default {
   // TODO [for backend]: more professional API!
   listPost: async function() {
     const { request } = this
-    const result = await request('get', 'PUBLIC', '/posts/')
+    const result = await request('get', 'ADMIN', '/admin/posts/')
 
     return result.data.posts.map(item => {
       const model = {
         isDraft: item.status === 'DRAFTED',
+        title: item.title,
+        id: item.id,
+        createdAt: new Date(item.createdAt).getTime(),
+        updatedAt: new Date(item.updatedAt).getTime()
+      }
+
+      return model
+    })
+  },
+  listPublicPosts: async function(limit, cursor) {
+    const { request } = this
+    const result = await request('get', 'PUBLIC', '/posts', {
+      query: {
+        cursor,
+        limit
+      }
+    })
+
+    return result.data.posts.map(item => {
+      const model = {
         title: item.title,
         id: item.id,
         createdAt: new Date(item.createdAt).getTime(),
