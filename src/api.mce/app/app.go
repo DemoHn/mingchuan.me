@@ -43,12 +43,12 @@ func (app *App) Init() error {
 	debugMode := (os.Getenv("DEBUG") == "1")
 	configPath := app.CLI.String("config")
 	// 01. init infra
-	config, _ := infra.Init(configPath, debugMode)
+	infra := infra.NewInfrastructure(configPath, debugMode)
 
 	// 02. init DB
 	var db *gorm.DB
 	var dbURL string
-	if dbURL, err = util.GenerateDatabaseURL(config); err != nil {
+	if dbURL, err = util.GenerateDatabaseURL(infra.Config); err != nil {
 		return err
 	}
 
@@ -59,7 +59,7 @@ func (app *App) Init() error {
 	// 02. init apiServer - swagger
 
 	var port int
-	if port, err = config.FindInt("global.listen_port"); err != nil {
+	if port, err = infra.Config.FindInt("global.listen_port"); err != nil {
 		return err
 	}
 
