@@ -3,7 +3,6 @@ package blog
 import (
 	"fmt"
 	"strconv"
-	"time"
 
 	"mingchuan.me/util"
 
@@ -69,7 +68,7 @@ func (blog *BlogService) UpdatePost(ID uint32, payload *ArticleUpdatePayload) (*
 }
 
 // DeletePost - delete a post
-// Notice, we will not delete a post
+// Notice, we will not delete a post from db directly
 func (blog *BlogService) DeletePost(ID uint32) *errors.Error {
 	// validate if ID exists
 	var article Article
@@ -79,41 +78,9 @@ func (blog *BlogService) DeletePost(ID uint32) *errors.Error {
 		return errors.ArticleIDNotFoundError(ID)
 	}
 
-	// Delete that post
-	// and create transaction
-	finish := false
-	tx := blog.DB.Begin()
-	if tx.Error != nil {
-		return errors.SQLExecutionError(tx.Error)
-	}
-	defer func() {
-		if finish == false {
-			tx.Rollback()
-		}
-	}()
-
-	// 1. Update post to DELETED
-	if err = tx.Model(&article).Update("status", Removed).Error; err != nil {
-		return errors.SQLExecutionError(tx.Error)
-	}
-	// 2. and register event log
-	newEvent := ArticleEventLog{
-		ArticleID:     article.ID,
-		ArticleEvent:  DeletePost,
-		NewStatus:     Removed,
-		NewPermission: article.Permission,
-		CreatedAt:     time.Now(),
-	}
-	if err = tx.Create(&newEvent).Error; err != nil {
+	if err = blog.PostRepo.Delete(&article); err != nil {
 		return errors.SQLExecutionError(err)
 	}
-
-	// 3. commit
-	if err = tx.Commit().Error; err != nil {
-		return errors.SQLExecutionError(err)
-	}
-
-	finish = true
 	return nil
 }
 
@@ -132,38 +99,9 @@ func (blog *BlogService) PublishPost(ID uint32) (*Article, *errors.Error) {
 		return nil, errors.NotDraftedPostError()
 	}
 
-	// 1. update status
-	finish := false
-	tx := blog.DB.Begin()
-	if tx.Error != nil {
-		return nil, errors.SQLExecutionError(tx.Error)
-	}
-	defer func() {
-		if finish == false {
-			tx.Rollback()
-		}
-	}()
-
-	if err = tx.Model(&article).Update("status", Published).Error; err != nil {
+	if err = blog.PostRepo.UpdateStatus(&article, Published, PublishPost); err != nil {
 		return nil, errors.SQLExecutionError(err)
 	}
-	// 2. and register event log
-	newEvent := ArticleEventLog{
-		ArticleID:     article.ID,
-		ArticleEvent:  PublishPost,
-		NewStatus:     Published,
-		NewPermission: article.Permission,
-		CreatedAt:     time.Now(),
-	}
-	if err = tx.Create(&newEvent).Error; err != nil {
-		return nil, errors.SQLExecutionError(err)
-	}
-
-	// 3. commit
-	if err = tx.Commit().Error; err != nil {
-		return nil, errors.SQLExecutionError(err)
-	}
-	finish = true
 	return &article, nil
 }
 

@@ -7,49 +7,6 @@ import (
 // Types
 type Nstring string
 
-// ArticleStatus - define all states of an article
-type ArticleStatus = string
-
-const (
-	// Published -
-	Published ArticleStatus = "PUBLISHED"
-	// Drafted -
-	Drafted ArticleStatus = "DRAFTED"
-	// Removed -
-	Removed ArticleStatus = "REMOVED"
-)
-
-// ArticlePermission - all permissions that an article have
-type ArticlePermission = string
-
-const (
-	// Public - can be seen by everyone
-	Public ArticlePermission = "PUBLIC"
-	// Private - can be seen only by owner
-	Private ArticlePermission = "PRIVATE"
-)
-
-// ArticleEvent - consts on article events
-type ArticleEvent = string
-
-const (
-	// Change Status Events
-	// SaveDraft -
-	SaveDraft ArticleEvent = "SAVE_DRAFT" // status = DRAFTED
-	// PublishPost -
-	PublishPost ArticleEvent = "PUBLISH_POST" // status = PUBLISHED
-	// DeletePost -
-	DeletePost ArticleEvent = "DELETE_POST" // status = REMOVED
-	// Change Permission Events
-	// SetPublic -
-	SetPublic ArticleEvent = "SET_PUBLIC" // permission = PUBLIC
-	// SetPrivate -
-	SetPrivate ArticleEvent = "SET_PRIVATE" // permission = PRIVATE
-	// Other Events (That don't change status)
-	// EditPost -
-	EditPost ArticleEvent = "EDIT_POST"
-)
-
 /* filters */
 // ArticlePageFilter - page filter
 type ArticlePageLimit struct {
