@@ -4,7 +4,10 @@ require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/franela/goblin v0.0.0-20181003173013-ead4ad1d2727
+	github.com/go-openapi/analysis v0.18.0 // indirect
 	github.com/go-openapi/errors v0.18.0
+	github.com/go-openapi/jsonpointer v0.18.0 // indirect
+	github.com/go-openapi/jsonreference v0.18.0 // indirect
 	github.com/go-openapi/loads v0.18.0
 	github.com/go-openapi/runtime v0.18.0
 	github.com/go-openapi/spec v0.18.0
@@ -27,10 +30,10 @@ require (
 	github.com/olekukonko/tablewriter v0.0.1 // indirect
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/sirupsen/logrus v1.3.0
-	github.com/stretchr/testify v1.2.2
+	github.com/stretchr/testify v1.3.0
 	github.com/ttacon/chalk v0.0.0-20160626202418-22c06c80ed31
 	github.com/urfave/cli v1.20.0
-	golang.org/x/net v0.0.0-20181220203305-927f97764cc3
+	golang.org/x/net v0.0.0-20190110200230-915654e7eabc
 	golang.org/x/sys v0.0.0-20190109145017-48ac38b7c8cb // indirect
 	golang.org/x/tools v0.0.0-20190111214448-fc1d57b08d7b // indirect
 	google.golang.org/appengine v1.4.0 // indirect

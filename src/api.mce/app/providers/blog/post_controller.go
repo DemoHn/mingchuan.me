@@ -4,17 +4,17 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/drivers/swagger/models"
-	apiBlog "mingchuan.me/app/drviers/swagger/restapi/operations/blog"
+	apiBlog "mingchuan.me/app/drivers/swagger/restapi/operations/blog"
 )
 
 // PostController -
 type PostController struct {
-	*api.API
+	*swagger.API
 	Service *BlogService
 }
 
 // CreatePostController -
-func CreatePostController(api *api.API, service *BlogService) *PostController {
+func CreatePostController(api *swagger.API, service *BlogService) *PostController {
 	return &PostController{
 		API:     api,
 		Service: service,

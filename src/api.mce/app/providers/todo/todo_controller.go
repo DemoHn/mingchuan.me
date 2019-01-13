@@ -4,25 +4,25 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/drivers/swagger/models"
-	apiTodo "mingchuan.me/app/drviers/swagger/restapi/operations/todo"
+	apiTodo "mingchuan.me/app/drivers/swagger/restapi/operations/todo"
 )
 
 // Controller -
 type Controller struct {
 	*swagger.API
-	Service *TodoService
+	*Service
 }
 
 // NewController -
-func NewController(api *swagger.API, service *TodoService) *TodoController {
-	return &TodoController{
+func NewController(api *swagger.API, service *Service) *Controller {
+	return &Controller{
 		API:     api,
 		Service: service,
 	}
 }
 
 // BindAllRoutes -
-func (ctrl *TodoController) BindAllRoutes() {
+func (ctrl *Controller) BindAllRoutes() {
 	API := ctrl.API
 	service := ctrl.Service
 

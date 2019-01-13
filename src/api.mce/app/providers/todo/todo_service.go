@@ -2,7 +2,7 @@ package todo
 
 import (
 	"github.com/jinzhu/gorm"
-	"mingchuan.me/api"
+	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/errors"
 )
 
@@ -19,15 +19,15 @@ type Todo struct {
 }
 
 // NewService -
-func NewService(db *gorm.DB) *TodoService {
-	return &TodoService{
+func NewService(db *gorm.DB) *Service {
+	return &Service{
 		DB:      db,
 		Version: 1,
 	}
 }
 
 // Init - init the service, including auto-migrate table, etc.
-func (srv *TodoService) Init() error {
+func (srv *Service) Init() error {
 	db := srv.DB
 
 	db = db.AutoMigrate(&Todo{})
@@ -35,15 +35,15 @@ func (srv *TodoService) Init() error {
 }
 
 // RegisterAPI -
-func (srv *TodoService) RegisterAPI(api *api.API) {
-	ctrl := CreateController(api, srv)
+func (srv *Service) RegisterAPI(api *swagger.API) {
+	ctrl := NewController(api, srv)
 	ctrl.BindAllRoutes()
 }
 
 // Other Methods
 
 // CreateTodo -
-func (srv *TodoService) CreateTodo(content string) (*Todo, *errors.Error) {
+func (srv *Service) CreateTodo(content string) (*Todo, *errors.Error) {
 	db := srv.DB
 
 	newTodo := &Todo{
@@ -59,7 +59,7 @@ func (srv *TodoService) CreateTodo(content string) (*Todo, *errors.Error) {
 }
 
 // UpdateTodo -
-func (srv *TodoService) UpdateTodo(id int64, content string) (*Todo, *errors.Error) {
+func (srv *Service) UpdateTodo(id int64, content string) (*Todo, *errors.Error) {
 	db := srv.DB
 	var todo Todo
 
@@ -77,7 +77,7 @@ func (srv *TodoService) UpdateTodo(id int64, content string) (*Todo, *errors.Err
 }
 
 // DeleteTodo -
-func (srv *TodoService) DeleteTodo(id int64) (*Todo, *errors.Error) {
+func (srv *Service) DeleteTodo(id int64) (*Todo, *errors.Error) {
 	db := srv.DB
 	var todo Todo
 
@@ -97,7 +97,7 @@ func (srv *TodoService) DeleteTodo(id int64) (*Todo, *errors.Error) {
 }
 
 // ListAllTodos -
-func (srv *TodoService) ListAllTodos() (*[]Todo, *errors.Error) {
+func (srv *Service) ListAllTodos() (*[]Todo, *errors.Error) {
 	db := srv.DB
 	todos := make([]Todo, 0)
 

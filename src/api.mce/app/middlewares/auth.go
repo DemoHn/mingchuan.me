@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"mingchuan.me/api"
+	"mingchuan.me/app/drivers/swagger"
 
 	gErrors "mingchuan.me/app/errors"
 
@@ -32,7 +32,7 @@ const (
 // Headers:
 // Auth-Schema: PUBLIC | ADMIN
 // Authorization: Bearer <jwt>
-func Auth(handler api.HandlerFunc) api.HandlerFunc {
+func Auth(handler swagger.HandlerFunc) swagger.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) *gErrors.Error {
 		err := validateAuthSchema(w, r)
 		if err != nil {

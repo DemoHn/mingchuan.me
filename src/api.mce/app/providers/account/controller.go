@@ -6,7 +6,7 @@ import (
 
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/drivers/swagger/models"
-	apiAccount "mingchuan.me/app/drviers/swagger/restapi/operations/account"
+	apiAccount "mingchuan.me/app/drivers/swagger/restapi/operations/account"
 	"mingchuan.me/app/errors"
 )
 
@@ -17,8 +17,8 @@ type AccountController struct {
 	Service *AccountService
 }
 
-// CreateController -
-func CreateController(api *swagger.API, service *AccountService) *AccountController {
+// NewController -
+func NewController(api *swagger.API, service *AccountService) *AccountController {
 	return &AccountController{
 		API:     api,
 		Service: service,

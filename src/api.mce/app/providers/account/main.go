@@ -37,7 +37,7 @@ func (srv *AccountService) Init() error {
 
 // RegisterAPI -
 func (srv *AccountService) RegisterAPI(api *swagger.API) {
-	c := CreateController(api, srv)
+	c := NewController(api, srv)
 	// bind routes
 	c.RegisterAdmin()
 	c.Login()

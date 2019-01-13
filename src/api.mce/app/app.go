@@ -4,12 +4,12 @@ import (
 	"log"
 	"os"
 
-	"mingchuan.me/api"
-	"mingchuan.me/app/account"
-	"mingchuan.me/app/blog"
-	"mingchuan.me/app/healthz"
+	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/middlewares"
-	"mingchuan.me/app/todo"
+	"mingchuan.me/app/providers/account"
+	"mingchuan.me/app/providers/blog"
+	"mingchuan.me/app/providers/healthz"
+	"mingchuan.me/app/providers/todo"
 	"mingchuan.me/infra"
 	"mingchuan.me/util"
 
@@ -21,9 +21,9 @@ import (
 
 // App - Instance
 type App struct {
-	Version int
-	CLI     *cli.Context
-	*api.Server
+	Version   int
+	CLI       *cli.Context
+	apiServer *swagger.Driver
 }
 
 // New - new App instance
@@ -43,7 +43,7 @@ func (app *App) Init() error {
 	debugMode := (os.Getenv("DEBUG") == "1")
 	configPath := app.CLI.String("config")
 	// 01. init infra
-	infra := infra.NewInfrastructure(configPath, debugMode)
+	infra := infra.New(configPath, debugMode)
 
 	// 02. init DB
 	var db *gorm.DB
@@ -57,17 +57,11 @@ func (app *App) Init() error {
 	}
 
 	// 02. init apiServer - swagger
-
-	var port int
-	if port, err = infra.Config.FindInt("global.listen_port"); err != nil {
+	var apiServer *swagger.Driver
+	if apiServer, err = swagger.NewDriver(infra); err != nil {
 		return err
 	}
-
-	apiServer := api.NewServer(port)
-	if err = apiServer.Init(); err != nil {
-		return err
-	}
-	app.Server = apiServer
+	app.apiServer = apiServer
 
 	// 03. register middlewares
 	apiServer.Use(middlewares.Auth)
@@ -77,7 +71,7 @@ func (app *App) Init() error {
 
 	// 04. init account module
 	var jwtSecret string
-	if jwtSecret, err = config.FindString("global.admin_jwt_secret"); err != nil {
+	if jwtSecret, err = infra.Config.FindString("global.admin_jwt_secret"); err != nil {
 		return err
 	}
 
@@ -117,7 +111,7 @@ func Start(context *cli.Context) error {
 		return err
 	}
 
-	app.Listen()
+	app.apiServer.Listen()
 	log.Println("mingchuan.me API is on!")
 
 	return nil

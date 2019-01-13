@@ -7,7 +7,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/drivers/swagger/models"
-	apiMisc "mingchuan.me/app/drviers/swagger/restapi/operations/misc"
+	apiMisc "mingchuan.me/app/drivers/swagger/restapi/operations/misc"
 )
 
 // RegisterAPI -

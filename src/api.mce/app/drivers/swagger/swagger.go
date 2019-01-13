@@ -6,6 +6,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"mingchuan.me/app/drivers/swagger/restapi"
 	"mingchuan.me/app/drivers/swagger/restapi/operations"
+
 	"mingchuan.me/infra"
 	"net/http"
 )
@@ -19,6 +20,7 @@ type Driver struct {
 	errorHandler ErrorHandlerFunc
 }
 
+// API -
 type API = operations.MceAPI
 
 // NewDriver -
