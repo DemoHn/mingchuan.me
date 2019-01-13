@@ -8,7 +8,7 @@ import (
 
 // Driver - gorm_driver is a wrapper of the popular ORM: gorm
 type Driver struct {
-	*gorm.DB
+	DB *gorm.DB
 }
 
 // NewDriver - new gorm driver
@@ -26,7 +26,74 @@ func NewDriver(infra *infra.Infrastructure) (*Driver, error) {
 	if db, err = gorm.Open("mysql", dbURL); err != nil {
 		return nil, err
 	}
+
 	return &Driver{DB: db}, nil
+}
+
+func (d *Driver) Error() error {
+	return d.DB.Error
+}
+
+// THE FOLLOWING FUNCTIONS ARE ALL FROM gorm.DB WITH SAME SIGNATURE
+
+// Begin - begin an transaction
+func (d *Driver) Begin() *Driver {
+	d.DB = d.DB.Begin()
+	return d
+}
+
+// Commit - commit an transaction
+func (d *Driver) Commit() *Driver {
+	d.DB = d.DB.Commit()
+	return d
+}
+
+// Rollback - rollback an transaction
+func (d *Driver) Rollback() *Driver {
+	d.DB = d.DB.Rollback()
+	return d
+}
+
+// migration
+
+// AutoMigrate - auto migrate data
+func (d *Driver) AutoMigrate(values ...interface{}) *Driver {
+	d.DB = d.DB.AutoMigrate(values...)
+	return d
+}
+
+// query
+
+// Create - create record
+func (d *Driver) Create(value interface{}) *Driver {
+	d.DB = d.DB.Create(value)
+	return d
+}
+
+// Limit - add limitation of query
+func (d *Driver) Limit(limit interface{}) *Driver {
+	d.DB = d.DB.Limit(limit)
+	return d
+}
+
+// Where - where conditions
+func (d *Driver) Where(query interface{}, args ...interface{}) *Driver {
+	d.DB = d.DB.Where(query, args...)
+	return d
+}
+
+// Update -
+func (d *Driver) Update(attrs ...interface{}) *Driver {
+	d.DB = d.DB.Update(attrs...)
+	return d
+}
+
+// misc
+
+// Debug -
+func (d *Driver) Debug() *Driver {
+	d.DB = d.DB.Debug()
+	return d
 }
 
 // Close - close DB
