@@ -2,9 +2,9 @@ package blog
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"mingchuan.me/api"
-	"mingchuan.me/api/models"
-	apiBlog "mingchuan.me/api/restapi/operations/blog"
+	"mingchuan.me/app/drivers/swagger"
+	"mingchuan.me/app/drivers/swagger/models"
+	apiBlog "mingchuan.me/app/drviers/swagger/restapi/operations/blog"
 )
 
 // PostController -
@@ -34,7 +34,7 @@ func (ctrl *PostController) GetOnePost() {
 			// service
 			article, err := service.GetOnePost(id)
 			if err != nil {
-				mErr := api.ModelServiceError(err)
+				mErr := swagger.ModelServiceError(err)
 				return apiBlog.NewGetOnePostBadRequest().WithPayload(mErr)
 			}
 			resp := article2Post(article)
@@ -59,7 +59,7 @@ func (ctrl *PostController) CreatePost() {
 			// service
 			article, err := service.CreatePost(title, content, status, permission)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewCreatePostBadRequest().WithPayload(wErr)
 			}
 
@@ -79,7 +79,7 @@ func (ctrl *PostController) PublishPost() {
 			// service
 			article, err := service.PublishPost(id)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewPublishPostBadRequest().WithPayload(wErr)
 			}
 
@@ -108,7 +108,7 @@ func (ctrl *PostController) UpdatePost() {
 			// service
 			article, err := service.UpdatePost(id, payload)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewUpdatePostBadRequest().WithPayload(wErr)
 			}
 
@@ -128,7 +128,7 @@ func (ctrl *PostController) DeletePost() {
 			// service
 			err := service.DeletePost(id)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewDeletePostBadRequest().WithPayload(wErr)
 			}
 
@@ -155,7 +155,7 @@ func (ctrl *PostController) GetOnePublicPost() {
 			// service
 			article, err := service.GetOnePublicPost(id)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewGetOnePublicPostBadRequest().WithPayload(wErr)
 			}
 
@@ -176,7 +176,7 @@ func (ctrl *PostController) ListAllPosts() {
 
 			rPage, articles, err := service.ListAllPostsByPage(page, limit)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewListAllPostsBadRequest().WithPayload(wErr)
 			}
 
@@ -205,7 +205,7 @@ func (ctrl *PostController) ListAllPublicPosts() {
 
 			hasMore, fCursor, articles, err := service.ListPublicPostsByCursor(cursor, limit)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiBlog.NewListPublicPostsBadRequest().WithPayload(wErr)
 			}
 

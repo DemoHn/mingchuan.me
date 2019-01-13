@@ -2,19 +2,19 @@ package todo
 
 import (
 	"github.com/go-openapi/runtime/middleware"
-	"mingchuan.me/api"
-	"mingchuan.me/api/models"
-	apiTodo "mingchuan.me/api/restapi/operations/todo"
+	"mingchuan.me/app/drivers/swagger"
+	"mingchuan.me/app/drivers/swagger/models"
+	apiTodo "mingchuan.me/app/drviers/swagger/restapi/operations/todo"
 )
 
-// TodoController -
-type TodoController struct {
-	*api.API
+// Controller -
+type Controller struct {
+	*swagger.API
 	Service *TodoService
 }
 
-// CreateController -
-func CreateController(api *api.API, service *TodoService) *TodoController {
+// NewController -
+func NewController(api *swagger.API, service *TodoService) *TodoController {
 	return &TodoController{
 		API:     api,
 		Service: service,
@@ -35,7 +35,7 @@ func (ctrl *TodoController) BindAllRoutes() {
 			// service
 			todo, err := service.CreateTodo(content)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewCreateItemTBadRequest().WithPayload(wErr)
 			}
 
@@ -50,7 +50,7 @@ func (ctrl *TodoController) BindAllRoutes() {
 			todos, err := service.ListAllTodos()
 
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewListAllItemsTBadRequest().WithPayload(wErr)
 			}
 
@@ -74,7 +74,7 @@ func (ctrl *TodoController) BindAllRoutes() {
 			// services
 			todo, err := service.DeleteTodo(id)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewDeleteItemTBadRequest().WithPayload(wErr)
 			}
 
@@ -92,7 +92,7 @@ func (ctrl *TodoController) BindAllRoutes() {
 			// services
 			todo, err := service.UpdateTodo(id, newContent)
 			if err != nil {
-				wErr := api.ModelServiceError(err)
+				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewUpdateItemTBadRequest().WithPayload(wErr)
 			}
 

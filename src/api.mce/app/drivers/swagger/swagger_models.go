@@ -1,12 +1,13 @@
-package api
+package swagger
 
 import (
-	"mingchuan.me/api/models"
+	"mingchuan.me/app/drivers/swagger/models"
 	"mingchuan.me/app/errors"
 )
 
 // models.go
 // This file wraps some common swagger models
+// TODO: use formatters to help replce this file!
 
 // ModelServiceError -
 func ModelServiceError(err *errors.Error) *models.ServiceError {

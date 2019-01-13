@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 
-	"mingchuan.me/api"
+	"mingchuan.me/app/drivers/swagger"
 )
 
 // NewService - new service
@@ -36,7 +36,7 @@ func (srv *AccountService) Init() error {
 }
 
 // RegisterAPI -
-func (srv *AccountService) RegisterAPI(api *api.API) {
+func (srv *AccountService) RegisterAPI(api *swagger.API) {
 	c := CreateController(api, srv)
 	// bind routes
 	c.RegisterAdmin()

@@ -2,7 +2,7 @@ package blog
 
 import (
 	"github.com/jinzhu/gorm"
-	"mingchuan.me/api"
+	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/pkg/morloop"
 )
 
@@ -61,7 +61,7 @@ func (blog *BlogService) SetValidations(validations BlogValidations) {
 }
 
 // RegisterAPI -
-func (blog *BlogService) RegisterAPI(api *api.API) {
+func (blog *BlogService) RegisterAPI(api *swagger.API) {
 	pCtrl := CreatePostController(api, blog)
 
 	// admin

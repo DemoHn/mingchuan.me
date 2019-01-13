@@ -3,21 +3,22 @@ package account
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/swag"
-	"mingchuan.me/api"
-	"mingchuan.me/api/models"
-	apiAccount "mingchuan.me/api/restapi/operations/account"
+
+	"mingchuan.me/app/drivers/swagger"
+	"mingchuan.me/app/drivers/swagger/models"
+	apiAccount "mingchuan.me/app/drviers/swagger/restapi/operations/account"
 	"mingchuan.me/app/errors"
 )
 
 // Routes - create a struct with instance inside it
 // this is to help do mock testing
 type AccountController struct {
-	*api.API
+	*swagger.API
 	Service *AccountService
 }
 
 // CreateController -
-func CreateController(api *api.API, service *AccountService) *AccountController {
+func CreateController(api *swagger.API, service *AccountService) *AccountController {
 	return &AccountController{
 		API:     api,
 		Service: service,
@@ -44,7 +45,7 @@ func (c *AccountController) RegisterAdmin() {
 			if err != nil {
 				// TODO: more specific error
 				wErr := errors.UnknownError(err)
-				return apiAccount.NewRegisterAdminBadRequest().WithPayload(api.ModelServiceError(wErr))
+				return apiAccount.NewRegisterAdminBadRequest().WithPayload(swagger.ModelServiceError(wErr))
 			}
 			// construct payload
 			resp := models.JwtResponse{
@@ -71,7 +72,7 @@ func (c *AccountController) Login() {
 
 			if err != nil {
 				wErr := errors.UnknownError(err)
-				return apiAccount.NewLoginBadRequest().WithPayload(api.ModelServiceError(wErr))
+				return apiAccount.NewLoginBadRequest().WithPayload(swagger.ModelServiceError(wErr))
 			}
 
 			resp := models.JwtResponse{

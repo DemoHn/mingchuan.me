@@ -19,6 +19,8 @@ type Driver struct {
 	errorHandler ErrorHandlerFunc
 }
 
+type API = operations.MceAPI
+
 // NewDriver -
 func NewDriver(infra *infra.Infrastructure) (*Driver, error) {
 	var err error
@@ -75,9 +77,7 @@ func (d *Driver) configureAPI() {
 	// api.Logger = log.Printf
 
 	api.JSONConsumer = runtime.JSONConsumer()
-
 	api.JSONProducer = runtime.JSONProducer()
-
 	api.ServerShutdown = func() {}
 
 	apiHandler := d.runMiddlewares(api.Serve(d.setupMiddlewares))
