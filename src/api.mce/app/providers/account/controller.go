@@ -3,9 +3,9 @@ package account
 import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/swag"
-
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/drivers/swagger/models"
+
 	apiAccount "mingchuan.me/app/drivers/swagger/restapi/operations/account"
 	"mingchuan.me/app/errors"
 )
@@ -25,7 +25,6 @@ func NewController(api *swagger.API, service *AccountService) *AccountController
 	}
 }
 
-// TODO - use a unique key to avoid uncontrol register admin
 // RegisterAdmin -
 func (c *AccountController) RegisterAdmin() {
 	API := c.API

@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/jinzhu/gorm"
-
 	"mingchuan.me/app/drivers/swagger"
 )
 
