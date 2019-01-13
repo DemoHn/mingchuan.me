@@ -10,23 +10,29 @@ import (
 	"mingchuan.me/app/errors"
 )
 
-// Routes - create a struct with instance inside it
+// Controller - create a struct with instance inside it
 // this is to help do mock testing
-type AccountController struct {
+type Controller struct {
 	*swagger.API
-	Service *AccountService
+	*Service
 }
 
 // NewController -
-func NewController(api *swagger.API, service *AccountService) *AccountController {
-	return &AccountController{
-		API:     api,
+func NewController(api *swagger.Driver, service *Service) *Controller {
+	c := &Controller{
+		API:     api.GetAPI(),
 		Service: service,
 	}
+
+	// register routes
+	c.RegisterAdmin()
+	c.Login()
+
+	return c
 }
 
 // RegisterAdmin -
-func (c *AccountController) RegisterAdmin() {
+func (c *Controller) RegisterAdmin() {
 	API := c.API
 	service := c.Service
 
@@ -39,7 +45,7 @@ func (c *AccountController) RegisterAdmin() {
 			adminKey := swag.StringValue(request.AdminKey)
 
 			// service
-			jwt, err := service.RegisterAndSign(name, password, adminKey)
+			jwt, err := service.RegisterAdmin(name, password, adminKey)
 
 			if err != nil {
 				// TODO: more specific error
@@ -55,7 +61,7 @@ func (c *AccountController) RegisterAdmin() {
 }
 
 // Login -
-func (c *AccountController) Login() {
+func (c *Controller) Login() {
 	API := c.API
 	service := c.Service
 
