@@ -1,15 +1,17 @@
 package todo
 
 import (
-	"github.com/jinzhu/gorm"
+	"mingchuan.me/app/drivers/gorm"
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/errors"
+	"mingchuan.me/infra"
 )
 
 // Service - TODO service
 type Service struct {
-	*gorm.DB
-	Version uint16
+	DB *gorm.Driver
+	// infra
+	*infra.Infrastructure
 }
 
 // Todo - TODO model
@@ -19,25 +21,19 @@ type Todo struct {
 }
 
 // NewService -
-func NewService(db *gorm.DB) *Service {
-	return &Service{
-		DB:      db,
-		Version: 1,
+func NewService(infra *infra.Infrastructure, db *gorm.Driver) (*Service, error) {
+	var err error
+	if err = db.AutoMigrate(&Todo{}).Error(); err != nil {
+		return nil, err
 	}
-}
 
-// Init - init the service, including auto-migrate table, etc.
-func (srv *Service) Init() error {
-	db := srv.DB
-
-	db = db.AutoMigrate(&Todo{})
-	return db.Error
+	return &Service{DB: db}, nil
 }
 
 // RegisterAPI -
 func (srv *Service) RegisterAPI(api *swagger.API) {
-	ctrl := NewController(api, srv)
-	ctrl.BindAllRoutes()
+	//ctrl := NewController(api, srv)
+	//ctrl.BindAllRoutes()
 }
 
 // Other Methods
@@ -51,8 +47,8 @@ func (srv *Service) CreateTodo(content string) (*Todo, *errors.Error) {
 	}
 	db = db.Create(newTodo)
 
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 
 	return newTodo, nil
@@ -64,13 +60,13 @@ func (srv *Service) UpdateTodo(id int64, content string) (*Todo, *errors.Error) 
 	var todo Todo
 
 	db = db.Where("id = ?", id).First(&todo)
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 
 	db = db.Model(&todo).Update("content", content)
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 
 	return &todo, nil
@@ -84,13 +80,13 @@ func (srv *Service) DeleteTodo(id int64) (*Todo, *errors.Error) {
 	// find the corresponded ID
 	db = db.Find(&todo, "id = ?", id)
 
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 	// delete it
 	db = db.Delete(&todo)
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 
 	return &todo, nil
@@ -102,8 +98,8 @@ func (srv *Service) ListAllTodos() (*[]Todo, *errors.Error) {
 	todos := make([]Todo, 0)
 
 	db = db.Find(&todos)
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 
 	return &todos, nil

@@ -70,6 +70,12 @@ func (d *Driver) Create(value interface{}) *Driver {
 	return d
 }
 
+// Find -
+func (d *Driver) Find(out interface{}, where ...interface{}) *Driver {
+	d.DB = d.DB.Find(out, where...)
+	return d
+}
+
 // Limit - add limitation of query
 func (d *Driver) Limit(limit interface{}) *Driver {
 	d.DB = d.DB.Limit(limit)
@@ -85,6 +91,24 @@ func (d *Driver) Where(query interface{}, args ...interface{}) *Driver {
 // Update -
 func (d *Driver) Update(attrs ...interface{}) *Driver {
 	d.DB = d.DB.Update(attrs...)
+	return d
+}
+
+// Delete -
+func (d *Driver) Delete(value interface{}, where ...interface{}) *Driver {
+	d.DB = d.DB.Delete(value, where...)
+	return d
+}
+
+// First -
+func (d *Driver) First(out interface{}, where ...interface{}) *Driver {
+	d.DB = d.DB.First(out, where...)
+	return d
+}
+
+// Model -
+func (d *Driver) Model(value interface{}) *Driver {
+	d.DB = d.DB.Model(value)
 	return d
 }
 

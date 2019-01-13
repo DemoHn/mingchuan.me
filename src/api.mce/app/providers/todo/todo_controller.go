@@ -14,26 +14,26 @@ type Controller struct {
 }
 
 // NewController -
-func NewController(api *swagger.API, service *Service) *Controller {
-	return &Controller{
-		API:     api,
+func NewController(api *swagger.Driver, service *Service) *Controller {
+	cc := &Controller{
+		API:     api.GetAPI(),
 		Service: service,
 	}
+
+	cc.bindAllRoutes()
+	return cc
 }
 
-// BindAllRoutes -
-func (ctrl *Controller) BindAllRoutes() {
-	API := ctrl.API
-	service := ctrl.Service
+func (c *Controller) bindAllRoutes() {		
 
 	// CreateItem
-	API.TodoCreateItemTHandler = apiTodo.CreateItemTHandlerFunc(
+	c.TodoCreateItemTHandler = apiTodo.CreateItemTHandlerFunc(
 		func(params apiTodo.CreateItemTParams) middleware.Responder {
 			request := params.Request
 			content := request.Content
 
 			// service
-			todo, err := service.CreateTodo(content)
+			todo, err := c.CreateTodo(content)
 			if err != nil {
 				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewCreateItemTBadRequest().WithPayload(wErr)
@@ -44,10 +44,10 @@ func (ctrl *Controller) BindAllRoutes() {
 		})
 
 	// ListAllItems
-	API.TodoListAllItemsTHandler = apiTodo.ListAllItemsTHandlerFunc(
+	c.TodoListAllItemsTHandler = apiTodo.ListAllItemsTHandlerFunc(
 		func(params apiTodo.ListAllItemsTParams) middleware.Responder {
 			// service
-			todos, err := service.ListAllTodos()
+			todos, err := c.ListAllTodos()
 
 			if err != nil {
 				wErr := swagger.ModelServiceError(err)
@@ -67,12 +67,12 @@ func (ctrl *Controller) BindAllRoutes() {
 		})
 
 	// DeleteItems
-	API.TodoDeleteItemTHandler = apiTodo.DeleteItemTHandlerFunc(
+	c.TodoDeleteItemTHandler = apiTodo.DeleteItemTHandlerFunc(
 		func(params apiTodo.DeleteItemTParams) middleware.Responder {
 			id := params.ID
 
 			// services
-			todo, err := service.DeleteTodo(id)
+			todo, err := c.DeleteTodo(id)
 			if err != nil {
 				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewDeleteItemTBadRequest().WithPayload(wErr)
@@ -83,14 +83,14 @@ func (ctrl *Controller) BindAllRoutes() {
 		})
 
 	// UpdateTodo
-	API.TodoUpdateItemTHandler = apiTodo.UpdateItemTHandlerFunc(
+	c.TodoUpdateItemTHandler = apiTodo.UpdateItemTHandlerFunc(
 		func(params apiTodo.UpdateItemTParams) middleware.Responder {
 			id := params.ID
 			request := params.Request
 			newContent := request.Content
 
 			// services
-			todo, err := service.UpdateTodo(id, newContent)
+			todo, err := c.UpdateTodo(id, newContent)
 			if err != nil {
 				wErr := swagger.ModelServiceError(err)
 				return apiTodo.NewUpdateItemTBadRequest().WithPayload(wErr)

@@ -16,7 +16,7 @@ require (
 	github.com/go-openapi/validate v0.18.0
 	github.com/go-sql-driver/mysql v1.4.1 // indirect
 	github.com/golang/mock v1.2.0
-	github.com/google/wire v0.2.0 // indirect
+	github.com/google/wire v0.2.0
 	github.com/gorilla/context v1.1.1 // indirect
 	github.com/gorilla/mux v1.6.2
 	github.com/imdario/mergo v0.3.6
