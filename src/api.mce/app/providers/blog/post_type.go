@@ -4,9 +4,6 @@ import (
 	"time"
 )
 
-// Types
-type Nstring string
-
 /* filters */
 // ArticlePageFilter - page filter
 type ArticlePageLimit struct {

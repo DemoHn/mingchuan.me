@@ -3,15 +3,15 @@ package blog
 import (
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"mingchuan.me/app/drivers/gorm"
 )
 
 // PostRepo - post repository
 type PostRepo struct {
-	*gorm.DB
+	DB *gorm.Driver
 }
 
-type txCallback func(tx *gorm.DB) error
+type txCallback func(tx *gorm.Driver) error
 
 // ArticleStatus - define all states of an article
 type ArticleStatus = string
@@ -40,6 +40,7 @@ type ArticleEvent = string
 
 const (
 	// Change Status Events
+
 	// SaveDraft -
 	SaveDraft ArticleEvent = "SAVE_DRAFT" // status = DRAFTED
 	// PublishPost -
@@ -47,17 +48,19 @@ const (
 	// DeletePost -
 	DeletePost ArticleEvent = "DELETE_POST" // status = REMOVED
 	// Change Permission Events
+
 	// SetPublic -
 	SetPublic ArticleEvent = "SET_PUBLIC" // permission = PUBLIC
 	// SetPrivate -
 	SetPrivate ArticleEvent = "SET_PRIVATE" // permission = PRIVATE
 	// Other Events (That don't change status)
+
 	// EditPost -
 	EditPost ArticleEvent = "EDIT_POST"
 )
 
 // NewPostRepo -
-func NewPostRepo(db *gorm.DB) *PostRepo {
+func NewPostRepo(db *gorm.Driver) *PostRepo {
 	return &PostRepo{
 		DB: db,
 	}
@@ -65,10 +68,10 @@ func NewPostRepo(db *gorm.DB) *PostRepo {
 
 // Create - create new post
 func (r *PostRepo) Create(newPost *Article) error {
-	return r.transaction(func(tx *gorm.DB) error {
+	return r.transaction(func(tx *gorm.Driver) error {
 		var err error
 		// 1. insert post
-		if err = tx.Create(newPost).Error; err != nil {
+		if err = tx.Create(newPost).Error(); err != nil {
 			return err
 		}
 		// 2. write event log
@@ -87,7 +90,7 @@ func (r *PostRepo) Create(newPost *Article) error {
 			NewPermission: newPost.Permission,
 			CreatedAt:     time.Now(),
 		}
-		if err = tx.Create(&newEvent).Error; err != nil {
+		if err = tx.Create(&newEvent).Error(); err != nil {
 			return err
 		}
 		return nil
@@ -96,10 +99,10 @@ func (r *PostRepo) Create(newPost *Article) error {
 
 // Delete - delete an existing post (soft delete)
 func (r *PostRepo) Delete(post *Article) error {
-	return r.transaction(func(tx *gorm.DB) error {
+	return r.transaction(func(tx *gorm.Driver) error {
 		var err error
 		// set status -> Removed
-		if err = tx.Model(post).Update("status", Removed).Error; err != nil {
+		if err = tx.Model(post).Update("status", Removed).Error(); err != nil {
 			return err
 		}
 
@@ -111,7 +114,7 @@ func (r *PostRepo) Delete(post *Article) error {
 			NewPermission: post.Permission,
 			CreatedAt:     time.Now(),
 		}
-		if err = tx.Create(&newEvent).Error; err != nil {
+		if err = tx.Create(&newEvent).Error(); err != nil {
 			return err
 		}
 		return nil
@@ -120,9 +123,9 @@ func (r *PostRepo) Delete(post *Article) error {
 
 // UpdateStatus - update post status with event log
 func (r *PostRepo) UpdateStatus(post *Article, newStatus ArticleStatus, event ArticleEvent) error {
-	return r.transaction(func(tx *gorm.DB) error {
+	return r.transaction(func(tx *gorm.Driver) error {
 		var err error
-		if err = tx.Model(post).Update("status", newStatus).Error; err != nil {
+		if err = tx.Model(post).Update("status", newStatus).Error(); err != nil {
 			return err
 		}
 		// add event log
@@ -133,7 +136,7 @@ func (r *PostRepo) UpdateStatus(post *Article, newStatus ArticleStatus, event Ar
 			NewPermission: post.Permission,
 			CreatedAt:     time.Now(),
 		}
-		if err = tx.Create(&newEvent).Error; err != nil {
+		if err = tx.Create(&newEvent).Error(); err != nil {
 			return err
 		}
 		return nil
@@ -144,21 +147,21 @@ func (r *PostRepo) UpdateStatus(post *Article, newStatus ArticleStatus, event Ar
 func (r *PostRepo) transaction(fn txCallback) error {
 	var finish = false
 	var err error
-	tx := r.Begin()
+	tx := r.DB.Begin()
 	defer func() {
 		if finish != true {
 			tx.Rollback()
 		}
 	}()
-	if tx.Error != nil {
-		return tx.Error
+	if tx.Error() != nil {
+		return tx.Error()
 	}
 	// execute
 	if err = fn(tx); err != nil {
 		return err
 	}
 	// commit
-	if err = tx.Commit().Error; err != nil {
+	if err = tx.Commit().Error(); err != nil {
 		return err
 	}
 	// finish transaction

@@ -4,14 +4,55 @@ import (
 	"fmt"
 	"strconv"
 
+	"mingchuan.me/app/drivers/gorm"
+
 	"mingchuan.me/util"
 
-	"github.com/jinzhu/gorm"
 	"mingchuan.me/app/errors"
 )
 
+// PostValidations -
+type PostValidations struct {
+	MaxTitleChars   uint32
+	MaxArticleChars uint32
+}
+
+// PostService - post service main data struct
+type PostService struct {
+	DB *gorm.Driver
+	*PostRepo
+	Validations PostValidations
+}
+
+const (
+	maxTitleChars   = 120
+	maxArticleChars = 120000
+)
+
+// NewPostService - new blog service object
+func NewPostService(db *gorm.Driver) (*PostService, error) {
+	var err error
+	if err = db.AutoMigrate(&Article{}).Error(); err != nil {
+		return nil, err
+	}
+	if err = db.AutoMigrate(&ArticleEventLog{}).Error(); err != nil {
+		return nil, err
+	}
+
+	return &PostService{
+		DB:       db,
+		PostRepo: NewPostRepo(db),
+		// Hardcore version number
+		// init validations
+		Validations: PostValidations{
+			MaxTitleChars:   maxTitleChars,
+			MaxArticleChars: maxArticleChars,
+		},
+	}, nil
+}
+
 // CreatePost - create a new post
-func (blog *BlogService) CreatePost(
+func (p *PostService) CreatePost(
 	title string,
 	content string,
 	initialStatus ArticleStatus,
@@ -19,7 +60,7 @@ func (blog *BlogService) CreatePost(
 	var newPost Article
 	var err error
 	// check validation
-	if errV := blog.validateNewPost(title, content, initialStatus); errV != nil {
+	if errV := p.validateNewPost(title, content, initialStatus); errV != nil {
 		return newPost, errV
 	}
 
@@ -30,7 +71,7 @@ func (blog *BlogService) CreatePost(
 		Permission: initialPermission,
 	}
 
-	if err = blog.PostRepo.Create(&newPost); err != nil {
+	if err = p.PostRepo.Create(&newPost); err != nil {
 		return newPost, errors.SQLExecutionError(err)
 	}
 
@@ -38,12 +79,12 @@ func (blog *BlogService) CreatePost(
 }
 
 // UpdatePost - update content of a post
-func (blog *BlogService) UpdatePost(ID uint32, payload *ArticleUpdatePayload) (*Article, *errors.Error) {
+func (p *PostService) UpdatePost(ID uint32, payload *ArticleUpdatePayload) (*Article, *errors.Error) {
 	// TODO
-	db := blog.DB
+	db := p.DB
 	var article Article
 	db = db.Where("id = ?", ID).First(&article)
-	if db.Error != nil {
+	if db.Error() != nil {
 		return nil, errors.ArticleIDNotFoundError(ID)
 	}
 
@@ -60,8 +101,8 @@ func (blog *BlogService) UpdatePost(ID uint32, payload *ArticleUpdatePayload) (*
 		article.Permission = *(payload.Permission)
 	}
 	db = db.Save(&article)
-	if db.Error != nil {
-		return nil, errors.SQLExecutionError(db.Error)
+	if db.Error() != nil {
+		return nil, errors.SQLExecutionError(db.Error())
 	}
 
 	return &article, nil
@@ -69,16 +110,16 @@ func (blog *BlogService) UpdatePost(ID uint32, payload *ArticleUpdatePayload) (*
 
 // DeletePost - delete a post
 // Notice, we will not delete a post from db directly
-func (blog *BlogService) DeletePost(ID uint32) *errors.Error {
+func (p *PostService) DeletePost(ID uint32) *errors.Error {
 	// validate if ID exists
 	var article Article
 	var err error
 	// not found
-	if err = blog.DB.Where("id = ?", ID).First(&article).Error; err != nil {
+	if err = p.DB.Where("id = ?", ID).First(&article).Error(); err != nil {
 		return errors.ArticleIDNotFoundError(ID)
 	}
 
-	if err = blog.PostRepo.Delete(&article); err != nil {
+	if err = p.PostRepo.Delete(&article); err != nil {
 		return errors.SQLExecutionError(err)
 	}
 	return nil
@@ -86,12 +127,12 @@ func (blog *BlogService) DeletePost(ID uint32) *errors.Error {
 
 // PublishPost - publish a drafted post
 // NOTICE: only status = DRAFTED could do this operation
-func (blog *BlogService) PublishPost(ID uint32) (*Article, *errors.Error) {
+func (p *PostService) PublishPost(ID uint32) (*Article, *errors.Error) {
 	// 0. validate if it exists and status = DRAFTED
 	var article Article
 	var err error
 	// not found
-	if err = blog.DB.Where("id = ?", ID).First(&article).Error; err != nil {
+	if err = p.DB.Where("id = ?", ID).First(&article).Error(); err != nil {
 		return nil, errors.SQLExecutionError(err)
 	}
 	// status != DRAFTED
@@ -99,16 +140,16 @@ func (blog *BlogService) PublishPost(ID uint32) (*Article, *errors.Error) {
 		return nil, errors.NotDraftedPostError()
 	}
 
-	if err = blog.PostRepo.UpdateStatus(&article, Published, PublishPost); err != nil {
+	if err = p.PostRepo.UpdateStatus(&article, Published, PublishPost); err != nil {
 		return nil, errors.SQLExecutionError(err)
 	}
 	return &article, nil
 }
 
 // GetOnePost - get one post
-func (blog *BlogService) GetOnePost(ID uint32) (Article, *errors.Error) {
+func (p *PostService) GetOnePost(ID uint32) (Article, *errors.Error) {
 	var article Article
-	if err := blog.DB.Find(&article, "id = ?", ID).Error; err != nil {
+	if err := p.DB.Find(&article, "id = ?", ID).Error(); err != nil {
 		return article, errors.ArticleIDNotFoundError(ID)
 	}
 
@@ -116,11 +157,11 @@ func (blog *BlogService) GetOnePost(ID uint32) (Article, *errors.Error) {
 }
 
 // GetOnePublicPost - get one post (public to be seen)
-func (blog *BlogService) GetOnePublicPost(ID uint32) (*Article, *errors.Error) {
+func (p *PostService) GetOnePublicPost(ID uint32) (*Article, *errors.Error) {
 	var article Article
-	db := blog.DB
+	db := p.DB
 
-	if err := db.Find(&article, "id = ?", ID).Error; err != nil {
+	if err := db.Find(&article, "id = ?", ID).Error(); err != nil {
 		return nil, errors.ArticleIDNotFoundError(ID)
 	}
 
@@ -135,11 +176,11 @@ func (blog *BlogService) GetOnePublicPost(ID uint32) (*Article, *errors.Error) {
 // ListAllPostsByPage - list all posts for admin panel, including DRAFTED, PUBLISHED, REMOVED
 // This is usually used in admin panel
 // returns: page(bool), articles(Array<Article>), error
-func (blog *BlogService) ListAllPostsByPage(page *int64, limit *int64) (int64, []Article, *errors.Error) {
+func (p *PostService) ListAllPostsByPage(page *int64, limit *int64) (int64, []Article, *errors.Error) {
 	// TODO add sorting
 	var articles []Article
 	var err error
-	db := blog.DB
+	db := p.DB
 
 	// get actuall limit
 	var aLimit int64
@@ -181,8 +222,8 @@ func (blog *BlogService) ListAllPostsByPage(page *int64, limit *int64) (int64, [
 
 // ListPublicPostsByCursor - list posts by cursor
 // used in blog main page to show all blog posts
-func (blog *BlogService) ListPublicPostsByCursor(cursor *string, limit *int64) (bool, string, []Article, *errors.Error) {
-	db := blog.DB
+func (p *PostService) ListPublicPostsByCursor(cursor *string, limit *int64) (bool, string, []Article, *errors.Error) {
+	db := p.DB
 	var articles []Article
 
 	// enusre only published & public posts will be shown
@@ -239,13 +280,13 @@ Rule #1.1: len(title) > 0
 Rule #2: len(contet) < maxContentLength
 Rule #3: state in [Published, ]
 */
-func (blog *BlogService) validateNewPost(
+func (p *PostService) validateNewPost(
 	title string,
 	content string,
 	status ArticleStatus) *errors.Error {
 
 	// Rule #1
-	maxTitleChars := blog.Validations.MaxTitleChars
+	maxTitleChars := p.Validations.MaxTitleChars
 	if uint32(len([]rune(title))) >= maxTitleChars {
 		return errors.NewPostValidationError(
 			fmt.Sprintf("The length of title has exceed limit:%d chars", maxTitleChars),
@@ -259,7 +300,7 @@ func (blog *BlogService) validateNewPost(
 		)
 	}
 	// Rule #2
-	maxContentChars := blog.Validations.MaxArticleChars
+	maxContentChars := p.Validations.MaxArticleChars
 	if uint32(len([]rune(content))) >= maxContentChars {
 		return errors.NewPostValidationError(
 			fmt.Sprintf("The length of content has exceed limit:%d chars", maxContentChars),
@@ -295,7 +336,7 @@ func listPostsWithFilters(
 	// db - gorm database connection.
 	// for parsing more conditions, add `Where()` clause on this method
 	// before passing into the function.
-	db *gorm.DB,
+	db *gorm.Driver,
 	// filter - article status and permission filter
 	filter *ArticleFilter,
 	pageLimit *ArticlePageLimit,
@@ -326,7 +367,7 @@ func listPostsWithFilters(
 	}
 
 	// do search
-	if err = db.Find(&articles).Error; err != nil {
+	if err = db.Find(&articles).Error(); err != nil {
 		articles = nil
 	}
 	return

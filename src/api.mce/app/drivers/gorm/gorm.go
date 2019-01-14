@@ -82,9 +82,21 @@ func (d *Driver) Limit(limit interface{}) *Driver {
 	return d
 }
 
+// Offset - add offset of query
+func (d *Driver) Offset(offset interface{}) *Driver {
+	d.DB = d.DB.Offset(offset)
+	return d
+}
+
 // Where - where conditions
 func (d *Driver) Where(query interface{}, args ...interface{}) *Driver {
 	d.DB = d.DB.Where(query, args...)
+	return d
+}
+
+// Order - order the query
+func (d *Driver) Order(value interface{}, reorder ...bool) *Driver {
+	d.DB = d.DB.Order(value, reorder...)
 	return d
 }
 
@@ -109,6 +121,12 @@ func (d *Driver) First(out interface{}, where ...interface{}) *Driver {
 // Model -
 func (d *Driver) Model(value interface{}) *Driver {
 	d.DB = d.DB.Model(value)
+	return d
+}
+
+// Save -
+func (d *Driver) Save(value interface{}) *Driver {
+	d.DB = d.DB.Save(value)
 	return d
 }
 

@@ -9,23 +9,36 @@ import (
 
 // PostController -
 type PostController struct {
-	*swagger.API
-	Service *BlogService
+	API *swagger.API
+	*PostService
 }
 
-// CreatePostController -
-func CreatePostController(api *swagger.API, service *BlogService) *PostController {
-	return &PostController{
-		API:     api,
-		Service: service,
+// NewPostController -
+func NewPostController(api *swagger.Driver, service *PostService) *PostController {
+	c := &PostController{
+		API:         api.GetAPI(),
+		PostService: service,
 	}
+	// admin
+	c.CreatePost()
+	c.GetOnePost()
+	c.PublishPost()
+	c.UpdatePost()
+	c.DeletePost()
+	c.ListAllPosts()
+
+	// public
+	c.GetOnePublicPost()
+	c.ListAllPublicPosts()
+
+	return c
 }
 
 // GetOnePost - get one post by post ID
 // It's the most easy way to get the info of one post. (including drafted, private, etc...)
 func (ctrl *PostController) GetOnePost() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogGetOnePostHandler = apiBlog.GetOnePostHandlerFunc(
 		func(params apiBlog.GetOnePostParams) middleware.Responder {
@@ -46,7 +59,7 @@ func (ctrl *PostController) GetOnePost() {
 // CreatePost -
 func (ctrl *PostController) CreatePost() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogCreatePostHandler = apiBlog.CreatePostHandlerFunc(
 		func(params apiBlog.CreatePostParams) middleware.Responder {
@@ -71,7 +84,7 @@ func (ctrl *PostController) CreatePost() {
 // PublishPost -
 func (ctrl *PostController) PublishPost() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogPublishPostHandler = apiBlog.PublishPostHandlerFunc(
 		func(params apiBlog.PublishPostParams) middleware.Responder {
@@ -91,7 +104,7 @@ func (ctrl *PostController) PublishPost() {
 // UpdatePost -
 func (ctrl *PostController) UpdatePost() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogUpdatePostHandler = apiBlog.UpdatePostHandlerFunc(
 		func(params apiBlog.UpdatePostParams) middleware.Responder {
@@ -120,7 +133,7 @@ func (ctrl *PostController) UpdatePost() {
 // DeletePost -
 func (ctrl *PostController) DeletePost() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogDeletePostHandler = apiBlog.DeletePostHandlerFunc(
 		func(params apiBlog.DeletePostParams) middleware.Responder {
@@ -146,7 +159,7 @@ func (ctrl *PostController) DeletePost() {
 // GetOnePublicPost -
 func (ctrl *PostController) GetOnePublicPost() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogGetOnePublicPostHandler = apiBlog.GetOnePublicPostHandlerFunc(
 		func(params apiBlog.GetOnePublicPostParams) middleware.Responder {
@@ -167,7 +180,7 @@ func (ctrl *PostController) GetOnePublicPost() {
 // ListAllPosts -
 func (ctrl *PostController) ListAllPosts() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogListAllPostsHandler = apiBlog.ListAllPostsHandlerFunc(
 		func(params apiBlog.ListAllPostsParams) middleware.Responder {
@@ -196,7 +209,7 @@ func (ctrl *PostController) ListAllPosts() {
 // ListAllPublicPosts -
 func (ctrl *PostController) ListAllPublicPosts() {
 	API := ctrl.API
-	service := ctrl.Service
+	service := ctrl.PostService
 
 	API.BlogListPublicPostsHandler = apiBlog.ListPublicPostsHandlerFunc(
 		func(params apiBlog.ListPublicPostsParams) middleware.Responder {
