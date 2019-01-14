@@ -17,6 +17,6 @@ fi
 # change to workdir
 cd /go/src/mingchuan.me
 # genearte swagger files
-swagger generate server -t api -f $ROOT/api/swagger.yml --exclude-main -A mce
+swagger generate server -t app/drivers/swagger -f $ROOT/api/swagger.yml --exclude-main -A mce
 # build binary
 GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-s -w" -o $BIN/mce -v $ROOT/main.go
