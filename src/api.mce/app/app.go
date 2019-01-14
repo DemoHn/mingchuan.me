@@ -4,6 +4,8 @@ import (
 	"log"
 	"os"
 
+	"mingchuan.me/app/drivers/gorm"
+
 	"mingchuan.me/app/drivers/swagger"
 	"mingchuan.me/app/middlewares"
 	"mingchuan.me/app/providers/account"
@@ -11,17 +13,15 @@ import (
 	"mingchuan.me/app/providers/healthz"
 	"mingchuan.me/app/providers/todo"
 	"mingchuan.me/infra"
-	"mingchuan.me/util"
 
-	"github.com/jinzhu/gorm"
 	"github.com/urfave/cli"
+
 	// FixMe
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 // App - Instance
 type App struct {
-	Version   int
 	CLI       *cli.Context
 	apiServer *swagger.Driver
 }
@@ -29,8 +29,7 @@ type App struct {
 // New - new App instance
 func New(c *cli.Context) *App {
 	return &App{
-		Version: 1,
-		CLI:     c,
+		CLI: c,
 	}
 }
 
@@ -45,61 +44,43 @@ func (app *App) Init() error {
 	// 01. init infra
 	infra := infra.New(configPath, debugMode)
 
-	// 02. init DB
-	var db *gorm.DB
-	var dbURL string
-	if dbURL, err = util.GenerateDatabaseURL(infra.Config); err != nil {
+	// 02. init db
+	db, err := gorm.NewDriver(infra)
+	if err != nil {
+		return err
+	}
+	// 03. init apiServer - swagger
+	var api *swagger.Driver
+	if api, err = swagger.NewDriver(infra); err != nil {
+		return err
+	}
+	app.apiServer = api
+
+	// 04. register middlewares
+	api.Use(middlewares.Auth)
+	api.SetErrorHandler(middlewares.HandleError)
+
+	// 05. account module
+	_, err = account.New(infra, db, api)
+	if err != nil {
 		return err
 	}
 
-	if db, err = gorm.Open("mysql", dbURL); err != nil {
+	// 06. blog module
+	_, err = blog.New(infra, db, api)
+	if err != nil {
 		return err
 	}
 
-	// 02. init apiServer - swagger
-	var apiServer *swagger.Driver
-	if apiServer, err = swagger.NewDriver(infra); err != nil {
-		return err
-	}
-	app.apiServer = apiServer
-
-	// 03. register middlewares
-	apiServer.Use(middlewares.Auth)
-	apiServer.SetErrorHandler(middlewares.HandleError)
-
-	API := apiServer.GetAPI()
-
-	// 04. init account module
-	var jwtSecret string
-	if jwtSecret, err = infra.Config.FindString("global.admin_jwt_secret"); err != nil {
+	// 07. todo module
+	_, err = todo.New(infra, db, api)
+	if err != nil {
 		return err
 	}
 
-	// 04. init account module
-	accountService := account.NewService(db, jwtSecret)
-	if err = accountService.Init(); err != nil {
-		return err
-	}
-	accountService.RegisterAPI(API)
-
-	// 05. blog module
-	blogService := blog.NewService(db)
-	if err = blogService.Init(); err != nil {
-		return err
-	}
-	blogService.RegisterAPI(API)
-
-	// 06. TODO module
-	todoService := todo.NewService(db)
-	if err = todoService.Init(); err != nil {
-		return err
-	}
-	todoService.RegisterAPI(API)
-
-	// 06. health check
-	healthz.RegisterAPI(API)
-
-	return nil
+	// 08. health module
+	_, err = healthz.New(infra, db, api)
+	return err
 }
 
 // Start - start the whole instance
