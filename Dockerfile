@@ -33,12 +33,21 @@ RUN GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-s -w" -o $BIN/mce -v $ROOT/
 
 
 # Installer Stage
-FROM abiosoft/caddy AS installer
+FROM node:11-alpine AS container
 
 WORKDIR /srv
 
-# install nodejs
-RUN mkdir -p /srv/api /srv/web
-COPY --from=API-builder /app/bin/mce api/
+# install PM2
+RUN yarn global add pm2
+# init dir
+RUN mkdir -p api web config pm2
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
+# copy caddy
+COPY --from=abiosoft/caddy /usr/bin/caddy .
+# copy FE & BE build artifacts
+COPY --from=API-builder /app/bin/mce api/
+COPY --from=WEB-builder /app/. web/
+# copy PM2
+COPY pm2.config.js pm2/
+
+ENTRYPOINT ["pm2", "start", "/srv/pm2/pm2.config.js", "--no-daemon"]
