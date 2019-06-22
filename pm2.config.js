@@ -2,11 +2,12 @@ module.exports = {
   apps: [
     {
       name: 'mce-web',
-      instances: 'max',
-      exec_mode: 'cluster',
+      instances: 1,
+      exec_mode: 'fork',
+      interpreter: 'none',
       cwd: '/srv/web',
-      script: 'yarn',
-      args: 'start',
+      script: 'npm',
+      args: 'run start',
       merge_logs: true,
       restart_delay: 5000,
       wait_ready: true,

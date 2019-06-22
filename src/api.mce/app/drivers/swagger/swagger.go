@@ -7,8 +7,9 @@ import (
 	"mingchuan.me/app/drivers/swagger/restapi"
 	"mingchuan.me/app/drivers/swagger/restapi/operations"
 
-	"mingchuan.me/infra"
 	"net/http"
+
+	"mingchuan.me/infra"
 )
 
 // Driver - swagger driver: HTTP server based on swagger
@@ -38,10 +39,12 @@ func NewDriver(infra *infra.Infrastructure) (*Driver, error) {
 	}
 
 	api := operations.NewMceAPI(swaggerSpec)
+	srv := restapi.NewServer(api)
+	srv.Port = port
 	return &Driver{
 		Port:         port,
 		api:          api,
-		server:       restapi.NewServer(api),
+		server:       srv,
 		middlewares:  []middlewareFunc{},
 		errorHandler: defaultErrorHandler(),
 	}, nil

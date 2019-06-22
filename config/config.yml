@@ -1,7 +1,7 @@
 global:
   listen_port: 4000
   admin_jwt_secret: secret  
-  admin_key_file: /app/storage/admin_key.txt
+  admin_key_file: /srv/api/admin_key.txt
 database:
   type: mysql
   user: ${DB_USER}
