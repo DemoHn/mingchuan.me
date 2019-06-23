@@ -1,50 +1,34 @@
 version: '3.4'
 
 services:
-  mce_api:
+  mce:
+    build:
+      context: .
     environment:
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: ${DB_DATABASE}
       MCE_ENV: ${MCE_ENV}
       DEBUG: ${DEBUG}
-    build:
-      context: ./
-      dockerfile: ./docker/mce_api/Dockerfile
+      HOST: '0.0.0.0'
+      SITE_BASE_URL: ${SITE_BASE_URL}    
     depends_on:
       - db
     volumes:
-      - go_cache:/go/pkg/mod
-      # src
-      - ./src/api.mce:/go/src/mingchuan.me
-      # build & start script
-      - ./docker/mce_api/build.sh:/app/build.sh
-      - ./docker/mce_api/start.sh:/app/start.sh
-      # build artifacts
-      - ./build/mce_api:/app/bin
       # config
-      - ./config/mce_api.yml:/app/config.yml
-      # admin key
-      - ./storage/mce_api:/app/storage
+      - ./config:/srv/config
+      - ./storage/caddy:/root/.caddy
+      - ./storage/mce_api/admin_key.txt:/srv/api/admin_key.txt
     ports:
-      - "4000"
-  mce_site:
-    build:
-      context: ./
-      dockerfile: ./docker/mce_site/Dockerfile
-    environment:
-      MCE_ENV: ${MCE_ENV}
-      HOST: '0.0.0.0'
-      SITE_BASE_URL: ${SITE_BASE_URL}
-    volumes:
-      - ./src/web.mce:/app/src
-      # build & start scripts
-      - ./docker/mce_site/build.sh:/app/build.sh
-      - ./docker/mce_site/start.sh:/app/start.sh
-      # build artifacts
-      - ./build/mce_web:/app/dist
-    ports:
-      - "3000"
+      - target: 8080
+        published: 8080
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+      - target: 80
+        published: 80
+        mode: host
   db:
     image: mysql:5.7
     volumes:
@@ -57,20 +41,6 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USER}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-  caddy:
-    image: abiosoft/caddy
-    ports:
-      - "80:80"
-      - "2015:2015"
-      - "443:443"
-    environment:
-      CADDY_HOST: ${CADDY_HOST}
-      CADDY_TLS: ${CADDY_TLS}
-      ACME_AGREE: 'true'
-    volumes:
-      - ./config/Caddyfile:/etc/Caddyfile
-      - ./storage/caddy:/root/.caddy
-volumes:
-  go_cache:
+      MYSQL_PASSWORD: ${DB_PASSWORD}      
+volumes:  
   db_data:
