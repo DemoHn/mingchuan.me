@@ -1,0 +1,15 @@
+{
+  "name": "api-main",
+  "version": "1.0.0",
+  "author": "DemoHn <demohn2016@gmail.com>",
+  "license": "ISC",
+  "scripts": {},
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^5.8.12"
+  },
+  "devDependencies": {
+    "@types/sequelize": "^4.28.3",
+    "sequelize-typescript": "^0.6.11"
+  }
+}
