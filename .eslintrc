@@ -23,6 +23,7 @@
     "jest/no-disabled-tests": "off",    
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-object-literal-type-assertion": true,
+    "@typescript-eslint/explicit-member-accessibility": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
