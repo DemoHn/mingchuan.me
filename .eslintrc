@@ -12,7 +12,6 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
@@ -21,7 +20,7 @@
     "@typescript-eslint/no-parameter-properties": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "prettier/prettier": "error",
-    "jest/no-disabled-tests": "off",
+    "jest/no-disabled-tests": "off",    
     "@typescript-eslint/camelcase": "off",
     "@typescript-eslint/no-object-literal-type-assertion": true,
     "@typescript-eslint/no-unused-vars": [
@@ -32,12 +31,20 @@
         "argsIgnorePattern": "^_"
       }
     ],
-    "no-unused-vars": "off",
     "prefer-const": [
       "error", {
         "destructuring": "any",
         "ignoreReadBeforeAssign": false
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-vars": ["off"],
+        "@typescript-eslint/no-undef": ["off"]
+      }
+    }
+  ]
 }

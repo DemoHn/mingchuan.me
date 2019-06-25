@@ -2,10 +2,17 @@
   "version": 2,
   "name": "mingchuan.me",
   "builds": [
-    { "src": "src/api/*.ts", "use": "@now/node" },
-    { "src": "packages/web-main/next.config.js", "use": "@now/next" }
+    { "src": "packages/api-main/*.js", "use": "@now/node"},
+    { "src": "packages/web-main/package.json", "use": "@now/next" }
   ],
   "routes": [
-    { "src": "/", "dest": "packages/web-main/index.ts" }
+    {
+      "src": "^/api/(.*)$",
+      "dest": "packages/api-main/$1"
+    },
+    {
+      "src": "^/(.*)$",
+      "dest": "packages/web-main/$1"
+    }
   ]
 }
