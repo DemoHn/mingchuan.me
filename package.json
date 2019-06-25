@@ -1,0 +1,8 @@
+{
+  "name": "mingchuan.me",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com-demohn:DemoHn/mingchuan.me",
+  "author": "DemoHn <demohn2016@gmail.com>",
+  "license": "MIT"
+}

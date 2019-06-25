@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "name": "mingchuan.me",
+  "builds": [
+    { "src": "src/api/*.ts", "use": "@now/node" },
+    { "src": "packages/web-main/next.config.js", "use": "@now/next" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "packages/web-main/index.ts" }
+  ]
+}
