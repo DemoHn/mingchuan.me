@@ -1,34 +1,32 @@
 import { Sequelize, Model, DataTypes } from 'sequelize'
 
-class Account extends Model {
+class Post extends Model {
   public id!: number
-  public name!: string
-  public passwordHash!: Buffer
-  public permissionMask?: number
-
-  public readonly createdAt!: Date
-  public readonly updatedAt!: Date
+  public type!: string
+  public status!: string
+  public permission!: string
 }
 
-export function initAccount(sequelize: Sequelize) {
-  return Account.init(
+export default Post
+
+export function initPost(sequelize: Sequelize) {
+  return Post.init(
     {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      name: {
-        type: DataTypes.STRING(255),
-        unique: true,
+      type: {
+        type: DataTypes.STRING(32),
         allowNull: false,
       },
-      passwordHash: {
-        type: DataTypes.BLOB,
+      status: {
+        type: DataTypes.STRING(32),
         allowNull: false,
       },
-      permissionMask: {
-        type: DataTypes.INTEGER,
+      permission: {
+        type: DataTypes.STRING(32),
         allowNull: false,
       },
       createdAt: {
@@ -42,9 +40,7 @@ export function initAccount(sequelize: Sequelize) {
     },
     {
       sequelize,
-      tableName: 'accounts',
+      tableName: 'posts',
     }
   )
 }
-
-export default Account
