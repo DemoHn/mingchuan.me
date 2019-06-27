@@ -1,5 +1,6 @@
 import { getInstance } from 'db-migrate'
 import models from '../index'
+import { ValidationError } from 'sequelize'
 
 describe('Model: Account', () => {
   const dbmigrate = getInstance(true)
@@ -31,5 +32,13 @@ describe('Model: Account', () => {
     })
 
     expect(result).toMatchObject(payload)
+  })
+
+  test('should throw error: UniqueError', async () => {
+    const missingPayload = {
+      name: 'Account',
+    }
+
+    await expect(Account.create(missingPayload)).rejects.toThrow(ValidationError)
   })
 })
