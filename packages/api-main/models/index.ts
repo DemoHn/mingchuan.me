@@ -3,7 +3,7 @@ import Account, { initAccount } from './Account'
 import Post, { initPost } from './Post'
 import config from '../config/default'
 
-export const sequelize = new Sequelize(config.database.url)
+export const sequelize = new Sequelize(config.database.url, config.database.sequelize)
 
 var initFlag = false
 // init functions
