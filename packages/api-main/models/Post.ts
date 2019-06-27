@@ -2,7 +2,8 @@ import { Sequelize, Model, DataTypes } from 'sequelize'
 
 class Post extends Model {
   public id!: number
-  public type!: string
+  public title!: string
+  public content!: string
   public status!: string
   public permission!: string
 }
@@ -17,8 +18,12 @@ export function initPost(sequelize: Sequelize) {
         autoIncrement: true,
         primaryKey: true,
       },
-      type: {
-        type: DataTypes.STRING(32),
+      title: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       status: {

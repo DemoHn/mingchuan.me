@@ -6,8 +6,10 @@ services:
       - MYSQL_ROOT_PASSWORD=password
       - MYSQL_USER=general-user
       - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=payment_service
+      - MYSQL_DATABASE=mce_main
     ports:
       - target: 3306
         published: 3306
         mode: host
+    volumes:
+      - "./docker-setup:/docker-entrypoint-initdb.d"
