@@ -3,7 +3,7 @@ import config from '../config/default'
 
 var sequelizeInstance: any = null
 
-if (sequelizeInstance) {
+if (!sequelizeInstance) {
   const dbConfig = config.database
   sequelizeInstance = new Sequelize(dbConfig.url, dbConfig.sequelize)
 }
