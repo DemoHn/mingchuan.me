@@ -1,9 +1,8 @@
 import { getInstance } from 'db-migrate'
-import models from '../index'
+import Post, { PostPayload } from '../Post'
 
 describe('Model: Post', () => {
   const dbmigrate = getInstance(true)
-  const { Post } = models
 
   beforeAll(async () => {
     await dbmigrate.up()
@@ -13,7 +12,7 @@ describe('Model: Post', () => {
     await dbmigrate.down()
   })
 
-  const payload = {
+  const payload: PostPayload = {
     title: 'This is another post',
     content: '<p>content</p>',
     status: 'PUBLISHED',
