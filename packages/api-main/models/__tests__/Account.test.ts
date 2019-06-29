@@ -1,15 +1,13 @@
 import { getInstance } from 'db-migrate'
-import models from '../index'
+import Account, { AccountPayload } from '../Account'
 import { ValidationError } from 'sequelize'
 
 describe('Model: Account', () => {
   const dbmigrate = getInstance(true)
-  const { Account } = models
 
-  const payload = {
+  const payload: AccountPayload = {
     name: '这是一个支持汉字的账户',
     passwordHash: Buffer.from([1, 2, 3]),
-    permissionMask: 0,
   }
   beforeAll(async () => {
     await dbmigrate.up()
