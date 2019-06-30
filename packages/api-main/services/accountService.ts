@@ -36,7 +36,7 @@ export async function verifyAccount(name: string, password: string): Promise<Acc
   if (verifyResult) {
     return account
   } else {
-    throw new Error('passowrd mismatch')
+    throw new Error('password mismatch')
   }
 }
 
@@ -95,12 +95,24 @@ export async function generateLoginJwt(
     publicKey,
     deviceIdentifier: idf,
   }
-
-  await LoginToken.create(createTokenPayload)
+  await upsertLoginToken(createTokenPayload)
 
   return sign(jwtPayload, privateKey, {
     algorithm: 'RS256',
     expiresIn,
     issuer: 'mingchuan.me',
   })
+}
+
+// helper
+async function upsertLoginToken(payload: LoginTokenPayload) {
+  const tokenRecord = await LoginToken.findOne({
+    where: { deviceIdentifier: payload.deviceIdentifier },
+  })
+
+  if (tokenRecord) {
+    return tokenRecord.update(payload)
+  } else {
+    return LoginToken.create(payload)
+  }
 }

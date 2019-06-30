@@ -8,8 +8,10 @@
     "test": "jest --runInBand --forceExit"
   },
   "dependencies": {
+    "ajv": "^6.10.0",
     "db-migrate": "^0.11.6",
     "db-migrate-mysql": "^1.1.10",
+    "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.6.5",
     "sequelize": "^5.8.12",
@@ -17,6 +19,7 @@
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
+    "@types/express": "^4.17.0",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/uuid": "^3.4.4"
   }
