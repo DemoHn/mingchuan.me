@@ -14,7 +14,7 @@ export default class Account extends Model {
 export interface AccountPayload {
   name: string
   passwordHash: Buffer
-  PermissionMask?: number
+  permissionMask?: number
 }
 
 Account.init(
