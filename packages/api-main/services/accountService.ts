@@ -2,9 +2,9 @@
 import { generateKeyPair } from 'crypto'
 import { promisify } from 'util'
 import { v4 as uuid } from 'uuid'
-import { sign } from 'jsonwebtoken'
+import { sign, decode, verify } from 'jsonwebtoken'
 // services
-import { generatePassowrdHash } from './tokenService'
+import { generatePassowrdHash, verifyPasswordHash } from './tokenService'
 // models
 import Account, { AccountPayload } from '../models/Account'
 import LoginToken, { LoginTokenPayload } from '../models/LoginToken'
@@ -25,8 +25,47 @@ export async function createAccount(
   return Account.create(createPayload)
 }
 
+export async function verifyAccount(name: string, password: string): Promise<Account> {
+  // find account by name
+  const account = await Account.findOne({ where: { name } })
+  if (!account) {
+    throw new Error('account not found')
+  }
+
+  const verifyResult = await verifyPasswordHash(password, account.passwordHash)
+  if (verifyResult) {
+    return account
+  } else {
+    throw new Error('passowrd mismatch')
+  }
+}
+
 // jwt related helpers
-export async function generateJWT(
+export async function verifyLoginJwt(loginJwt: string): Promise<Record<string, any>> {
+  const payload: any = decode(loginJwt)
+  // find token record
+  if (!payload.deviceIdentifier) {
+    throw new Error('malformed jwt')
+  }
+
+  const token = await LoginToken.findOne({
+    where: { deviceIdentifier: payload.deviceIdentifier },
+  })
+  if (!token) {
+    throw new Error('invalid token')
+  }
+
+  // verify token
+  await verify(loginJwt, token.publicKey)
+  // check if account matches
+  if (token.accountID !== payload.accountID) {
+    throw new Error('accountID mismatch')
+  } else {
+    return payload
+  }
+}
+
+export async function generateLoginJwt(
   account: Account,
   expiresIn: string,
   deviceIdentifier?: string
