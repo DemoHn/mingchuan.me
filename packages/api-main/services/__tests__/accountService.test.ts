@@ -1,4 +1,4 @@
-import { generateJWT } from '../accountService'
+import { generateLoginJwt } from '../accountService'
 import Account, { AccountPayload } from '../../models/Account'
 import { getInstance } from 'db-migrate'
 describe('service: accountService', () => {
@@ -13,7 +13,6 @@ describe('service: accountService', () => {
     }
 
     expAccount = await Account.create(acctPayload)
-    console.log(expAccount)
   })
 
   afterAll(async () => {
@@ -21,8 +20,8 @@ describe('service: accountService', () => {
   })
 
   test('should generateJWT', async () => {
-    const jwt = await generateJWT(expAccount, '1h')
+    const jwt = await generateLoginJwt(expAccount, '1h')
 
-    console.log(jwt)
+    expect(jwt).not.toEqual(null)
   })
 })
