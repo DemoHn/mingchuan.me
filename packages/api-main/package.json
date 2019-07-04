@@ -5,9 +5,13 @@
   "license": "ISC",
   "scripts": {
     "migration:up": "db-migrate up",
+    "local:dev": "ts-node app.ts",
+    "build": "tsc",
     "test": "jest --runInBand --forceExit"
   },
   "dependencies": {
+    "@godaddy/terminus": "^4.1.2",
+    "@now/node": "^0.10.1",
     "ajv": "^6.10.0",
     "db-migrate": "^0.11.6",
     "db-migrate-mysql": "^1.1.10",
@@ -15,12 +19,15 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^1.6.5",
     "sequelize": "^5.8.12",
-    "uuid": "^3.3.2"
+    "ts-node": "^8.3.0",
+    "uuid": "^3.3.2",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/express": "^4.17.0",
     "@types/jsonwebtoken": "^8.3.2",
-    "@types/uuid": "^3.4.4"
+    "@types/uuid": "^3.4.4",
+    "ts-node": "^8.3.0"
   }
 }

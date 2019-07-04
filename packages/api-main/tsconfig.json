@@ -1,21 +1,24 @@
 {
   "compilerOptions": {
+    "target": "es2018",    
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "preserve",
-    "lib": ["dom", "es2017"],
-    "module": "es6",
-    "moduleResolution": "node",
+    "lib": ["dom", "es2018"],
+    "module": "commonjs",
+    "inlineSourceMap": true,
+		"noImplicitThis": true,
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "removeComments": false,
     "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "es6"
+		"declaration": true,
+		"esModuleInterop": true,
+    "strict": true    
   }
 }
