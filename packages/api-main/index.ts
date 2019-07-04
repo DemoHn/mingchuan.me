@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-/* eslint no-unreachable: "off" */
-
 /**
  * Module dependencies.
  */
@@ -76,7 +74,7 @@ async function main() {
     onSignal: () => {
       logger.info('going to close the server...')
       // 01. close sequelize
-      const sequelize = require('./models/sequelize')
+      const sequelize = require('./models/_sequelize')
       return Promise.all([sequelize.close()])
     },
     onShutdown: () => {

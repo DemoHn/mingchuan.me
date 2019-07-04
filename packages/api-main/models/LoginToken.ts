@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from './sequelize'
+import { sequelize } from './_sequelize'
 
 export default class LoginToken extends Model {
   public id!: number
