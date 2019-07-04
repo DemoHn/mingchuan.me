@@ -5,11 +5,12 @@
  * Module dependencies.
  */
 import http from 'http'
+import { createApiServer } from './app'
 import { createTerminus } from '@godaddy/terminus'
 import logger from './utils/logger'
 
 async function main() {
-  const app = await require('./app').createApiServer()
+  const app = await createApiServer()
 
   /**
    * Get port from environment and store in Express.
@@ -30,7 +31,12 @@ async function main() {
 
   server.listen(port, () => {
     const addr = server.address()
-    const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`
+    const bind = addr
+      ? typeof addr === 'string'
+        ? `pipe ${addr}`
+        : `port ${addr.port}`
+      : null
+
     logger.info(`Listening on ${bind}`)
     logger.info(`NODE_ENV: ${process.env.NODE_ENV}`)
     if (process.send) {
