@@ -43,6 +43,23 @@ export async function verifyAccount(name: string, password: string): Promise<Acc
   }
 }
 
+export async function findAccountByID(id: number): Promise<Account> {
+  const account = await Account.findByPk(id)
+  if (!account) {
+    throw Errors.newLogicError('AccountNotFoundError', `account: ${name} not exists`)
+  }
+
+  return account
+}
+
+export async function updatePassword(
+  account: Account,
+  newPassword: string
+): Promise<Account> {
+  const passwordHash = generatePassowrdHash(newPassword)
+  return account.update({ passwordHash })
+}
+
 // jwt related helpers
 export async function verifyLoginJwt(loginJwt: string): Promise<Record<string, any>> {
   const payload: any = decode(loginJwt)

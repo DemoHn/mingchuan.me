@@ -52,7 +52,28 @@ async function loginFunc(req: Request) {
   return { jwt }
 }
 
+// update password
+const updatePasswordSchema = {
+  body: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['newPassword'],
+    properties: {
+      newPassword: {
+        type: 'string',
+      },
+    },
+  },
+}
+async function updatePasswordFunc(req: Request) {
+  const { name, password } = req.body
+  const account = await verifyAccount(name, password)
+  const jwt = await generateLoginJwt(account, '7d')
+  return { jwt }
+}
+
 export default {
   register: wrapRoute(registerFunc, registerSchema),
   login: wrapRoute(loginFunc, loginSchema),
+  updatePassword: wrapRoute(updatePasswordFunc, updatePasswordSchema),
 }
