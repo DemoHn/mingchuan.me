@@ -56,7 +56,7 @@ export async function updatePassword(
   account: Account,
   newPassword: string
 ): Promise<Account> {
-  const passwordHash = generatePassowrdHash(newPassword)
+  const passwordHash = await generatePassowrdHash(newPassword)
   return account.update({ passwordHash })
 }
 

@@ -4,7 +4,10 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
+// middlewares
 import errorHandler from './middlewares/errorHandler'
+import authHandler from './middlewares/authHandler'
+
 // controllers
 import accountController from './controllers/accountController'
 
@@ -27,6 +30,7 @@ export async function createApiServer() {
 
   app.post('/accounts/register', accountController.register)
   app.post('/accounts/login', accountController.login)
+  app.patch('/accounts/password', authHandler, accountController.updatePassword)
 
   app.use(errorHandler)
   return app

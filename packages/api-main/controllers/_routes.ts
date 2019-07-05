@@ -2,9 +2,13 @@ import { Request, Response, NextFunction } from 'express'
 import Ajv from 'ajv'
 import Errors from '../utils/errors'
 
-type RouteP = (req: Request, res: Response) => Promise<any>
+// define types of Request & Response for app
+export interface AppRequest extends Request {
+  authPayload?: object
+}
 
-const ajv = new Ajv()
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface AppResponse extends Response {}
 
 export interface RequestSchema {
   body?: {}
@@ -12,11 +16,11 @@ export interface RequestSchema {
   params?: {}
 }
 
-export const wrapRoute = (routeFunc: RouteP, schema: RequestSchema) => (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const ajv = new Ajv()
+export const wrapRoute = (
+  routeFunc: (req: AppRequest, res: AppResponse) => Promise<any>,
+  schema: RequestSchema
+) => (req: AppRequest, res: AppResponse, next: NextFunction) => {
   // validate data
   const schTuples = [
     [schema.body, req.body],

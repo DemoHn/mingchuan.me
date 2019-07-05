@@ -24,4 +24,12 @@ export default {
       $type: 'AppError',
     }
   },
+  newAuthError(error: Error | string): AppError {
+    return {
+      statusCode: 401,
+      name: 'AuthError',
+      message: error instanceof Error ? error.message : error,
+      $type: 'AppError',
+    }
+  },
 }
