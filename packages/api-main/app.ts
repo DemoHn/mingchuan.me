@@ -4,7 +4,8 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
-import { register } from './controllers/accountController'
+import accountController from './controllers/accountController'
+import { AppError } from './utils/errors'
 
 export async function createApiServer() {
   const app = express()
@@ -23,17 +24,23 @@ export async function createApiServer() {
   app.disable('x-powered-by')
   app.options('*', corsInstance)
 
-  app.post('/accounts/register', register)
+  app.post('/accounts/register', accountController.register)
 
-  // catch 404 and forward to error handler
-  /*app.use(function(req, res, next) {
-    next(new error.ResourceNotFoundError(req))
+  app.use((error: any, _: any, res: any, __: any) => {
+    if (error.$type === 'AppError') {
+      const e = error as AppError
+      res.status(e.statusCode).json({
+        data: e.data,
+        message: e.message,
+        name: e.name,
+      })
+    } else {
+      // unknown error
+      res.status(500).json({
+        message: error.message,
+        name: 'UnknownError',
+      })
+    }
   })
-
-  // Invoke audit logger for failed calls
-  app.use(auditLogger.expressErrorHandler)
-
-  app.use(errorHandler.generalErrorHandler)
-  */
   return app
 }

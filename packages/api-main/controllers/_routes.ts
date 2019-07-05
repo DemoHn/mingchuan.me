@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import Ajv from 'ajv'
+import Errors from '../utils/errors'
+
 type RouteP = (req: Request, res: Response) => Promise<any>
 
 const ajv = new Ajv()
@@ -25,10 +27,9 @@ export const wrapRoute = (routeFunc: RouteP, schema: RequestSchema) => (
   for (var [sch, data] of schTuples) {
     if (sch) {
       const validate = ajv.compile(sch) as any
-      const valid = validate(data)
-
-      if (!valid) {
-        return next(new Error(validate.errors))
+      if (!validate(data)) {
+        const path = `${req.method} ${req.path}`
+        return next(Errors.newValidationError(path, validate.errors))
       }
     }
   }
