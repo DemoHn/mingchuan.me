@@ -9,6 +9,9 @@ import { generatePassowrdHash, verifyPasswordHash } from './tokenService'
 import Account, { AccountPayload } from '../models/Account'
 import LoginToken, { LoginTokenPayload } from '../models/LoginToken'
 
+// utils
+import Errors from '../utils/errors'
+
 export async function createAccount(
   name: string,
   password: string,
@@ -29,14 +32,14 @@ export async function verifyAccount(name: string, password: string): Promise<Acc
   // find account by name
   const account = await Account.findOne({ where: { name } })
   if (!account) {
-    throw new Error('account not found')
+    throw Errors.newLogicError('NotExistAccountError', `account ${name} not found`)
   }
 
   const verifyResult = await verifyPasswordHash(password, account.passwordHash)
   if (verifyResult) {
     return account
   } else {
-    throw new Error('password mismatch')
+    throw Errors.newLogicError('WrongPasswordError', `password mismatch`)
   }
 }
 
@@ -45,21 +48,32 @@ export async function verifyLoginJwt(loginJwt: string): Promise<Record<string, a
   const payload: any = decode(loginJwt)
   // find token record
   if (!payload.deviceIdentifier) {
-    throw new Error('malformed jwt')
+    throw Errors.newLogicError(
+      'VerifyJwtError',
+      'malformed jwt structure: missing deviceIdentifier'
+    )
   }
 
   const token = await LoginToken.findOne({
     where: { deviceIdentifier: payload.deviceIdentifier },
   })
   if (!token) {
-    throw new Error('invalid token')
+    throw Errors.newLogicError('VerifyJwtError', 'token key not found')
   }
 
   // verify token
-  await verify(loginJwt, token.publicKey)
+  try {
+    await verify(loginJwt, token.publicKey)
+  } catch (error) {
+    throw Errors.newLogicError('VerifyJwtError', error)
+  }
+
   // check if account matches
   if (token.accountID !== payload.accountID) {
-    throw new Error('accountID mismatch')
+    throw Errors.newLogicError(
+      'VerifyJwtError',
+      `accountID from payload: ${payload.accountID} mismatch`
+    )
   } else {
     return payload
   }

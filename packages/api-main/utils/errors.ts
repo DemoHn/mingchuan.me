@@ -16,4 +16,12 @@ export default {
       $type: 'AppError',
     }
   },
+  newLogicError(name: string, error: Error | string): AppError {
+    return {
+      statusCode: 400,
+      name,
+      message: error instanceof Error ? error.message : error,
+      $type: 'AppError',
+    }
+  },
 }

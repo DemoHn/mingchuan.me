@@ -4,8 +4,9 @@ import express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
 import compression from 'compression'
+import errorHandler from './middlewares/errorHandler'
+// controllers
 import accountController from './controllers/accountController'
-import { AppError } from './utils/errors'
 
 export async function createApiServer() {
   const app = express()
@@ -25,22 +26,8 @@ export async function createApiServer() {
   app.options('*', corsInstance)
 
   app.post('/accounts/register', accountController.register)
+  app.post('/accounts/login', accountController.login)
 
-  app.use((error: any, _: any, res: any, __: any) => {
-    if (error.$type === 'AppError') {
-      const e = error as AppError
-      res.status(e.statusCode).json({
-        data: e.data,
-        message: e.message,
-        name: e.name,
-      })
-    } else {
-      // unknown error
-      res.status(500).json({
-        message: error.message,
-        name: 'UnknownError',
-      })
-    }
-  })
+  app.use(errorHandler)
   return app
 }
