@@ -19,6 +19,6 @@
     "skipLibCheck": true,
 		"declaration": true,
 		"esModuleInterop": true,
-    "strict": true    
+    "strict": true
   }
 }

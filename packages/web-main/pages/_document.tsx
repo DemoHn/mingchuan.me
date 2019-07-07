@@ -1,4 +1,10 @@
-import Document, { Html, Head, Main, NextScript, NextDocumentContext } from 'next/document'
+import Document, {
+  Html,
+  Head,
+  Main,
+  NextScript,
+  NextDocumentContext,
+} from 'next/document'
 
 const globalStyle = `
 * {
@@ -24,8 +30,8 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
-          <meta name='viewport' content='width=device-width, initial-scale=1' />
-          <meta charSet='utf-8' />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta charSet="utf-8" />
           <style>{globalStyle}</style>
         </Head>
         <body>
@@ -33,7 +39,7 @@ class MyDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    );
+    )
   }
 }
 

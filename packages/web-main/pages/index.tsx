@@ -12,14 +12,14 @@ const MainContainer = styled.div`
 
 const Box = styled.div`
   font-family: OCR-A;
-  font-size: 20px;
+  font-size: 30px;
 `
 const Index: NextFunctionComponent = () => {
-  return <MainContainer>
-    <Box>
-      mingchuan.me
-    </Box>
-  </MainContainer>
+  return (
+    <MainContainer>
+      <Box>mingchuan.me</Box>
+    </MainContainer>
+  )
 }
 
 export default Index

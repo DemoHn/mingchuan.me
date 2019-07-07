@@ -16,8 +16,12 @@
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.1",
+    "@babel/preset-typescript": "^7.3.3",
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.22",
-    "@types/styled-components": "^4.1.16"
+    "@types/styled-components": "^4.1.16",
+    "babel-plugin-styled-components": "^1.10.6"
   }
 }
