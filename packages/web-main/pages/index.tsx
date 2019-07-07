@@ -10,14 +10,33 @@ const MainContainer = styled.div`
   align-items: center;
 `
 
-const Box = styled.div`
-  font-family: OCR-A;
-  font-size: 30px;
+const TitleBox = styled.div`
+  width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+  display: flex;
+  flex-direction: column;
 `
+
+const Title = styled.div`
+  font-family: OCR-A, monospace;
+  font-size: 32px;
+`
+
+const Motto = styled.div`
+  margin-top: 8px;
+  font-size: 16px;
+  color: #666;
+  letter-spacing: 2px;
+`
+
 const Index: NextFunctionComponent = () => {
   return (
     <MainContainer>
-      <Box>mingchuan.me</Box>
+      <TitleBox>
+        <Title>mingchuan.me</Title>
+        <Motto>這個世界的異鄉人</Motto>
+      </TitleBox>
     </MainContainer>
   )
 }
