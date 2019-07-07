@@ -20,13 +20,13 @@ export interface CreatePostOption {
 export async function createPost(
   title: string,
   content: string,
-  options: CreatePostOption
+  options?: CreatePostOption
 ): Promise<Post> {
   const newPost: PostPayload = {
     title,
     content,
-    status: options.status,
-    permission: options.permission,
+    status: (options && options.status) || PostStatus.PUBLISHED,
+    permission: (options && options.permission) || PostPermission.PUBLIC,
   }
 
   return Post.create(newPost)

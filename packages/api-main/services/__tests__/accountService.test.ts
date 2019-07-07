@@ -7,6 +7,7 @@ import {
 import Account, { AccountPayload } from '../../models/Account'
 import { decode } from 'jsonwebtoken'
 import { getInstance } from 'db-migrate'
+
 describe('service: accountService', () => {
   const dbmigrate = getInstance(true)
 
@@ -52,14 +53,14 @@ describe('service: accountService', () => {
     const expName = 'name01'
     const expPassword = 'password--wrong'
 
-    await expect(verifyAccount(expName, expPassword)).rejects.toThrow('password mismatch')
+    await expect(verifyAccount(expName, expPassword)).rejects.toThrow(Error)
   })
 
   test('should verify account failed /account not found', async () => {
     const expName = 'name01-not-found'
     const expPassword = 'password--wrong'
 
-    await expect(verifyAccount(expName, expPassword)).rejects.toThrow('account not found')
+    await expect(verifyAccount(expName, expPassword)).rejects.toThrow(Error)
   })
 
   // login jwt

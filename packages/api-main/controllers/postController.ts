@@ -77,6 +77,7 @@ async function updatePostContentFunc(req: AppRequest) {
 
   return getPostResponse(newPost)
 }
+
 // delete post
 const deleteSchema = {
   params: {
