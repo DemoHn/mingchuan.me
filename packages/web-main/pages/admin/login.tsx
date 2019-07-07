@@ -14,10 +14,20 @@ const MainContainer = styled.div`
   align-items: center;
 `
 
+const FormContainer = styled.div`
+  width: 100%;
+  max-width: 350px;
+`
 const LoginPage: NextFunctionComponent = () => {
   return (
     <MainContainer>
-      <LoginForm />
+      <FormContainer>
+        <LoginForm
+          onLogin={data => {
+            console.log(data)
+          }}
+        />
+      </FormContainer>
     </MainContainer>
   )
 }
