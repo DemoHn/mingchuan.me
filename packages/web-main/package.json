@@ -9,13 +9,21 @@
     "start": "next start"
   },
   "dependencies": {
+    "@zeit/next-css": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
+    "antd": "^3.20.1",
     "next": "^8.1.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.1",
+    "@babel/preset-typescript": "^7.3.3",
     "@types/next": "^8.0.5",
-    "@types/react": "^16.8.22"
+    "@types/react": "^16.8.22",
+    "@types/styled-components": "^4.1.16",
+    "babel-plugin-styled-components": "^1.10.6"
   }
 }
