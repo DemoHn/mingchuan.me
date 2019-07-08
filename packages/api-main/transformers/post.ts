@@ -39,14 +39,15 @@ export function getPublicPostResponse(post: Post): PublicPostResponse {
 }
 
 // for posts list, we only need title & its status to speed up response time
+export interface PostBrief {
+  title: string
+  status: string
+  permission: string
+  createTime: number
+  lastUpdateTime: number
+}
 export interface PostsList {
-  posts: {
-    title: string
-    status: string
-    permission: string
-    createTime: number
-    lastUpdateTime: number
-  }[]
+  posts: PostBrief[]
   totalCount?: number
 }
 export function getPostsList(posts: Post[], count?: number): PostsList {

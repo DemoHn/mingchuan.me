@@ -6,8 +6,9 @@ import {
   updatePostContent,
   getPostByID,
   removePost,
+  listAllPosts,
 } from '../services/postService'
-import { getPostResponse } from '../transformers/post'
+import { getPostResponse, getPostsList } from '../transformers/post'
 
 // admin create post
 const createPostSchema = {
@@ -100,8 +101,51 @@ async function deletePostFunc(req: AppRequest) {
   return getPostResponse(delPost)
 }
 
+// get post by ID
+// delete post
+const getOneSchema = {
+  params: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['id'],
+    properties: {
+      id: {
+        type: 'number',
+      },
+    },
+  },
+}
+async function getOnePostFunc(req: AppRequest) {
+  const { id } = req.params
+  const post = await getPostByID(id)
+  return getPostResponse(post)
+}
+
+// list posts
+const listPostsSchema = {
+  query: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      limit: {
+        type: 'number',
+      },
+      offset: {
+        type: 'number',
+      },
+    },
+  },
+}
+async function listAllPostsFunc(req: AppRequest) {
+  const { limit, offset } = req.query
+  const [posts, totalCount] = await listAllPosts({ limit, offset })
+  return getPostsList(posts, totalCount)
+}
+
 export default {
   createPost: wrapRoute(createPostFunc, createPostSchema),
   updatePostContent: wrapRoute(updatePostContentFunc, updatePostSchema),
   deletePost: wrapRoute(deletePostFunc, deleteSchema),
+  getOnePost: wrapRoute(getOnePostFunc, getOneSchema),
+  listAllPosts: wrapRoute(listAllPostsFunc, listPostsSchema),
 }

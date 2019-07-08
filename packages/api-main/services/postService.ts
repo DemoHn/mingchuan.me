@@ -1,12 +1,6 @@
 import Post, { PostPayload } from '../models/Post'
 import _ from 'lodash'
 import Errors from '../utils/errors'
-import {
-  PostsList,
-  getPostsList,
-  PostResponse,
-  getPostResponse,
-} from '../transformers/post'
 
 export enum PostStatus {
   PUBLISHED = 'PUBLISHED',
@@ -32,7 +26,7 @@ export async function createPost(
   title: string,
   content: string,
   options?: CreatePostOption
-): Promise<PostResponse> {
+): Promise<Post> {
   const newPost: PostPayload = {
     title,
     content,
@@ -40,8 +34,7 @@ export async function createPost(
     permission: (options && options.permission) || PostPermission.PUBLIC,
   }
 
-  const p = await Post.create(newPost)
-  return getPostResponse(p)
+  return Post.create(newPost)
 }
 
 // update post info
@@ -52,31 +45,30 @@ export interface UpdatePostOptions {
 export async function updatePostContent(
   post: Post,
   updateInfo: UpdatePostOptions
-): Promise<PostResponse> {
-  const p = await post.update(_.pickBy(updateInfo, _.identity))
-  return getPostResponse(p)
+): Promise<Post> {
+  return post.update(_.pickBy(updateInfo, _.identity))
 }
 
 // soft remove posts
-export async function removePost(post: Post): Promise<PostResponse> {
-  const p = await post.update({
+export async function removePost(post: Post): Promise<Post> {
+  return post.update({
     status: PostStatus.REMOVED,
   })
-
-  return getPostResponse(p)
 }
 
 // get post (even status = 'REMOVED')
-export async function getPostByID(id: number): Promise<PostResponse> {
+export async function getPostByID(id: number): Promise<Post> {
   const post = await Post.findByPk(id)
   if (!post) {
     throw Errors.newLogicError('PostNotFoundError', `post ${id} not found!`)
   }
 
-  return getPostResponse(post)
+  return post
 }
 
-export async function listAllPosts(cursorOption?: CursorOption): Promise<PostsList> {
+export async function listAllPosts(
+  cursorOption?: CursorOption
+): Promise<[Post[], number]> {
   const MAX_LIMIT = 25
   const offset = (cursorOption && cursorOption.offset) || 0
   const limit =
@@ -94,7 +86,7 @@ export async function listAllPosts(cursorOption?: CursorOption): Promise<PostsLi
     order: [['updated_at', 'DESC']],
   })
 
-  return getPostsList(listResult.rows, listResult.count)
+  return [listResult.rows, listResult.count]
 }
 
 ////// CLIENT (PUBLIC) handler
