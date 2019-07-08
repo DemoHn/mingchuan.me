@@ -6,6 +6,9 @@ export default class Post extends Model {
   public content!: string
   public status!: string
   public permission!: string
+
+  public createdAt!: Date
+  public updatedAt!: Date
 }
 
 export interface PostPayload {

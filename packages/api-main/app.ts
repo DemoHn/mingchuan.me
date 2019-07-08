@@ -10,6 +10,7 @@ import authHandler from './middlewares/authHandler'
 
 // controllers
 import accountController from './controllers/accountController'
+import postController from './controllers/postController'
 
 export async function createApiServer() {
   const app = express()
@@ -28,9 +29,17 @@ export async function createApiServer() {
   app.disable('x-powered-by')
   app.options('*', corsInstance)
 
-  app.post('/accounts/register', accountController.register)
-  app.post('/accounts/login', accountController.login)
-  app.patch('/accounts/password', authHandler, accountController.updatePassword)
+  // accounts
+  app.post('/api/accounts/register', accountController.register)
+  app.post('/api/accounts/login', accountController.login)
+  app.patch('/api/accounts/password', authHandler, accountController.updatePassword)
+
+  // posts
+  app.post('/api/admin/posts', authHandler, postController.createPost)
+  app.get('/api/admin/posts/:id', authHandler, postController.getOnePost)
+  app.get('/api/admin/posts', authHandler, postController.listAllPosts)
+  app.patch('/api/admin/posts/:id', authHandler, postController.updatePostContent)
+  app.delete('/api/admin/posts/:id', authHandler, postController.deletePost)
 
   app.use(errorHandler)
   return app
