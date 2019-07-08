@@ -1,35 +1,31 @@
-export interface AppError {
-  statusCode: number
-  name: string
-  message: string
+export class AppError extends Error {
+  statusCode!: number
+  name!: string
+  message!: string
   data?: {}
-  $type: 'AppError'
+
+  public constructor(statusCode: number, name: string, message: string, data?: {}) {
+    super(message)
+    this.statusCode = statusCode
+    this.name = name
+    this.message = message
+    this.data = data
+  }
 }
 
 export default {
   newValidationError(validationObject: string, data?: {}): AppError {
-    return {
-      statusCode: 400,
-      name: 'ValidationError',
-      message: `validate '${validationObject}' failed`,
-      data,
-      $type: 'AppError',
-    }
+    return new AppError(
+      400,
+      'ValidationError',
+      `validate '${validationObject}' failed`,
+      data
+    )
   },
   newLogicError(name: string, error: Error | string): AppError {
-    return {
-      statusCode: 400,
-      name,
-      message: error instanceof Error ? error.message : error,
-      $type: 'AppError',
-    }
+    return new AppError(400, name, error instanceof Error ? error.message : error)
   },
   newAuthError(error: Error | string): AppError {
-    return {
-      statusCode: 401,
-      name: 'AuthError',
-      message: error instanceof Error ? error.message : error,
-      $type: 'AppError',
-    }
+    return new AppError(401, 'AuthError', error instanceof Error ? error.message : error)
   },
 }

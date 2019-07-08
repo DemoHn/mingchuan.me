@@ -37,3 +37,29 @@ export function getPublicPostResponse(post: Post): PublicPostResponse {
     lastUpdateTime: post.updatedAt.getTime(),
   }
 }
+
+// for posts list, we only need title & its status to speed up response time
+export interface PostsList {
+  posts: {
+    title: string
+    status: string
+    permission: string
+    createTime: number
+    lastUpdateTime: number
+  }[]
+  totalCount?: number
+}
+export function getPostsList(posts: Post[], count?: number): PostsList {
+  const dPosts = posts.map(p => ({
+    title: p.title,
+    status: p.status,
+    permission: p.permission,
+    createTime: p.createdAt.getTime(),
+    lastUpdateTime: p.updatedAt.getTime(),
+  }))
+
+  return {
+    posts: dPosts,
+    totalCount: count,
+  }
+}

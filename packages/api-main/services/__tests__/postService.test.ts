@@ -1,5 +1,13 @@
 import { getInstance } from 'db-migrate'
-import { createPost, PostStatus, PostPermission } from '../postService'
+import {
+  createPost,
+  PostStatus,
+  PostPermission,
+  removePost,
+  getPostByID,
+  listAllPosts,
+} from '../postService'
+import Post from '../../models/Post'
 
 describe('service: postService -> Create', () => {
   const dbmigrate = getInstance(true)
@@ -48,11 +56,85 @@ describe('service: postService -> Create', () => {
 describe('service: postService -> Remove', () => {
   const dbmigrate = getInstance(true)
 
+  let expPost: Post
   beforeAll(async () => {
     await dbmigrate.up()
+
+    // create fixtures
+    expPost = await Post.create({
+      title: 'title-01',
+      content: 'exp-content',
+      status: PostStatus.DRAFTED,
+      permission: PostPermission.PRIVATE,
+    })
   })
 
   afterAll(async () => {
     await dbmigrate.down()
+  })
+
+  test('should remove a post', async () => {
+    const newPost = await removePost(expPost)
+    expect(newPost).toMatchObject({
+      status: PostStatus.REMOVED,
+    })
+  })
+
+  test('should get one post by ID /even if removed', async () => {
+    const p = await getPostByID(expPost.id)
+    expect(p).toMatchObject({
+      status: p.status,
+      title: p.title,
+    })
+  })
+})
+
+describe('service: postService -> ListAll', () => {
+  const dbmigrate = getInstance(true)
+
+  let expPosts: Post[]
+  beforeAll(async () => {
+    await dbmigrate.up()
+
+    // create fixtures
+    expPosts = await Post.bulkCreate([
+      {
+        title: 'title-01',
+        content: 'exp-content',
+        status: PostStatus.DRAFTED,
+        permission: PostPermission.PRIVATE,
+      },
+      {
+        title: 'title-02',
+        content: 'exp-content',
+        status: PostStatus.PUBLISHED,
+        permission: PostPermission.PUBLIC,
+      },
+    ])
+  })
+
+  afterAll(async () => {
+    await dbmigrate.down()
+  })
+
+  test('should list all posts /no limit', async () => {
+    const posts = await listAllPosts()
+    expect(posts).toHaveProperty('totalCount', expPosts.length)
+    expect(posts.posts).toHaveLength(2)
+  })
+
+  test('should list all posts /limit = 1', async () => {
+    const posts = await listAllPosts({ limit: 1 })
+    expect(posts).toHaveProperty('totalCount', expPosts.length)
+    expect(posts.posts).toHaveLength(1)
+    // ensure there is only keys
+    expect(Object.keys(posts.posts[0])).toEqual([
+      'id',
+      'title',
+      'status',
+      'permission',
+      'createTime',
+      'lastUpdateTime',
+    ])
   })
 })
