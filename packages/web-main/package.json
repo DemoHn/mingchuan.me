@@ -27,6 +27,7 @@
     "@types/styled-components": "^4.1.16",
     "babel-plugin-styled-components": "^1.10.6",
     "http-proxy-middleware": "^0.19.1",
+    "next-images": "^1.1.2",
     "nodemon": "^1.19.1",
     "ts-node": "^8.3.0"
   }

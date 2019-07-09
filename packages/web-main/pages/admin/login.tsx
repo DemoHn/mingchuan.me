@@ -33,7 +33,7 @@ const Banner = styled.div`
   text-align: center;
   font-family: OCR-A;
   margin-bottom: 25px;
-  color: #294d05;
+  color: #237804;
 `
 const LoginPage: NextFunctionComponent = () => {
   return (
@@ -42,8 +42,12 @@ const LoginPage: NextFunctionComponent = () => {
       <FormContainer>
         <Wrapper>
           <LoginForm
-            onLogin={data => {
-              console.log(data)
+            onLogin={() => {
+              return new Promise(resolve => {
+                setTimeout(() => {
+                  resolve(true)
+                }, 3000)
+              })
             }}
           />
         </Wrapper>
