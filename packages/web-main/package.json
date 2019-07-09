@@ -4,7 +4,7 @@
   "author": "DemoHn <demohn2016@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "dev": "next",
+    "dev:local": "NODE_ENV=development nodemon server.ts --exec ts-node",
     "build": "next build",
     "start": "next start"
   },
@@ -12,6 +12,7 @@
     "@zeit/next-css": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "antd": "^3.20.1",
+    "isomorphic-unfetch": "^3.0.0",
     "next": "^8.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -24,6 +25,9 @@
     "@types/next": "^8.0.5",
     "@types/react": "^16.8.22",
     "@types/styled-components": "^4.1.16",
-    "babel-plugin-styled-components": "^1.10.6"
+    "babel-plugin-styled-components": "^1.10.6",
+    "http-proxy-middleware": "^0.19.1",
+    "nodemon": "^1.19.1",
+    "ts-node": "^8.3.0"
   }
 }
