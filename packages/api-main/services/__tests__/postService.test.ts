@@ -118,17 +118,17 @@ describe('service: postService -> ListAll', () => {
   })
 
   test('should list all posts /no limit', async () => {
-    const posts = await listAllPosts()
-    expect(posts).toHaveProperty('totalCount', expPosts.length)
-    expect(posts.posts).toHaveLength(2)
+    const [posts, count] = await listAllPosts()
+    expect(count).toHaveProperty('totalCount', expPosts.length)
+    expect(posts).toHaveLength(2)
   })
 
   test('should list all posts /limit = 1', async () => {
-    const posts = await listAllPosts({ limit: 1 })
-    expect(posts).toHaveProperty('totalCount', expPosts.length)
-    expect(posts.posts).toHaveLength(1)
+    const [posts, count] = await listAllPosts({ limit: 1 })
+    expect(count).toHaveProperty('totalCount', expPosts.length)
+    expect(posts).toHaveLength(1)
     // ensure there is only keys
-    expect(Object.keys(posts.posts[0])).toEqual([
+    expect(Object.keys(posts[0])).toEqual([
       'id',
       'title',
       'status',

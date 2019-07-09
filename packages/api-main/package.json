@@ -5,7 +5,8 @@
   "license": "ISC",
   "scripts": {
     "migration:up": "db-migrate up",
-    "dev:local": "nodemon index.ts --exec ts-node",
+    "dev:local": "NODE_ENV=development nodemon index.ts --exec ts-node",
+    "dev:now": "now dev",
     "build": "tsc",
     "test": "jest --runInBand --forceExit"
   },
