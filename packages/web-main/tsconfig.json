@@ -1,20 +1,21 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
+    "allowJs": true,    
     "jsx": "preserve",
     "lib": ["dom", "es2018"],
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "commonjs",
+    "allowSyntheticDefaultImports": true,    
     "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "preserveConstEnums": true,
     "removeComments": false,
+    "esModuleInterop": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "esnext",
+    "target": "es2018",
+    "moduleResolution": "node",
     "baseUrl": "."
   }
 }

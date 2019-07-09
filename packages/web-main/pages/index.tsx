@@ -1,6 +1,7 @@
 import React from 'react'
 import { NextFunctionComponent } from 'next'
 import styled from 'styled-components'
+import fetch from 'isomorphic-unfetch'
 
 const MainContainer = styled.div`
   width: 100%;
@@ -39,6 +40,15 @@ const Index: NextFunctionComponent = () => {
       </TitleBox>
     </MainContainer>
   )
+}
+
+Index.getInitialProps = async (ctx: any) => {
+  const req = ctx.req
+  const baseUrl = req ? `${req.protocol}://${req.headers.host}` : ''
+
+  const res = await fetch(baseUrl + '/api/admin/posts/1')
+  console.log(res)
+  return {}
 }
 
 export default Index
