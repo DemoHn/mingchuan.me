@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout } from 'antd'
+import { Layout, Icon } from 'antd'
 import 'antd/dist/antd.css'
 import styled from 'styled-components'
 
@@ -16,6 +16,11 @@ const Container = styled.div`
 `
 
 const layoutStyles = {
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    color: 'white',
+  },
   content: {
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -36,14 +41,25 @@ const layoutStyles = {
     textAlign: 'center',
   } as any,
 }
-const AdminLayout: React.FC = props => {
+
+// props
+export interface AdminLayoutProps {
+  routeKey: string
+}
+
+const AdminLayout: React.FC<AdminLayoutProps> = props => {
   const currentYear = new Date().getFullYear()
   const { Header, Content, Footer, Sider } = Layout
-
+  const { routeKey } = props
   return (
     <Container>
       <Layout>
-        <Header>header</Header>
+        <Header style={layoutStyles.header}>
+          <span>mingchuan.me</span>
+          <span>
+            <Icon type="poweroff" />
+          </span>
+        </Header>
         <Content>
           <Layout style={layoutStyles.content}>
             <Sider width={240} style={layoutStyles.sider}>
@@ -51,7 +67,7 @@ const AdminLayout: React.FC = props => {
                 onClick={(route: string) => {
                   console.log(route)
                 }}
-                currentRoute="posts/list"
+                currentRoute={routeKey}
                 routeMap={menuConfig.routes}
               ></AdminMenu>
             </Sider>
