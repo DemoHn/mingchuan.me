@@ -13,7 +13,8 @@ export default async function(req: AppRequest, _: AppResponse, next: NextFunctio
 
   const [, jwt] = re.exec(authHeader) as RegExpExecArray
   const payload = await verifyLoginJwt(jwt)
-
+  // add payload & raw jwt
   req.authPayload = payload
+  req.authToken = jwt
   return next()
 }

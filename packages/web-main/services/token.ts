@@ -23,7 +23,7 @@ export async function clearToken() {
   Cookie.remove(LOGIN_TOKEN_KEY)
 }
 
-export async function getTokenFromCookie(req: Request) {
+export function getTokenFromCookie(req: Request) {
   if (!req.headers.cookie) return null
   // parse cookies
   const cookiesStr = req.headers.cookie.split(';')
@@ -36,7 +36,7 @@ export async function getTokenFromCookie(req: Request) {
   return cookieDict[LOGIN_TOKEN_KEY]
 }
 
-export async function getTokenFromLocalStorage() {
+export function getTokenFromLocalStorage() {
   // 01. find from cookie first
   if (typeof window !== 'undefined') {
     const localStorage = window.localStorage

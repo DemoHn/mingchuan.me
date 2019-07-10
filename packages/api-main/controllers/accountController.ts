@@ -5,6 +5,7 @@ import {
   generateLoginJwt,
   updatePassword,
   findAccountByID,
+  verifyLoginJwt,
 } from '../services/accountService'
 
 // register account controller
@@ -49,8 +50,14 @@ const loginSchema = {
 async function loginFunc(req: AppRequest) {
   const { name, password } = req.body
   const account = await verifyAccount(name, password)
-  const jwt = await generateLoginJwt(account, '7d')
-  return { jwt }
+  // get existing token for replacing new token with same deviceIdentifier
+  const authHeader = req.get('authorization')
+  return authHeader && /Bearer (.+)$/.test(authHeader)
+    ? verifyLoginJwt(authHeader.slice(7))
+        .then(payload => generateLoginJwt(account, '7d', payload.deviceIdentifier))
+        .catch(() => generateLoginJwt(account, '7d'))
+        .then(jwt => ({ jwt }))
+    : generateLoginJwt(account, '7d').then(jwt => ({ jwt }))
 }
 
 // update password

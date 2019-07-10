@@ -5,6 +5,7 @@ import Errors from '../utils/errors'
 // define types of Request & Response for app
 export interface AppRequest extends Request {
   authPayload?: object
+  authToken?: string
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
