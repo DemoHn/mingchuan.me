@@ -2,9 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 import { NextFunctionComponent } from 'next'
 import 'antd/dist/antd.css'
-
 // components
 import LoginForm from 'components/LoginForm'
+import { notification } from 'antd'
+// services
+import { login } from 'services/login'
+import { JSONResponse } from 'services/_base'
+import { storeToken } from 'services/token'
 
 const MainContainer = styled.div`
   width: 100%;
@@ -35,6 +39,28 @@ const Banner = styled.div`
   margin-bottom: 25px;
   color: #237804;
 `
+
+const handleResponse = (resp: JSONResponse): Promise<boolean> => {
+  if (resp.isSuccess) {
+    const { jwt }: any = resp.body
+    storeToken(jwt)
+  } else {
+    const { name, message }: any = resp.body
+    notification.open({
+      message: name,
+      description: message,
+    })
+  }
+  return Promise.resolve(resp.isSuccess)
+}
+
+const handleFatalError = (err: Error): Promise<boolean> => {
+  notification.open({
+    message: 'FatalError',
+    description: err.message,
+  })
+  return Promise.resolve(false)
+}
 const LoginPage: NextFunctionComponent = () => {
   return (
     <MainContainer>
@@ -42,13 +68,11 @@ const LoginPage: NextFunctionComponent = () => {
       <FormContainer>
         <Wrapper>
           <LoginForm
-            onLogin={() => {
-              return new Promise(resolve => {
-                setTimeout(() => {
-                  resolve(true)
-                }, 3000)
-              })
-            }}
+            onLogin={({ name, password }) =>
+              login({ name, password })
+                .then(handleResponse)
+                .catch(handleFatalError)
+            }
           />
         </Wrapper>
       </FormContainer>
