@@ -9,6 +9,8 @@ import { notification } from 'antd'
 import { login } from 'services/login'
 import { JSONResponse } from 'services/_base'
 import { storeToken } from 'services/token'
+// routes
+import Router from 'next/router'
 
 const MainContainer = styled.div`
   width: 100%;
@@ -40,10 +42,19 @@ const Banner = styled.div`
   color: #237804;
 `
 
+// helpers
 const handleResponse = (resp: JSONResponse): Promise<boolean> => {
   if (resp.isSuccess) {
     const { jwt }: any = resp.body
     storeToken(jwt)
+    // send notification
+    notification.open({
+      message: 'Success',
+      description: 'will redirect to admin panel immediately...',
+      duration: 1,
+    })
+    // redirect
+    redirectToAdminPage(1200)
   } else {
     const { name, message }: any = resp.body
     notification.open({
@@ -60,6 +71,16 @@ const handleFatalError = (err: Error): Promise<boolean> => {
     description: err.message,
   })
   return Promise.resolve(false)
+}
+
+//
+const redirectToAdminPage = (
+  timeout: number = 1000,
+  adminURL: string = '/admin/home'
+) => {
+  setTimeout(() => {
+    Router.push(adminURL)
+  }, timeout)
 }
 const LoginPage: NextFunctionComponent = () => {
   return (
