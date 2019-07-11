@@ -17,5 +17,17 @@ export default {
         },
       ],
     },
+    {
+      name: '用户',
+      icon: 'user',
+      key: 'accounts',
+      children: [
+        {
+          name: '更新密码',
+          icon: 'lock',
+          key: 'updatePassword',
+        },
+      ],
+    },
   ],
 }

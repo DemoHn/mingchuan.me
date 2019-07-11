@@ -60,6 +60,13 @@ export async function updatePassword(
   return account.update({ passwordHash })
 }
 
+export async function updateUsername(
+  account: Account,
+  newUsername: string
+): Promise<Account> {
+  return account.update({ name: newUsername })
+}
+
 // jwt related helpers
 export async function verifyLoginJwt(loginJwt: string): Promise<Record<string, any>> {
   const payload: any = decode(loginJwt)
@@ -117,6 +124,7 @@ export async function generateLoginJwt(
   const idf = deviceIdentifier || uuid()
   const jwtPayload = {
     accountID: account.id,
+    name: account.name,
     deviceIdentifier: idf,
   }
 
