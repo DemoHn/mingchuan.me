@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-unfetch'
-import { getTokenFromCookie, getTokenFromLocalStorage } from './token'
+import { getTokenFromCookie, getTokenFromLocalStorage } from './tokenService'
 
 import { Request as ExpressRequest } from 'express'
 
@@ -32,11 +32,11 @@ export async function baseRequest(
     options.body = JSON.stringify(payload.body)
   }
   // add auth header
+  options.headers = {
+    'content-type': 'application/json',
+  }
   if (token) {
-    options.headers = {
-      'content-type': 'application/json',
-      authorization: `Bearer ${token}`,
-    }
+    options.headers.authorization = `Bearer ${token}`
   }
   // add querystring
   if (payload && payload.query) {

@@ -6,6 +6,7 @@ import {
   updatePassword,
   findAccountByID,
   verifyLoginJwt,
+  updateUsername,
 } from '../services/accountService'
 
 // register account controller
@@ -83,6 +84,29 @@ async function updatePasswordFunc(req: AppRequest) {
   return { success: true }
 }
 
+// update password
+const updateUsernameSchema = {
+  body: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['newUsername'],
+    properties: {
+      newUsername: {
+        type: 'string',
+      },
+    },
+  },
+}
+async function updateUsernameFunc(req: AppRequest) {
+  const { newUsername } = req.body
+  const { accountID } = req.authPayload as any
+
+  const account = await findAccountByID(accountID)
+  await updateUsername(account, newUsername)
+
+  return { success: true }
+}
+
 // verify login token
 async function verifyTokenFunc() {
   // after auth, it should return success only
@@ -92,5 +116,6 @@ export default {
   register: wrapRoute(registerFunc, registerSchema),
   login: wrapRoute(loginFunc, loginSchema),
   updatePassword: wrapRoute(updatePasswordFunc, updatePasswordSchema),
+  updateUsername: wrapRoute(updateUsernameFunc, updateUsernameSchema),
   verifyToken: wrapRoute(verifyTokenFunc, {}),
 }

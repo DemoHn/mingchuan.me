@@ -11,3 +11,11 @@ export async function login(body: LoginRequest): Promise<JSONResponse> {
   const payload = { body }
   return jsonRequest('POST', '/api/accounts/login', payload)
 }
+
+export async function updatePassword(newPassword: string): Promise<JSONResponse> {
+  return jsonRequest('PATCH', '/api/accounts/password', { body: { newPassword } })
+}
+
+export async function updateUsername(newUsername: string): Promise<JSONResponse> {
+  return jsonRequest('PATCH', '/api/accounts/username', { body: { newUsername } })
+}

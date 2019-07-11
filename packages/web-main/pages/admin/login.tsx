@@ -6,9 +6,9 @@ import 'antd/dist/antd.css'
 import LoginForm from 'components/LoginForm'
 import { notification } from 'antd'
 // services
-import { login } from 'services/login'
+import { login } from 'services/loginService'
 import { JSONResponse } from 'services/_base'
-import { storeToken } from 'services/token'
+import { storeToken } from 'services/tokenService'
 // routes
 import Router from 'next/router'
 
