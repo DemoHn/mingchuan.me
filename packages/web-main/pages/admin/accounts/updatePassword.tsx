@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { NextFunctionComponent } from 'next'
 import styled from 'styled-components'
 import AdminLayout from '../_layout'
 import { decode } from 'jsonwebtoken'
 // services
-//import { updatePassword } from 'services/loginService'
-import { Input, Button } from 'antd'
+import { updatePassword, updateUsername } from 'services/loginService'
+import { Input, Button, message } from 'antd'
 import { getTokenFromCookie } from 'services/tokenService'
 
 // styles
@@ -47,6 +47,50 @@ const UpdatePasswordPage: NextFunctionComponent<PageProps> = props => {
   const [usernameInput, setUsernameInput] = useState(name)
   const [usernameLoading, setUsernameLoading] = useState(false)
 
+  // handlers
+  const submitNewPassword = useCallback(async () => {
+    // loading first
+    setPasswordLoading(true)
+    return updatePassword(passwordInput)
+      .then(resp => {
+        if (resp.isSuccess) {
+          message.success('Update password successfully!')
+        } else {
+          const body = resp.body as any
+          message.warning(`${body.name}: ${body.message}`)
+        }
+        setPasswordLoading(false)
+        setEditPassword(false)
+        return
+      })
+      .catch((err: Error) => {
+        message.error(`FatalError: ${err.message}`)
+        setPasswordLoading(false)
+        setEditPassword(false)
+      })
+  }, [passwordInput])
+
+  const submitNewUsername = useCallback(async () => {
+    // loading first
+    setUsernameLoading(true)
+    return updateUsername(usernameInput)
+      .then(resp => {
+        if (resp.isSuccess) {
+          message.success('Update username successfully!')
+        } else {
+          const body = resp.body as any
+          message.warning(`${body.name}: ${body.message}`)
+        }
+        setUsernameLoading(false)
+        setEditUsername(false)
+        return
+      })
+      .catch((err: Error) => {
+        message.error(`FatalError: ${err.message}`)
+        setUsernameLoading(false)
+        setEditUsername(false)
+      })
+  }, [usernameInput])
   return (
     <AdminLayout routeKey="accounts/updatePassword">
       <FormContainer>
@@ -62,7 +106,7 @@ const UpdatePasswordPage: NextFunctionComponent<PageProps> = props => {
               {usernameLoading ? (
                 <Button loading={true} size="small" />
               ) : (
-                <Button size="small" onClick={() => setEditPassword(false)}>
+                <Button size="small" onClick={submitNewUsername}>
                   保存修改
                 </Button>
               )}
@@ -87,7 +131,7 @@ const UpdatePasswordPage: NextFunctionComponent<PageProps> = props => {
               {passwordLoading ? (
                 <Button loading={true} size="small" />
               ) : (
-                <Button size="small" onClick={() => setEditPassword(false)}>
+                <Button size="small" onClick={submitNewPassword}>
                   保存修改
                 </Button>
               )}
