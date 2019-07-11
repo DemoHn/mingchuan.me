@@ -33,6 +33,7 @@ export async function createApiServer() {
   app.post('/api/accounts/register', accountController.register)
   app.post('/api/accounts/login', accountController.login)
   app.patch('/api/accounts/password', authHandler, accountController.updatePassword)
+  app.get('/api/accounts/verify', authHandler, accountController.verifyToken)
 
   // posts
   app.post('/api/admin/posts', authHandler, postController.createPost)
