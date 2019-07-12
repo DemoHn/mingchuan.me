@@ -1,6 +1,6 @@
 import React, { ReactNodeArray, ReactNode } from 'react'
 import { Menu, Icon } from 'antd'
-
+import Link from 'next/link'
 //// example routeMap
 /**
  *  [{
@@ -72,10 +72,12 @@ const composeMenuMap = (
 
     return (
       <Menu.Item key={key}>
-        <span>
-          {submenuIcon}
-          <span>{title}</span>
-        </span>
+        <Link href={`/admin/${key}`}>
+          <span>
+            {submenuIcon}
+            <span>{title}</span>
+          </span>
+        </Link>
       </Menu.Item>
     )
   }

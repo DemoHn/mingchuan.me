@@ -6,7 +6,7 @@ import { decode } from 'jsonwebtoken'
 // services
 import { updatePassword, updateUsername } from 'services/loginService'
 import { Input, Button, message } from 'antd'
-import { getTokenFromCookie } from 'services/tokenService'
+import { getTokenFromCookie, getTokenFromLocalStorage } from 'services/tokenService'
 
 // styles
 const FormContainer = styled.div`
@@ -144,7 +144,6 @@ const UpdatePasswordPage: NextFunctionComponent<PageProps> = props => {
             </span>
           )}
         </FormColumn>
-        
       </FormContainer>
     </AdminLayout>
   )
@@ -152,7 +151,7 @@ const UpdatePasswordPage: NextFunctionComponent<PageProps> = props => {
 
 UpdatePasswordPage.getInitialProps = (ctx: any) => {
   const req = ctx.req as any
-  const authToken = getTokenFromCookie(req)
+  const authToken = req ? getTokenFromCookie(req) : getTokenFromLocalStorage()
 
   const payload = decode(authToken) as any
   return {
