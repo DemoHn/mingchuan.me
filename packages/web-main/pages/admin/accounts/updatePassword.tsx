@@ -153,6 +153,7 @@ UpdatePasswordPage.getInitialProps = (ctx: any) => {
   const req = ctx.req as any
   const authToken = req ? getTokenFromCookie(req) : getTokenFromLocalStorage()
 
+
   const payload = decode(authToken) as any
   return {
     name: payload ? payload.name : null,
