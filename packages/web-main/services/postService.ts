@@ -5,6 +5,7 @@ export async function adminCreatePost(body: SubmitPayload): Promise<JSONResponse
   const payload = {
     body: {
       title: body.title,
+      type: body.type,
       content: body.content,
       status: body.publishOptions.draft ? 'DRAFTED' : 'PUBLISHED',
       permission: body.publishOptions.public ? 'PUBLIC' : 'PRIVATE',
