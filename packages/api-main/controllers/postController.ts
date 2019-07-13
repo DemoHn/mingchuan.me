@@ -29,7 +29,7 @@ const createPostSchema = {
       },
       status: {
         type: 'string',
-        enum: ['PUBLISHED', 'DRAFTED', 'REMOVED'],
+        enum: ['PUBLISHED', 'DRAFTED'],
       },
       permission: {
         type: 'string',

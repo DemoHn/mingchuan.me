@@ -26,7 +26,7 @@ const { SubMenu } = Menu
 export interface AdminMenuProps {
   currentRoute: string
   routeMap: Record<string, any>[]
-  onClick: (route: string) => any
+  onClick?: (route: string) => any
 }
 
 const composeMenuMap = (
@@ -73,10 +73,10 @@ const composeMenuMap = (
     return (
       <Menu.Item key={key}>
         <Link href={`/admin/${key}`}>
-          <span>
+          <a>
             {submenuIcon}
             <span>{title}</span>
-          </span>
+          </a>
         </Link>
       </Menu.Item>
     )
@@ -107,9 +107,14 @@ const AdminMenu: React.FC<AdminMenuProps> = props => {
 
   return (
     <Menu
+      style={{
+        borderRight: 'none',
+      }}
       mode="inline"
       onClick={({ key }) => {
-        onClick(key)
+        if (onClick) {
+          onClick(key)
+        }
       }}
       defaultOpenKeys={defaultKeys}
       defaultSelectedKeys={[currentRoute]}
