@@ -15,27 +15,33 @@ const Container = styled.div`
   justify-content: center;
 `
 
+const ContentContainer = styled.div`
+  display: flex;
+  background-color: #fff;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  min-height: 640px;
+  max-width: 1200px;
+  width: 100%;
+`
+
+const Sider = styled.div`
+  height: 100%;
+  width: 280px;
+  border-right: 1px solid #ccc;
+  flex-shrink: 1;
+`
+
+const InnerContent = styled.div`
+  height: 100%;
+  width: 100%;
+`
 const layoutStyles = {
   header: {
     display: 'flex',
     justifyContent: 'space-between',
     color: 'white',
-  },
-  content: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: '30px',
-    padding: '30px 0',
-    backgroundColor: '#fff',
-    minHeight: '600px',
-    maxWidth: '1200px',
-  },
-  sider: {
-    backgroundColor: '#fff',
-    borderRight: '1px solid #ddd',
-  },
-  innerContent: {
-    padding: '0 24px',
   },
   footer: {
     textAlign: 'center',
@@ -49,7 +55,7 @@ export interface AdminLayoutProps {
 
 const AdminLayout: React.FC<AdminLayoutProps> = props => {
   const currentYear = new Date().getFullYear()
-  const { Header, Content, Footer, Sider } = Layout
+  const { Header, Footer } = Layout
   const { routeKey } = props
   return (
     <Container>
@@ -60,20 +66,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = props => {
             <Icon type="poweroff" />
           </span>
         </Header>
-        <Content>
-          <Layout style={layoutStyles.content}>
-            <Sider width={240} style={layoutStyles.sider}>
-              <AdminMenu
-                onClick={(route: string) => {
-                  console.log(route)
-                }}
-                currentRoute={routeKey}
-                routeMap={menuConfig.routes}
-              ></AdminMenu>
-            </Sider>
-            <Content style={layoutStyles.innerContent}>{props.children}</Content>
-          </Layout>
-        </Content>
+        <ContentContainer>
+          <Sider>
+            <AdminMenu currentRoute={routeKey} routeMap={menuConfig.routes}></AdminMenu>
+          </Sider>
+          <InnerContent>{props.children}</InnerContent>
+        </ContentContainer>
         <Footer style={layoutStyles.footer}>
           <span>
             credit by <a href="https://mingchuan.me">DemoHn</a> - {currentYear}
