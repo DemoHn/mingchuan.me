@@ -65,7 +65,7 @@ const QuillEditor: React.FC<QuillEditorProps> = props => {
   } else {
     return (
       <section>
-        <textarea></textarea>
+        <div style={{ height: '500px' }}></div>
       </section>
     )
   }
