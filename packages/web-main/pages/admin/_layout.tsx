@@ -28,9 +28,9 @@ const ContentContainer = styled.div`
 
 const Sider = styled.div`
   height: 100%;
-  width: 280px;
+  width: 240px;
   border-right: 1px solid #ccc;
-  flex-shrink: 1;
+  flex: 0 0 auto;
 `
 
 const InnerContent = styled.div`
