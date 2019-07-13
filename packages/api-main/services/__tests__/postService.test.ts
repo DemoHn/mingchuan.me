@@ -24,11 +24,12 @@ describe('service: postService -> Create', () => {
   test('should create new post /default options', async () => {
     const expTitle = 'First Title'
     const expContent = '<p>blog content</p>'
-
-    const post = await createPost(expTitle, expContent)
+    const expType = 'html'
+    const post = await createPost(expTitle, expType, expContent)
 
     expect(post).toMatchObject({
       title: expTitle,
+      type: expType,
       content: expContent,
       status: PostStatus.PUBLISHED,
       permission: PostPermission.PUBLIC,
@@ -38,8 +39,9 @@ describe('service: postService -> Create', () => {
   test('should create new post /with options', async () => {
     const expTitle = 'First Title'
     const expContent = '<p>blog content</p>'
+    const expType = 'html'
 
-    const post = await createPost(expTitle, expContent, {
+    const post = await createPost(expTitle, expType, expContent, {
       status: PostStatus.DRAFTED,
       permission: PostPermission.PRIVATE,
     })
@@ -63,6 +65,7 @@ describe('service: postService -> Remove', () => {
     // create fixtures
     expPost = await Post.create({
       title: 'title-01',
+      type: 'html',
       content: 'exp-content',
       status: PostStatus.DRAFTED,
       permission: PostPermission.PRIVATE,
@@ -101,12 +104,14 @@ describe('service: postService -> ListAll', () => {
       {
         title: 'title-01',
         content: 'exp-content',
+        type: 'html',
         status: PostStatus.DRAFTED,
         permission: PostPermission.PRIVATE,
       },
       {
         title: 'title-02',
         content: 'exp-content',
+        type: 'html',
         status: PostStatus.PUBLISHED,
         permission: PostPermission.PUBLIC,
       },
@@ -119,22 +124,13 @@ describe('service: postService -> ListAll', () => {
 
   test('should list all posts /no limit', async () => {
     const [posts, count] = await listAllPosts()
-    expect(count).toHaveProperty('totalCount', expPosts.length)
+    expect(count).toEqual(expPosts.length)
     expect(posts).toHaveLength(2)
   })
 
   test('should list all posts /limit = 1', async () => {
     const [posts, count] = await listAllPosts({ limit: 1 })
-    expect(count).toHaveProperty('totalCount', expPosts.length)
+    expect(count).toEqual(expPosts.length)
     expect(posts).toHaveLength(1)
-    // ensure there is only keys
-    expect(Object.keys(posts[0])).toEqual([
-      'id',
-      'title',
-      'status',
-      'permission',
-      'createTime',
-      'lastUpdateTime',
-    ])
   })
 })

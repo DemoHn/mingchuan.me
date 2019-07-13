@@ -14,6 +14,7 @@ describe('Model: Post', () => {
 
   const payload: PostPayload = {
     title: 'This is another post',
+    type: 'html',
     content: '<p>content</p>',
     status: 'PUBLISHED',
     permission: 'PUBLIC',

@@ -6,6 +6,7 @@ export default class Post extends Model {
   public content!: string
   public status!: string
   public permission!: string
+  public type!: string
 
   public createdAt!: Date
   public updatedAt!: Date
@@ -13,6 +14,7 @@ export default class Post extends Model {
 
 export interface PostPayload {
   title: string
+  type: string
   content: string
   status: string
   permission: string
@@ -27,6 +29,10 @@ Post.init(
     },
     title: {
       type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    type: {
+      type: DataTypes.STRING(32),
       allowNull: false,
     },
     content: {
