@@ -58,7 +58,7 @@ const QuillEditor: React.FC<QuillEditorProps> = props => {
           modules={$quillToolbar.modules}
           theme="snow"
           value={text}
-          onChange={onChange}
+          onChange={(text: string) => onChange(text)}
         />
       </section>
     )

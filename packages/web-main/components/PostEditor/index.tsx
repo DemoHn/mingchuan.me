@@ -3,7 +3,7 @@ import styled from 'styled-components'
 //// components
 import Title from './Title'
 import Content from './Content'
-import Footer from './Footer'
+import Footer, { SaveOption } from './Footer'
 
 //// styles
 const Container = styled.div`
@@ -25,18 +25,54 @@ export interface PostEditorProps {
   onSubmit: (payload: SubmitPayload) => any
   // RESERVED
   // onCancel: () => any
-  limits: {
+  editMode: boolean
+  initialValue?: {
+    title: string
+    content: string
+    publishOptions: {
+      public: boolean
+      draft: boolean
+    }
+  }
+  limits?: {
     maxTitleLength?: number
   }
 }
 
-const PostEditor: React.FC<PostEditorProps> = () => {
-  const [title, setTitle] = useState('')
+const PostEditor: React.FC<PostEditorProps> = props => {
+  // props
+  const { type, onSubmit, limits, editMode, initialValue } = props
+  const titleLimit = limits && limits.maxTitleLength ? limits.maxTitleLength : undefined
+  // states
+  const [title, setTitle] = useState(initialValue ? initialValue.title : '')
+  const [content, setContent] = useState(initialValue ? initialValue.content : '')
+
+  // handlers
+  const handleSave = (options: SaveOption) => {
+    const payload = {
+      title,
+      content,
+      type,
+      publishOptions: options,
+    }
+
+    onSubmit(payload)
+  }
+
   return (
     <Container>
-      <Title type="html" title={title} onChange={setTitle} maxTitleLength={10}></Title>
-      <Content type="html" />
-      <Footer onSave={() => {}} />
+      <Title
+        type={type}
+        title={title}
+        onChange={setTitle}
+        maxTitleLength={titleLimit}
+      ></Title>
+      <Content type={type} content={content} onChange={setContent} />
+      <Footer
+        onSave={handleSave}
+        editMode={editMode}
+        initialOption={initialValue ? initialValue.publishOptions : undefined}
+      />
     </Container>
   )
 }

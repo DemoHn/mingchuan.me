@@ -23,48 +23,59 @@ const SwitchBar = styled.div`
 const FooterSwitchLabel = styled.span`
   font-size: 13px;
   color: #777;
+  margin-left: 8px;
 `
 //// texts
 const $texts = {
   save: '发布',
   saveAsDraft: '保存为草稿',
   savePublic: '公开发表',
+  saveUpdates: '保存修改',
 }
 //// props
-interface SaveOption {
+export interface SaveOption {
   draft: boolean
   public: boolean
 }
 export interface FooterProps {
   onSave: (opt: SaveOption) => any
+  editMode: boolean
+  initialOption?: SaveOption
 }
 
 const Footer: React.FC<FooterProps> = props => {
-  const [draft, setDraft] = useState(false)
-  const [isPublic, setPublic] = useState(true)
-  const { onSave } = props
+  const { onSave, initialOption, editMode } = props
+  const [draft, setDraft] = useState(initialOption ? initialOption.draft : false)
+  const [isPublic, setPublic] = useState(initialOption ? initialOption.public : true)
+
+  const handleSave = () => {
+    onSave({
+      draft,
+      public: isPublic,
+    })
+  }
   return (
     <FooterBar>
       <SwitchBar>
         <span>
-          <Switch size="small" defaultChecked={draft} onChange={setDraft} />{' '}
+          <Switch
+            size="small"
+            defaultChecked={draft}
+            onChange={(opt: boolean) => setDraft(opt)}
+          />
           <FooterSwitchLabel>{$texts.saveAsDraft}</FooterSwitchLabel>
         </span>
         <span>
-          <Switch defaultChecked={isPublic} onChange={setPublic} size="small" />{' '}
+          <Switch
+            defaultChecked={isPublic}
+            onChange={(opt: boolean) => setPublic(opt)}
+            size="small"
+          />
           <FooterSwitchLabel>{$texts.savePublic}</FooterSwitchLabel>
         </span>
       </SwitchBar>
-      <Button
-        type="primary"
-        onClick={() =>
-          onSave({
-            draft,
-            public: isPublic,
-          })
-        }
-      >
-        {$texts.save}
+      <Button type="primary" onClick={handleSave}>
+        {editMode ? $texts.saveUpdates : $texts.save}
       </Button>
     </FooterBar>
   )
