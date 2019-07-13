@@ -6,7 +6,7 @@ import PostEditor from 'components/PostEditor'
 const NewPostPage: NextFunctionComponent = () => {
   return (
     <AdminLayout routeKey="posts/new">
-      <PostEditor type="html" onSubmit={d => console.log(d)} />
+      <PostEditor type="html" onSubmit={d => console.log(d)} editMode={true} />
     </AdminLayout>
   )
 }

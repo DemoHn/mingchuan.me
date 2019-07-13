@@ -13,7 +13,7 @@ const Container = styled.div`
 `
 
 //// props
-interface SubmitPayload {
+export interface SubmitPayload {
   title: string
   content: string
   type: string
