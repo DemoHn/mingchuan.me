@@ -24,11 +24,13 @@ export interface CursorOption {
 // create
 export async function createPost(
   title: string,
+  type: string,
   content: string,
   options?: CreatePostOption
 ): Promise<Post> {
   const newPost: PostPayload = {
     title,
+    type,
     content,
     status: (options && options.status) || PostStatus.PUBLISHED,
     permission: (options && options.permission) || PostPermission.PUBLIC,

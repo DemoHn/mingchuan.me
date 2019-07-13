@@ -15,13 +15,17 @@ const createPostSchema = {
   body: {
     type: 'object',
     additionalProperties: false,
-    required: ['title', 'content'],
+    required: ['title', 'content', 'type'],
     properties: {
       title: {
         type: 'string',
       },
       content: {
         type: 'string',
+      },
+      type: {
+        type: 'string',
+        enum: ['html', 'markdown'],
       },
       status: {
         type: 'string',
@@ -35,8 +39,8 @@ const createPostSchema = {
   },
 }
 async function createPostFunc(req: AppRequest) {
-  const { title, content, status, permission } = req.body
-  const post = await createPost(title, content, {
+  const { title, content, status, permission, type } = req.body
+  const post = await createPost(title, type, content, {
     status: status || PostStatus.PUBLISHED,
     permission: permission || PostPermission.PUBLIC,
   })

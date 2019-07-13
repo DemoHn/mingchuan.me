@@ -2,6 +2,7 @@ import Post from '../models/Post'
 
 export interface PostResponse {
   title: string
+  type: string
   content: string
   status: string
   permission: string
@@ -12,6 +13,7 @@ export interface PostResponse {
 export function getPostResponse(post: Post): PostResponse {
   return {
     title: post.title,
+    type: post.type,
     content: post.content,
     status: post.status,
     permission: post.permission,
@@ -41,6 +43,7 @@ export function getPublicPostResponse(post: Post): PublicPostResponse {
 // for posts list, we only need title & its status to speed up response time
 export interface PostBrief {
   title: string
+  type: string
   status: string
   permission: string
   createTime: number
@@ -53,6 +56,7 @@ export interface PostsList {
 export function getPostsList(posts: Post[], count?: number): PostsList {
   const dPosts = posts.map(p => ({
     title: p.title,
+    type: p.type,
     status: p.status,
     permission: p.permission,
     createTime: p.createdAt.getTime(),
