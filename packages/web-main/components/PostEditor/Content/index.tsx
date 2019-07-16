@@ -2,6 +2,9 @@ import React from 'react'
 import styled from 'styled-components'
 import QuillEditor from './html'
 
+// import styles
+import 'react-quill/dist/quill.snow.css'
+
 const Container = styled.div`
   flex: 1 1 auto;
 `

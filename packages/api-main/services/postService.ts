@@ -1,6 +1,7 @@
 import Post, { PostPayload } from '../models/Post'
 import _ from 'lodash'
 import Errors from '../utils/errors'
+import { Op } from 'sequelize'
 
 export enum PostStatus {
   PUBLISHED = 'PUBLISHED',
@@ -17,7 +18,7 @@ export interface CreatePostOption {
 }
 export interface CursorOption {
   limit?: number
-  offset?: number
+  page?: number
 }
 
 ///// ADMIN handler
@@ -50,6 +51,17 @@ export async function updatePostContent(
 ): Promise<Post> {
   return post.update(_.pickBy(updateInfo, _.identity))
 }
+/// update status, permission
+export async function updatePostStatus(post: Post, newStatus: string): Promise<Post> {
+  return post.update({ status: newStatus })
+}
+
+export async function updatePostPermission(
+  post: Post,
+  newPermission: string
+): Promise<Post> {
+  return post.update({ permission: newPermission })
+}
 
 // soft remove posts
 export async function removePost(post: Post): Promise<Post> {
@@ -72,7 +84,6 @@ export async function listAllPosts(
   cursorOption?: CursorOption
 ): Promise<[Post[], number]> {
   const MAX_LIMIT = 25
-  const offset = (cursorOption && cursorOption.offset) || 0
   const limit =
     (cursorOption &&
       cursorOption.limit &&
@@ -81,11 +92,17 @@ export async function listAllPosts(
       cursorOption.limit) ||
     MAX_LIMIT
 
+  const offset = cursorOption && cursorOption.page ? (cursorOption.page - 1) * limit : 0
   const listResult = await Post.findAndCountAll({
     attributes: ['id', 'title', 'status', 'permission', 'createdAt', 'updatedAt'],
     offset,
     limit,
     order: [['updated_at', 'DESC']],
+    where: {
+      status: {
+        [Op.in]: ['DRAFTED', 'PUBLISHED'],
+      },
+    },
   })
 
   return [listResult.rows, listResult.count]

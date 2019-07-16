@@ -1,4 +1,4 @@
-import express from 'express'
+import express, { Request, Response } from 'express'
 import next from 'next'
 
 const devProxy: any = {
@@ -32,6 +32,10 @@ app
         server.use(proxyMiddleware(context, devProxy[context]))
       })
     }
+    // e.g. /admin/posts/edit/1
+    server.get('/admin/posts/edit/:slug', (req: Request, res: Response) => {
+      return app.render(req, res, '/admin/posts/edit', { id: req.params.slug })
+    })
 
     // Default catch-all handler to allow Next.js to handle all other routes
     server.all('*', (req: any, res: any) => handle(req, res))

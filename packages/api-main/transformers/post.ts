@@ -42,6 +42,7 @@ export function getPublicPostResponse(post: Post): PublicPostResponse {
 
 // for posts list, we only need title & its status to speed up response time
 export interface PostBrief {
+  id: number
   title: string
   type: string
   status: string
@@ -55,6 +56,7 @@ export interface PostsList {
 }
 export function getPostsList(posts: Post[], count?: number): PostsList {
   const dPosts = posts.map(p => ({
+    id: p.id,
     title: p.title,
     type: p.type,
     status: p.status,

@@ -7,7 +7,7 @@ const defaultConfig: any = {
     type: 'mysql',
     url: process.env.DATABASE_URL,
     sequelize: {
-      logging: false,
+      logging: console.log,
       define: {
         underscored: true,
         freezeTableName: false,
