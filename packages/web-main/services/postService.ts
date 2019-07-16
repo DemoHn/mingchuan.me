@@ -1,6 +1,7 @@
 import { jsonRequest, JSONResponse } from './_base'
 import { SubmitPayload } from 'components/PostEditor'
 import { Request } from 'express'
+
 export async function adminCreatePost(body: SubmitPayload): Promise<JSONResponse> {
   const payload = {
     body: {
@@ -17,6 +18,7 @@ export async function adminCreatePost(body: SubmitPayload): Promise<JSONResponse
 export interface PostResponse {
   id: number
   title: string
+  content?: string
   type: string
   status: string
   permission: string
@@ -37,4 +39,29 @@ export async function adminListPosts(
   }
 
   return jsonRequest('GET', '/api/admin/posts', payload, serverReq)
+}
+
+export async function adminGetOnePost(
+  id: number,
+  serverReq?: Request
+): Promise<JSONResponse> {
+  return jsonRequest('GET', `/api/admin/posts/${id}`, {}, serverReq)
+}
+
+export async function adminUpdatePostContent(
+  id: number,
+  updateContent: {
+    title?: string
+    content?: string
+  },
+  serverReq?: Request
+): Promise<JSONResponse> {
+  return jsonRequest(
+    'PATCH',
+    `/api/admin/posts/${id}`,
+    {
+      body: updateContent,
+    },
+    serverReq
+  )
 }

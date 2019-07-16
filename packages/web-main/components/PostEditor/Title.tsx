@@ -80,6 +80,7 @@ const Title: React.FC<TitleProps> = props => {
       <TitleInput
         placeholder={$texts.titlePlaceholder}
         onChange={handleTextChange}
+        value={title}
         {...optionalProps}
       />
       {maxTitleLength ? (

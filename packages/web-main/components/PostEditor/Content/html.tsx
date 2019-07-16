@@ -1,6 +1,4 @@
 import React from 'react'
-// import styles
-import 'react-quill/dist/quill.snow.css'
 
 //// styles
 const $globalStyle = `
@@ -16,7 +14,7 @@ const $globalStyle = `
 }
 
 .ql-snow .ql-editor {
-  height: 500px; // TODO: use a better way to calculate height!
+  height: 500px;
   overflow-y: auto;
 }
 
@@ -45,13 +43,12 @@ export interface QuillEditorProps {
 
 const QuillEditor: React.FC<QuillEditorProps> = props => {
   const isClient = typeof window !== 'undefined'
-
   if (isClient) {
     const ReactQuill = require('react-quill')
     const { text, onChange } = props
 
     return (
-      <section>
+      <main>
         <style>{$globalStyle}</style>
         <ReactQuill
           placeholder=""
@@ -60,7 +57,7 @@ const QuillEditor: React.FC<QuillEditorProps> = props => {
           value={text}
           onChange={(text: string) => onChange(text)}
         />
-      </section>
+      </main>
     )
   } else {
     return (

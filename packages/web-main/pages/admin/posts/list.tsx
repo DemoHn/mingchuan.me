@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { NextFunctionComponent, NextContext } from 'next'
 import styled from 'styled-components'
 import { Pagination } from 'antd'
+import Link from 'next/link'
+
 //// components
 import PostList from 'components/PostList'
 import AdminLayout from '../_layout'
@@ -39,44 +41,40 @@ const PaginationContainer = styled.div`
   align-items: center;
   padding: 0 20px;
 `
+
 //// props
 export interface ListPostPageProps {
   totalCount: number
   page: number
   posts: PostResponse[]
-  isClient: boolean
 }
 
 const PAGE_LIMIT = 10
 
 const ListPostPage: NextFunctionComponent<ListPostPageProps> = props => {
-  const { page, posts, totalCount, isClient } = props
+  const { page, posts, totalCount } = props
   //// states
   const [displayPosts, setDisplayPosts] = useState(posts)
   const [loading, setLoading] = useState(false)
   const [displayPage, setDisplayPage] = useState(page)
   const [displayTotal, setDisplayTotal] = useState(totalCount)
   // handlers
-  useEffect(() => {
-    if (isClient) {
-      setLoading(true)
-      const fetchData = async () => {
-        const pageList = await adminListPosts(PAGE_LIMIT, displayPage)
-        if (pageList.isSuccess) {
-          const { totalCount, posts } = pageList.body as any
-          setDisplayPosts(posts)
-          setDisplayTotal(totalCount)
-        } else {
-          //// TODO: handle
-        }
-        setLoading(false)
-      }
-      fetchData()
-    }
-  }, [displayPage])
 
-  const handlePageChange = useCallback((page: number) => {
+  const handlePageChange = useCallback(async (page: number) => {
     setDisplayPage(page)
+
+    //// start loading data
+    setLoading(true)
+
+    const pageList = await adminListPosts(PAGE_LIMIT, page)
+    if (pageList.isSuccess) {
+      const { totalCount, posts } = pageList.body as any
+      setDisplayPosts(posts)
+      setDisplayTotal(totalCount)
+    } else {
+      //// TODO: handle
+    }
+    setLoading(false)
   }, [])
   return (
     <AdminLayout routeKey="posts/list">
@@ -104,30 +102,27 @@ const ListPostPage: NextFunctionComponent<ListPostPageProps> = props => {
 
 ListPostPage.getInitialProps = async (ctx: NextContext) => {
   const req = ctx.req as Request
-  //// on SSR
-  if (req) {
-    const page = parseInt(req.query.page, 10) || 1
-    const postList = await adminListPosts(PAGE_LIMIT, page, req)
-    /// handle
-    if (postList.isSuccess) {
-      const { posts, totalCount } = postList.body as any
 
-      return {
-        posts,
-        totalCount,
-        page,
-        isClient: false,
-      }
-    } else {
-      //// TODO: need handle
+  const page = req && req.query.page ? parseInt(req.query.page, 10) : 1
+  const postList = await adminListPosts(PAGE_LIMIT, page, req)
+  /// handle
+  if (postList.isSuccess) {
+    const { posts, totalCount } = postList.body as any
+
+    return {
+      posts,
+      totalCount,
+      page,
     }
+
+    // if postList failed on `getInitialProps`, then handle it
+    // on client side rendering.
   }
 
   return {
     posts: [],
     totalCount: 0,
     page: 1,
-    isClient: true,
   }
 }
 

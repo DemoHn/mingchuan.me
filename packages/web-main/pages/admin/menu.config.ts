@@ -6,7 +6,7 @@ export default {
       key: 'posts', // --> route = /admin/posts
       children: [
         {
-          name: '文章列表',
+          name: '所有文章',
           icon: 'file-text',
           key: 'list', // --> route = /admin/posts/list
         },

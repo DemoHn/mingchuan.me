@@ -56,7 +56,7 @@ const updatePostSchema = {
     required: ['id'],
     properties: {
       id: {
-        type: 'number',
+        type: 'string',
       },
     },
   },
@@ -114,7 +114,7 @@ const getOneSchema = {
     required: ['id'],
     properties: {
       id: {
-        type: 'number',
+        type: 'string',
       },
     },
   },

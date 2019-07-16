@@ -56,24 +56,26 @@ const Footer: React.FC<FooterProps> = props => {
   }
   return (
     <FooterBar>
-      <SwitchBar>
-        <span>
-          <Switch
-            size="small"
-            defaultChecked={draft}
-            onChange={(opt: boolean) => setDraft(opt)}
-          />
-          <FooterSwitchLabel>{$texts.saveAsDraft}</FooterSwitchLabel>
-        </span>
-        <span>
-          <Switch
-            defaultChecked={isPublic}
-            onChange={(opt: boolean) => setPublic(opt)}
-            size="small"
-          />
-          <FooterSwitchLabel>{$texts.savePublic}</FooterSwitchLabel>
-        </span>
-      </SwitchBar>
+      {editMode ? null : (
+        <SwitchBar>
+          <span>
+            <Switch
+              size="small"
+              defaultChecked={draft}
+              onChange={(opt: boolean) => setDraft(opt)}
+            />
+            <FooterSwitchLabel>{$texts.saveAsDraft}</FooterSwitchLabel>
+          </span>
+          <span>
+            <Switch
+              defaultChecked={isPublic}
+              onChange={(opt: boolean) => setPublic(opt)}
+              size="small"
+            />
+            <FooterSwitchLabel>{$texts.savePublic}</FooterSwitchLabel>
+          </span>
+        </SwitchBar>
+      )}
       <Button type="primary" onClick={handleSave}>
         {editMode ? $texts.saveUpdates : $texts.save}
       </Button>
