@@ -1,19 +1,26 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { NextFunctionComponent, NextContext } from 'next'
 import styled from 'styled-components'
-import { Pagination } from 'antd'
-import Link from 'next/link'
+import { Pagination, message } from 'antd'
+import Router from 'next/router'
 
 //// components
 import PostList from 'components/PostList'
 import AdminLayout from '../_layout'
 
 //// services
-import { adminListPosts, PostResponse } from 'services/postService'
+import {
+  adminListPosts,
+  PostResponse,
+  adminUpdatePostStatus,
+  adminUpdatePostPermission,
+} from 'services/postService'
 import { Request } from 'express'
 
 //// assets
 import loaderSVG from 'assets/loader.svg'
+import { OperationAction } from 'components/PostList/PostItem/Operation'
+import { JSONResponse } from 'services/_base'
 
 //// styles
 const Container = styled.div`
@@ -41,7 +48,31 @@ const PaginationContainer = styled.div`
   align-items: center;
   padding: 0 20px;
 `
-
+//// handlers
+const parseResp = (resp: JSONResponse) => {
+  if (resp.isSuccess) {
+    message.info('操作成功！')
+  } else {
+    message.error('操作失败！')
+  }
+}
+const handleOperationActions = async (id: number, action: OperationAction) => {
+  switch (action) {
+    case OperationAction.deletePost:
+      return adminUpdatePostStatus(id, 'REMOVED').then(parseResp)
+    case OperationAction.publishDraft:
+      return adminUpdatePostStatus(id, 'PUBLISHED').then(parseResp)
+    case OperationAction.setPrivate:
+      return adminUpdatePostPermission(id, 'PRIVATE').then(parseResp)
+    case OperationAction.setPublic:
+      return adminUpdatePostPermission(id, 'PUBLIC').then(parseResp)
+    case OperationAction.edit:
+      Router.push(`/admin/posts/edit/${id}`)
+      return
+    default:
+      return
+  }
+}
 //// props
 export interface ListPostPageProps {
   totalCount: number
@@ -85,7 +116,7 @@ const ListPostPage: NextFunctionComponent<ListPostPageProps> = props => {
               <img src={loaderSVG} height={16} />
             </LoaderContainer>
           ) : (
-            <PostList posts={displayPosts} />
+            <PostList posts={displayPosts} onOperationAction={handleOperationActions} />
           )}
         </PostListContainer>
         <PaginationContainer>

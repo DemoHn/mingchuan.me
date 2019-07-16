@@ -90,7 +90,7 @@ const PostItem: React.FC<PostItemProps> = props => {
         <IndicatorTip showType="status" value={status} />
         <IndicatorTip showType="permission" value={permission} />
       </IndicatorBar>
-      <TitleBar>{title}</TitleBar>
+      <TitleBar onClick={() => onOperationAction(OperationAction.edit)}>{title}</TitleBar>
       <OpeartionBar>
         <Operation
           actions={calculateOperations(status, permission)}

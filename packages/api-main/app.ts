@@ -41,6 +41,12 @@ export async function createApiServer() {
   app.get('/api/admin/posts/:id', authHandler, postController.getOnePost)
   app.get('/api/admin/posts', authHandler, postController.listAllPosts)
   app.patch('/api/admin/posts/:id', authHandler, postController.updatePostContent)
+  app.patch('/api/admin/posts/status/:id', authHandler, postController.updateStatus)
+  app.patch(
+    '/api/admin/posts/permission/:id',
+    authHandler,
+    postController.updatePermission
+  )
   app.delete('/api/admin/posts/:id', authHandler, postController.deletePost)
 
   app.use(errorHandler)

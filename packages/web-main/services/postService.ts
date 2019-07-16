@@ -65,3 +65,33 @@ export async function adminUpdatePostContent(
     serverReq
   )
 }
+
+export async function adminUpdatePostStatus(
+  id: number,
+  status: string,
+  serverReq?: Request
+): Promise<JSONResponse> {
+  return jsonRequest(
+    'PATCH',
+    `/api/admin/posts/status/${id}`,
+    {
+      body: { status },
+    },
+    serverReq
+  )
+}
+
+export async function adminUpdatePostPermission(
+  id: number,
+  permission: string,
+  serverReq?: Request
+): Promise<JSONResponse> {
+  return jsonRequest(
+    'PATCH',
+    `/api/admin/posts/permission/${id}`,
+    {
+      body: { permission },
+    },
+    serverReq
+  )
+}

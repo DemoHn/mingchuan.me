@@ -51,6 +51,17 @@ export async function updatePostContent(
 ): Promise<Post> {
   return post.update(_.pickBy(updateInfo, _.identity))
 }
+/// update status, permission
+export async function updatePostStatus(post: Post, newStatus: string): Promise<Post> {
+  return post.update({ status: newStatus })
+}
+
+export async function updatePostPermission(
+  post: Post,
+  newPermission: string
+): Promise<Post> {
+  return post.update({ permission: newPermission })
+}
 
 // soft remove posts
 export async function removePost(post: Post): Promise<Post> {
