@@ -130,19 +130,22 @@ const listPostsSchema = {
   query: {
     type: 'object',
     additionalProperties: false,
+    required: [],
     properties: {
       limit: {
-        type: 'number',
+        type: 'string',
       },
-      offset: {
-        type: 'number',
+      page: {
+        type: 'string',
       },
     },
   },
 }
 async function listAllPostsFunc(req: AppRequest) {
-  const { limit, offset } = req.query
-  const [posts, totalCount] = await listAllPosts({ limit, offset })
+  const { limit, page } = req.query
+  const Qlimit = limit ? parseInt(limit, 10) : undefined
+  const Qpage = page ? parseInt(page, 10) : undefined
+  const [posts, totalCount] = await listAllPosts({ limit: Qlimit, page: Qpage })
   return getPostsList(posts, totalCount)
 }
 

@@ -1,20 +1,21 @@
 import React from 'react'
-import PostItem, { PostItemProps } from './PostItem'
+import PostItem from './PostItem'
+import { PostResponse } from 'services/postService'
 //// props
 
 export interface PostListProps {
-  posts: PostItemProps[]
+  posts: PostResponse[]
 }
 
-const PostList: React.FC = () => {
-  const props = {
-    title: '233-XXY',
-    status: 'DRAFTED',
-    permission: 'PUBLIC',
-    createTime: Date.now(),
-    lastUpdateTime: 1572342435000,
-  }
-  return <PostItem {...props} />
+const PostList: React.FC<PostListProps> = props => {
+  const { posts } = props
+  return (
+    <>
+      {posts.map(post => (
+        <PostItem key={post.id} post={post} onOperationAction={() => {}} />
+      ))}
+    </>
+  )
 }
 
 export default PostList

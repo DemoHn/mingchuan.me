@@ -65,8 +65,10 @@ export async function jsonRequest(
 function buildQuerystring(qs: Record<string, any>) {
   const qsArray = []
   for (var key in qs) {
-    const qsItem = `${encodeURIComponent(key)}=${encodeURIComponent(qs[key])}`
-    qsArray.push(qsItem)
+    if (qs[key]) {
+      const qsItem = `${encodeURIComponent(key)}=${encodeURIComponent(qs[key])}`
+      qsArray.push(qsItem)
+    }
   }
 
   return qsArray.length > 0 ? `?${qsArray.join('&')}` : ''

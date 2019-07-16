@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import IndicatorTip from './IndicatorTip'
 import TimeDisplay from './TimeDisplay'
 import Operation, { OperationAction } from './Operation'
+import { PostResponse } from 'services/postService'
 //// styles
 const Container = styled.div`
   display: flex;
@@ -74,23 +75,13 @@ const calculateOperations = (status: string, permission: string): OperationActio
 }
 //// props
 export interface PostItemProps {
-  title: string
-  status: string
-  permission: string
-  createTime: number
-  lastUpdateTime: number
+  post: PostResponse
   onOperationAction: (action: OperationAction) => any
 }
 
 const PostItem: React.FC<PostItemProps> = props => {
-  const {
-    title,
-    status,
-    permission,
-    createTime,
-    lastUpdateTime,
-    onOperationAction,
-  } = props
+  const { post, onOperationAction } = props
+  const { title, status, permission, createTime, lastUpdateTime } = post
   const currentDate = new Date()
 
   return (
