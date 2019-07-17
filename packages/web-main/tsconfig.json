@@ -1,21 +1,10 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowJs": true,    
+    "noEmit": true,
     "jsx": "preserve",
     "lib": ["dom", "es2018"],
-    "module": "commonjs",
-    "allowSyntheticDefaultImports": true,    
-    "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveConstEnums": true,
-    "removeComments": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2018",
-    "moduleResolution": "node",
-    "baseUrl": "."
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true
   }
 }

@@ -1,24 +1,14 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "target": "es2018",    
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "jsx": "preserve",
-    "lib": ["dom", "es2018"],
-    "module": "commonjs",
-    "inlineSourceMap": true,
-		"noImplicitThis": true,
-    "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveConstEnums": true,
-    "removeComments": false,
-    "skipLibCheck": true,
-		"declaration": true,
-		"esModuleInterop": true,
-    "strict": true
-  }
+    "baseUrl": "src",
+    "outDir": "dist",    
+    "inlineSources": true,
+    "inlineSourceMap": true
+  },
+  "experimentalDecorators": true,
+  "include": [
+    "src"
+  ],
+  "exclude": ["dist", "node_modules"]
 }

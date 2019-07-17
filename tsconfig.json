@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "node",    
+    "noUnusedLocals": true,
+    "skipLibCheck": true,    
+    "target": "esnext",
+    "esModuleInterop": true
+  }
+}
