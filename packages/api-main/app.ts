@@ -11,6 +11,7 @@ import authHandler from './middlewares/authHandler'
 // controllers
 import accountController from './controllers/accountController'
 import postController from './controllers/postController'
+import publicPostController from './controllers/publicPostController'
 
 export async function createApiServer() {
   const app = express()
@@ -48,6 +49,9 @@ export async function createApiServer() {
     postController.updatePermission
   )
   app.delete('/api/admin/posts/:id', authHandler, postController.deletePost)
+
+  // public posts
+  app.get('/api/posts/:id', publicPostController.getPublicPost)
 
   app.use(errorHandler)
   return app

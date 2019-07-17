@@ -30,7 +30,7 @@ const Motto = styled.div`
   letter-spacing: 2px;
 `
 
-const Index: NextFunctionComponent = () => {
+const IndexPage: NextFunctionComponent = () => {
   return (
     <MainContainer>
       <TitleBox>
@@ -41,4 +41,4 @@ const Index: NextFunctionComponent = () => {
   )
 }
 
-export default Index
+export default IndexPage
