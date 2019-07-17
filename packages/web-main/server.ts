@@ -37,6 +37,10 @@ app
       return app.render(req, res, '/admin/posts/edit', { id: req.params.slug })
     })
 
+    server.get('/posts/:slug', (req: Request, res: Response) => {
+      return app.render(req, res, '/post', { id: req.params.slug })
+    })
+
     // Default catch-all handler to allow Next.js to handle all other routes
     server.all('*', (req: any, res: any) => handle(req, res))
 

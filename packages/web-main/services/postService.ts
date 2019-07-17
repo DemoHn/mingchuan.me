@@ -95,3 +95,10 @@ export async function adminUpdatePostPermission(
     serverReq
   )
 }
+
+export async function getPublicPost(
+  id: number,
+  serverReq?: Request
+): Promise<JSONResponse> {
+  return jsonRequest('GET', `/api/posts/${id}`, {}, serverReq)
+}
