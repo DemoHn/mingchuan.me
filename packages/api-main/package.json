@@ -9,7 +9,9 @@
     "dev:local": "NODE_ENV=development nodemon src/index.ts --exec ts-node",
     "dev:now": "now dev",
     "type-check": "tsc --noEmit true",
-    "test": "jest --runInBand --forceExit"
+    "build": "tsc",
+    "test": "jest --runInBand --forceExit",    
+    "start:docker": "RUN_MODE=server node dist/index.js"
   },
   "dependencies": {
     "@godaddy/terminus": "^4.1.2",

@@ -9,7 +9,8 @@
   "author": "DemoHn <demohn2016@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "start:docker": "lerna run start:docker"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",

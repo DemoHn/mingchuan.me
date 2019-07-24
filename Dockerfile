@@ -1,43 +1,45 @@
-# Frontend Build Stage
-FROM node:11-alpine AS WEB-builder
+# Build stage
+# api-main, web-main
+FROM node:11-alpine AS builder
 
 WORKDIR /app
-COPY packages/web-main .
+COPY . .
 
 # install deps
 RUN yarn
+# install lerna
+RUN yarn global add lerna
 # build
-RUN NODE_ENV=production yarn build
+RUN NODE_ENV=production lerna run build
 
-# Backend Build Stage
-FROM node:11-alpine AS API-builder
+# tar artifacts
+# api-main
+RUN tar -C packages/api-main -cvzf api-main.tar.gz node_modules package.json dist migrations
 
-WORKDIR /app
-RUN mkdir -p /app/src
-COPY packages/api-main ./src
-# move out tsconfig.json
-RUN mv src/tsconfig.json src/package.json .
+# web-main
+RUN tar -C packages/web-main -cvzf web-main.tar.gz node_modules package.json .next
 
-# install deps
-RUN yarn
-# build
-RUN yarn build --outDir build
+# Installer Stage
+FROM node:11-alpine AS container
 
-# # Installer Stage
-# FROM node:11-alpine AS container
+WORKDIR /srv
 
-# WORKDIR /srv
-
-# # install PM2
-# RUN yarn global add pm2
+# install PM2
+RUN yarn global add pm2
 # # init dir
-# RUN mkdir -p api web config pm2
+RUN mkdir -p bin packages/web-main packages/api-main node_modules
 
-# # copy caddy
-# COPY --from=abiosoft/caddy /usr/bin/caddy .
-# # copy FE & BE build artifacts
-# COPY --from=API-builder /app/bin/mce api/
-# COPY --from=WEB-builder /app/. web/
+# copy caddy
+COPY --from=abiosoft/caddy /usr/bin/caddy /srv/bin
+# copy BE & FE build artifacts
+COPY --from=builder /app/web-main.tar.gz .
+COPY --from=builder /app/api-main.tar.gz .
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/lerna.json .
+# untar data
+RUN tar -xvzf web-main.tar.gz -C packages/web-main
+RUN tar -xvzf api-main.tar.gz -C packages/api-main
 # # copy PM2
 # COPY pm2.config.js pm2/
 
