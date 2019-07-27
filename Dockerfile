@@ -17,7 +17,7 @@ RUN NODE_ENV=production lerna run build
 RUN tar -C packages/api-main -cvzf api-main.tar.gz node_modules package.json dist migrations
 
 # web-main
-RUN tar -C packages/web-main -cvzf web-main.tar.gz node_modules package.json .next
+RUN tar -C packages/web-main -cvzf web-main.tar.gz node_modules package.json .next static
 
 # Installer Stage
 FROM node:11-alpine AS container
@@ -40,7 +40,8 @@ COPY --from=builder /app/lerna.json .
 # untar data
 RUN tar -xvzf web-main.tar.gz -C packages/web-main
 RUN tar -xvzf api-main.tar.gz -C packages/api-main
-# # copy PM2
-# COPY pm2.config.js pm2/
 
-# ENTRYPOINT ["pm2", "start", "/srv/pm2/pm2.config.js", "--no-daemon"]
+COPY pm2.config.js .
+
+# # copy PM2
+ENTRYPOINT ["pm2-runtime", "/srv/pm2.config.js"]

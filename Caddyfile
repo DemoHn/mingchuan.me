@@ -1,0 +1,6 @@
+localhost:8080 {
+  proxy / localhost:3000
+  proxy /api localhost:4000
+  tls self_signed
+}
+
