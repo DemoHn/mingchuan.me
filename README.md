@@ -1,4 +1,4 @@
-# mingchuan.me API
+# mingchuan.me
 
 ## Overview
 

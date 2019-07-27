@@ -13,3 +13,16 @@ services:
         mode: host
     volumes:
       - "./docker-setup:/docker-entrypoint-initdb.d"
+  mce:
+    image: demohn/mingchuan.me:1
+    env_file:
+      - .env
+    ports:
+      - target: 8080
+        published: 8080
+        mode: host
+    volumes:
+      - "./Caddyfile:/etc/Caddyfile"
+    depends_on:
+      - mysql
+      

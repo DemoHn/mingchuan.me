@@ -1,6 +1,11 @@
-localhost:8080 {
+{$CADDY_HOST} {
+  tls {$CADDY_TLS}
+
+  log stdout
+  errors stdout
+
   proxy / localhost:3000
   proxy /api localhost:4000
-  tls self_signed
+
 }
 
