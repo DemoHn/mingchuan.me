@@ -43,6 +43,6 @@ export async function listPublicPosts(
 
   const actualPosts = publicPosts.length > aLimit ? publicPosts.slice(0, -1) : publicPosts
   const hasMore = publicPosts.length > aLimit
-  const aCursor = hasMore ? actualPosts[actualPosts.length - 1].updatedAt : null
+  const aCursor = hasMore ? actualPosts[actualPosts.length - 1].updatedAt.getTime() : null
   return [actualPosts, hasMore, aCursor]
 }
