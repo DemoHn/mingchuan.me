@@ -1,7 +1,9 @@
 import React from 'react'
-import { NextFunctionComponent } from 'next'
+import { NextFunctionComponent, NextContext } from 'next'
 import styled from 'styled-components'
 import PostTitle from 'components/PostTitle'
+import { Request } from 'express'
+import { getPublicPostsList } from 'services/postService'
 
 const MainContainer = styled.div`
   width: 100%;
@@ -45,7 +47,7 @@ const Motto = styled.div`
 const PostHeader = styled.div`
   font-family: OCR-A, monospace;
   font-size: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `
 
 export interface IndexPageProps {
@@ -76,21 +78,27 @@ const IndexPage: NextFunctionComponent<IndexPageProps> = props => {
   )
 }
 
-IndexPage.getInitialProps = async () => {
-  return Promise.resolve({
-    posts: [
-      {
-        postLink: '/posts/1',
-        title: 'Hello',
-        createTime: 1000,
-      },
-      {
-        postLink: '/posts/2',
-        title: 'Hellos',
-        createTime: 1000,
-      },
-    ],
-  })
+IndexPage.getInitialProps = async (ctx: NextContext) => {
+  const req = ctx.req as Request
+  const result = await getPublicPostsList(
+    {
+      limit: 10,
+      cursor: null,
+    },
+    req
+  )
+
+  if (result.isSuccess) {
+    const body = result.body as any
+    return {
+      posts: body.posts.map(p => ({
+        postLink: `/posts/${p.id}`,
+        title: p.title,
+        createTime: p.createTime,
+      })),
+    }
+  }
+  return { posts: [] }
 }
 
 export default IndexPage

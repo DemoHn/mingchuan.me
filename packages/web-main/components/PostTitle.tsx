@@ -5,22 +5,34 @@ import Link from 'next/link'
 const Container = styled.div`
   width: 100%;
   display: flex;
-  font-size: 18px;
+  font-size: 20px;
+  line-height: 1.6;
+  max-width: 480px;
 `
 
 const Lead = styled.div`
   flex: 0 0 auto;
-  padding: 0 10px;
+  font-weight: 100;
 `
 
 const TitleBar = styled.div`
   flex: 1 1 auto;
   padding: 0 10px;
+  cursor: pointer;
+  font-family: monospace, sans-serif;
+  color: #1890ff;
+  transition: color 300ms;
+
+  &:hover {
+    color: #096dd9;
+    text-decoration: underline;
+  }
 `
 
 const DateBar = styled.div`
   flex: 0 0 auto;
-  color: #999;
+  font-size: 18px;
+  color: #aaa;
 `
 
 const padZero = (num: number) => (num < 10 ? `0${num}` : `${num}`)
@@ -28,10 +40,8 @@ const formatDate = (date: Date) => {
   const YYYY = date.getFullYear()
   const MM = padZero(date.getMonth() + 1)
   const DD = padZero(date.getDate())
-  const HH = padZero(date.getHours())
-  const mm = padZero(date.getMinutes())
 
-  return `${YYYY}-${MM}-${DD} ${HH}:${mm}`
+  return `${YYYY}-${MM}-${DD}`
 }
 
 //// props

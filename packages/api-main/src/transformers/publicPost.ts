@@ -37,6 +37,7 @@ export function getPublicPostsList(
     hasMore,
     cursor,
     posts: posts.map(post => ({
+      id: post.id,
       title: post.title,
       createTime: post.createdAt.getTime(),
       lastUpdateTime: post.updatedAt.getTime(),
