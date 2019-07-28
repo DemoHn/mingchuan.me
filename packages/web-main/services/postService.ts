@@ -102,3 +102,25 @@ export async function getPublicPost(
 ): Promise<JSONResponse> {
   return jsonRequest('GET', `/api/posts/${id}`, {}, serverReq)
 }
+
+export async function getPublicPostsList(
+  cursorOptions?: {
+    cursor?: number
+    limit?: number
+  },
+  serverReq?: Request
+): Promise<JSONResponse> {
+  return jsonRequest(
+    'GET',
+    `/api/posts`,
+    {
+      query: cursorOptions
+        ? {
+            cursor: cursorOptions.cursor,
+            limit: cursorOptions.limit,
+          }
+        : {},
+    },
+    serverReq
+  )
+}

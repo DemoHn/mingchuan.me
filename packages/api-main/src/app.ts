@@ -52,6 +52,7 @@ export async function createApiServer() {
 
   // public posts
   app.get('/api/posts/:id', publicPostController.getPublicPost)
+  app.get('/api/posts', publicPostController.listPublicPosts)
 
   app.use(errorHandler)
   return app
