@@ -1,5 +1,7 @@
+language: general
+
 services:
-- docker
+  - docker
 env:
   global:
     - DOCKER_USERNAME=demohn
