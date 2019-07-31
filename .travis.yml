@@ -1,0 +1,23 @@
+services:
+  - docker
+env:
+  matrix:
+  - secure: Re+L+HgdkqbfNGCVC4Lnn2if+eASbAg9CwR+uyfx+3jvWfKTyMtfnlmyzc++EuVyIew02a8dTeEQPbT4WbzfXI9c7wO7HSQi4ShmHJtK8uatGygZf7KzJCWTHi1YA1Le2ZoLoHsB8XRPlkv0EcxeuCtCz6R9MpRyJZjPIHyYzbWWgnKu7INGSqtKMf5VeLO+EOx/gnSqNbPaLJPqPCNoRd2TWe4CljnhZraMH+xw2S1m7WLg7TN7T3w6rd8HsE47xyY97xLVvE4u5dNMrDrdnTNiyk2Gh4LCMkn+FcvVrrNaU1ZdbKYwBdrnPXwr0dB4yY6sHkALLB7uxbzyUEhVkhRpYVhFevwRv7UQoRjE0jGlZwc9r+1ySf3PYah0LrDhhkdjSHT7Umhku1kENtsVjNu5Y5TW1G87/mC6rZR/uRi0quNR24PtY4+n6PK5PGFDi3tyBFjpRtZ27xDijGZ0ClukhMMfzi5TqnHZrzO+ztOxTxnaIMJUGe3Cmj7zcTBs6Iuvb4h87fCkXJ4tlzlnH1pj9p/zHXh/zV/iVuahR7AKE5sv6x0wcvtP0mKWAPgHwoUhvVA6JBsfmI8Yt8ae3p8wxGuvYfIAFSLRkXWrsvMK6+bADG/VkRGBw5LMk70eo77QSlLIjHBWOSSSPYio6CHN+34UHfvSiUH7U3WZS8g=
+  - secure: EtrSQVGzeUZ0K8/MHRewhlJwDePDGq/mNfDGpG4NbGe/KzpuhCoMrbQBZo99T0FMTxDauacXWmjPiIxzFdI4NLZ6OwzrLOu1XYs7ijxDyB5QRcWhrpC2UxORKfU1ylUe6hqPxLICAkn3eauohITUWIfhotTnGhqs0iz+4OAh5JGkIM0JhV7v724svQYD5qJJGMStd/yqQ9lAXGFohQjXLrWfSW66UFU3CLXSRZH28o66BNzaATGNaqdK0mVZhWS+VFkfbV4e18zwgu0FrxwR2ZUOibOw4ahR+h1izJJqPILt+/aKArUqbRyvFTkdIrwHF6NQDYBptKMiQjEnyiob47bW2NcjrfrN+O/o4QB4FfusbuDECdtYKz6kBvn6MUQXX/X03Xe/aJHNrzGlzYqUG/xG4jqPXEKN2FDksDM1T6px/726VcNfgJFpHrmFELleVUWUEc8RItRaVyveTrGttDVUIWsQ5KqQZo5REHFWN0i5cTR5T/zniMCCCbxAsQwobaaFQzV+xCp/Y9n6LvrIQ1KjywK4vd2qQSJOzmtuVR+zctf/SBX431mD1hjYvfxtWbCzKikJpxZIFOqdRSzHIKaANK3426T7SLhPwQqfOj3PYoBvpGr40clskhTiXIiee471W8DIXqzYACSGYt4dS9y2IP+V09Zej+J/xasHHec=
+
+before_install:
+  - docker build -t demohn/mingchuan.me:1 .
+
+deploy:
+  - provider: script
+    script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push demohn/mingchuan.me:1
+    on:
+      branch: master
+  - provider: script
+    script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push demohn/mingchuan.me:1
+    on:
+      branch: development
