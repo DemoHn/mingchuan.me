@@ -4,4 +4,5 @@
 /storage/*
 !/storage/.gitkeep
 
+node_modules
 .env
