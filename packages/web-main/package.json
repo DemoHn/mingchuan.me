@@ -8,6 +8,7 @@
     "build": "RUN_MODE=server next build",
     "start": "next start",
     "start:docker": "next start",
+    "start:local": "yarn build && RUN_MODE=server next start",
     "type-check": "tsc"
   },
   "dependencies": {
