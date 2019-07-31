@@ -1,36 +1,23 @@
-# Frontend Build Stage
-FROM node:11-alpine AS WEB-builder
+# Build stage
+# api-main, web-main
+FROM node:11-alpine AS builder
 
 WORKDIR /app
-COPY src/web.mce .
+COPY . .
 
 # install deps
 RUN yarn
+# install lerna
+RUN yarn global add lerna
 # build
-RUN NODE_ENV=production yarn build
+RUN NODE_ENV=production lerna run build
 
-# Backend Build Stage
-FROM golang:1.12-alpine AS API-builder
+# tar artifacts
+# api-main
+RUN tar -C packages/api-main -cvzf api-main.tar.gz node_modules package.json dist migrations
 
-# install git
-RUN apk update && apk upgrade && \
-    apk add bash git make
-
-WORKDIR /go/src/mingchuan.me
-
-ENV ROOT=/go/src/mingchuan.me
-ENV BIN=/app/bin
-
-COPY src/api.mce .
-
-RUN mkdir -p $BIN
-# install go-swagger
-RUN go get -u github.com/go-swagger/go-swagger/cmd/swagger
-# genearte swagger files
-RUN swagger generate server -t app/drivers/swagger -f api/swagger.yml --exclude-main -A mce
-# build binary
-RUN GO111MODULE=on CGO_ENABLED=0 go build -ldflags "-s -w" -o $BIN/mce -v $ROOT/main.go
-
+# web-main
+RUN tar -C packages/web-main -cvzf web-main.tar.gz node_modules package.json .next static
 
 # Installer Stage
 FROM node:11-alpine AS container
@@ -39,15 +26,24 @@ WORKDIR /srv
 
 # install PM2
 RUN yarn global add pm2
-# init dir
-RUN mkdir -p api web config pm2
+# # init dir
+RUN mkdir -p bin packages/web-main packages/api-main node_modules
 
 # copy caddy
-COPY --from=abiosoft/caddy /usr/bin/caddy .
-# copy FE & BE build artifacts
-COPY --from=API-builder /app/bin/mce api/
-COPY --from=WEB-builder /app/. web/
-# copy PM2
-COPY pm2.config.js pm2/
+COPY --from=abiosoft/caddy /usr/bin/caddy /srv/bin
+# copy BE & FE build artifacts
+COPY --from=builder /app/web-main.tar.gz .
+COPY --from=builder /app/api-main.tar.gz .
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json .
+COPY --from=builder /app/lerna.json .
+# untar data
+RUN tar -xvzf web-main.tar.gz -C packages/web-main
+RUN tar -xvzf api-main.tar.gz -C packages/api-main
 
-ENTRYPOINT ["pm2", "start", "/srv/pm2/pm2.config.js", "--no-daemon"]
+# copy misc config file
+COPY config/pm2.config.js .
+COPY config/Caddyfile /etc
+
+# # copy PM2
+ENTRYPOINT ["pm2-runtime", "/srv/pm2.config.js"]

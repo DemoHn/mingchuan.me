@@ -1,9 +1,11 @@
-{$CADDY_HOST}
+{$CADDY_HOST} {
+  tls {$CADDY_TLS}
 
-tls {$CADDY_TLS}
+  log stdout
+  errors stdout
 
-log stdout
-errors stdout
+  proxy / localhost:3000
+  proxy /api localhost:4000
 
-proxy / localhost:3000
-proxy /api localhost:4000
+}
+
