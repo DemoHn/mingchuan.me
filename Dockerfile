@@ -41,7 +41,9 @@ COPY --from=builder /app/lerna.json .
 RUN tar -xvzf web-main.tar.gz -C packages/web-main
 RUN tar -xvzf api-main.tar.gz -C packages/api-main
 
-COPY pm2.config.js .
+# copy misc config file
+COPY config/pm2.config.js .
+COPY config/Caddyfile /etc
 
 # # copy PM2
 ENTRYPOINT ["pm2-runtime", "/srv/pm2.config.js"]
