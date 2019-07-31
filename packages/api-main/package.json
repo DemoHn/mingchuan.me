@@ -10,8 +10,8 @@
     "dev:now": "now dev",
     "type-check": "tsc --noEmit true",
     "build": "tsc",
-    "test": "jest --runInBand --forceExit",    
-    "start:docker": "RUN_MODE=server node dist/index.js"
+    "test": "jest --runInBand --forceExit",
+    "start:local": "yarn build && node dist/index.js"    
   },
   "dependencies": {
     "@godaddy/terminus": "^4.1.2",

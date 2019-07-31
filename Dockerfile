@@ -17,7 +17,7 @@ RUN NODE_ENV=production lerna run build
 RUN tar -C packages/api-main -czf api-main.tar.gz node_modules package.json dist migrations
 
 # web-main
-RUN tar -C packages/web-main -czf web-main.tar.gz node_modules package.json .next static
+RUN tar -C packages/web-main -czf web-main.tar.gz node_modules package.json .next static server.js
 
 # Installer Stage
 FROM node:11-alpine AS container
