@@ -1,4 +1,4 @@
-language: general
+language: nodejs
 
 services:
   - docker
@@ -9,16 +9,13 @@ env:
 
 before_install:
   - docker build -t demohn/mingchuan.me:1 .
+
 deploy:
   - provider: script
-    script:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker push demohn/mingchuan.me:1
+    script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && docker push demohn/mingchuan.me:1      
     on:
       branch: master
   - provider: script
-    script:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - docker push demohn/mingchuan.me:1
+    script: echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin && docker push demohn/mingchuan.me:1      
     on:
       branch: development
