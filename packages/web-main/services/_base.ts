@@ -26,8 +26,6 @@ export async function baseRequest(
     ? `${serverReq.protocol}://${serverReq.headers.host}${url}`
     : url
 
-  console.log('typeof window: ', typeof window)
-  console.log(requestURL)
   const options: any = { method }
   // add body
   if (payload && payload.body && method.toUpperCase() !== 'GET') {

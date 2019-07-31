@@ -4,11 +4,11 @@
   "author": "DemoHn <demohn2016@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "dev:local": "NODE_ENV=development nodemon server.ts --exec ts-node",
+    "dev:local": "NODE_ENV=development nodemon server.js",
     "build": "RUN_MODE=server next build",
     "start": "next start",
     "start:docker": "next start",
-    "start:local": "yarn build && RUN_MODE=server next start",
+    "start:local": "tsc && yarn build && RUN_MODE=server node server.js",
     "type-check": "tsc"
   },
   "dependencies": {

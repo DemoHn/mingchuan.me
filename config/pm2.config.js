@@ -26,9 +26,7 @@ module.exports = {
     {
       name: 'web-main',
       exec_mode: 'fork',
-      cwd: '/srv/packages/web-main',
-      script: 'npm',
-      args: 'start',
+      script: '/srv/packages/web-main/server.js',
       merge_logs: true,
       restart_delay: 3000,
       env: {

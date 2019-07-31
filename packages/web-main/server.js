@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express'
-import next from 'next'
+const next = require('next')
+const express = require('express')
 
-const devProxy: any = {
+const devProxy = {
   '/api': {
     target: 'http://localhost:4000/api/',
     pathRewrite: { '^/api': '/' },
@@ -19,7 +19,7 @@ const app = next({
 
 const handle = app.getRequestHandler()
 
-let server: any
+let server
 app
   .prepare()
   .then(() => {
@@ -33,18 +33,18 @@ app
       })
     }
     // e.g. /admin/posts/edit/1
-    server.get('/admin/posts/edit/:slug', (req: Request, res: Response) => {
+    server.get('/admin/posts/edit/:slug', (req, res) => {
       return app.render(req, res, '/admin/posts/edit', { id: req.params.slug })
     })
 
-    server.get('/posts/:slug', (req: Request, res: Response) => {
+    server.get('/posts/:slug', (req, res) => {
       return app.render(req, res, '/post', { id: req.params.slug })
     })
 
     // Default catch-all handler to allow Next.js to handle all other routes
-    server.all('*', (req: any, res: any) => handle(req, res))
+    server.all('*', (req, res) => handle(req, res))
 
-    server.listen(port, (err: Error) => {
+    server.listen(port, err => {
       if (err) {
         throw err
       }
