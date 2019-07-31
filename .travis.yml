@@ -1,20 +1,22 @@
 services:
 - docker
 env:
-  - DOCKER_USERNAME=demohn
-  - secure: BQieMRMwft59GfobBR2z7EKClKQV4Eue7sNxAdGYNo7iQtx+WOQQds9Opods9l1Z1eEXZn6RbZyy/7STRRs3/1RiIVpTikdIF2vgAH5Nua0J0Bq6KMUDSiVrdHHbvOx1UGGNY4OHiDksBnd56avfrRBB6oj98bfAN01y9p0ia0E9P9YNvTdlCFYYYQzH73RLW3pecdmEEheNt8Ii6dc1kg0pNnZBt/d+iO7+tAXQ3vyFb/VXUJ0slJtEqvJHrRdDo11gZ5k+hbr6X5VGPU7t1t0FldgitnWv+qdL231CAm1U8LUmQ3Ye6jwPHB5EkrYynT9Nsd/9ntfJ1IW7CXw56FgLJUlOPby82+U4rAi7Kig8TP1iLsjf6HC0W71dlcn1COII83oqBL6VE6Y4IMldgY1LWbyDpN9HITfa8HzRQfxo6OTVCw38dTKPZRnTdes/2lpgSTQsqq7fMd3Po85EqBH2z0szsfFOBCEFNTmy0AY5vlvoePG6Qa4NyWFI800yEJNVz/sntq9AHKfZ3vNOcwq9wkErA6jHCsI52HhxfqU4nA/2q1xIv64ifk+xWsmJqoG4E0pN1APjqB5oL/kleIAmv7j5i7HnHlOk0BXiAoOBMde+fvOihkKDG9mjqwsgPD5lmmiY7apIR8LPbaMEC7bEXnKNCi05g4WMCH76WjU=
+  global:
+    - DOCKER_USERNAME=demohn
+    - secure: BQieMRMwft59GfobBR2z7EKClKQV4Eue7sNxAdGYNo7iQtx+WOQQds9Opods9l1Z1eEXZn6RbZyy/7STRRs3/1RiIVpTikdIF2vgAH5Nua0J0Bq6KMUDSiVrdHHbvOx1UGGNY4OHiDksBnd56avfrRBB6oj98bfAN01y9p0ia0E9P9YNvTdlCFYYYQzH73RLW3pecdmEEheNt8Ii6dc1kg0pNnZBt/d+iO7+tAXQ3vyFb/VXUJ0slJtEqvJHrRdDo11gZ5k+hbr6X5VGPU7t1t0FldgitnWv+qdL231CAm1U8LUmQ3Ye6jwPHB5EkrYynT9Nsd/9ntfJ1IW7CXw56FgLJUlOPby82+U4rAi7Kig8TP1iLsjf6HC0W71dlcn1COII83oqBL6VE6Y4IMldgY1LWbyDpN9HITfa8HzRQfxo6OTVCw38dTKPZRnTdes/2lpgSTQsqq7fMd3Po85EqBH2z0szsfFOBCEFNTmy0AY5vlvoePG6Qa4NyWFI800yEJNVz/sntq9AHKfZ3vNOcwq9wkErA6jHCsI52HhxfqU4nA/2q1xIv64ifk+xWsmJqoG4E0pN1APjqB5oL/kleIAmv7j5i7HnHlOk0BXiAoOBMde+fvOihkKDG9mjqwsgPD5lmmiY7apIR8LPbaMEC7bEXnKNCi05g4WMCH76WjU=
+
 before_install:
-- docker build -t demohn/mingchuan.me:1 .
+  - docker build -t demohn/mingchuan.me:1 .
 deploy:
-- provider: script
-  script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push demohn/mingchuan.me:1
-  on:
-    branch: master
-- provider: script
-  script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push demohn/mingchuan.me:1
-  on:
-    branch: development
+  - provider: script
+    script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push demohn/mingchuan.me:1
+    on:
+      branch: master
+  - provider: script
+    script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - docker push demohn/mingchuan.me:1
+    on:
+      branch: development
