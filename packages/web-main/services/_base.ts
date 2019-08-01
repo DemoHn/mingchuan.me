@@ -22,9 +22,7 @@ export async function baseRequest(
 ): Promise<Response> {
   const token = serverReq ? getTokenFromCookie(serverReq) : getTokenFromLocalStorage()
 
-  var requestURL = serverReq
-    ? `${serverReq.protocol}://${serverReq.headers.host}${url}`
-    : url
+  var requestURL = serverReq ? `${process.env.API_ROOT}${url}` : url
 
   const options: any = { method }
   // add body
