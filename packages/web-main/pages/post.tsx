@@ -1,11 +1,12 @@
 import React from 'react'
 import { NextFunctionComponent, NextContext } from 'next'
 import Header from 'components/Header'
+import PostContent from 'components/PostContent'
+
 import styled from 'styled-components'
 import { Request } from 'express'
 import { getPublicPost } from 'services/postService'
 
-import parse from 'html-react-parser'
 //// styles
 const Content = styled.div`
   margin-top: 30px;
@@ -37,7 +38,7 @@ const PostPage: NextFunctionComponent<PostPageProps> = props => {
       <Header />
       <Content>
         <Title>{post.title}</Title>
-        {parse(post.content)}
+        <PostContent content={post.content} contentType="html"></PostContent>
       </Content>
     </section>
   )
