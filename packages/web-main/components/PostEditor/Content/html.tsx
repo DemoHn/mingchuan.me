@@ -1,4 +1,6 @@
 import React from 'react'
+import hljs from 'highlight.js'
+import 'highlight.js/styles/mono-blue.css'
 
 //// styles
 const $globalStyle = `
@@ -24,6 +26,11 @@ const $globalStyle = `
 `
 
 //// options
+hljs.configure({
+  // optionally configure hljs
+  languages: ['javascript', 'ruby', 'python'],
+})
+
 const $quillToolbar = {
   modules: {
     toolbar: [
@@ -32,9 +39,17 @@ const $quillToolbar = {
       ['blockquote', 'code-block'],
       [{ align: [] }],
       [{ color: [] }, { background: [] }],
+      [{ header: 1 }, { header: 2 }], // custom button values
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+      [{ indent: '-1' }, { indent: '+1' }],
     ],
+    syntax: {
+      highlight: text => hljs.highlightAuto(text).value,
+    }, // Include syntax module
   },
 }
+
 //// props
 export interface QuillEditorProps {
   text: string
@@ -46,7 +61,6 @@ const QuillEditor: React.FC<QuillEditorProps> = props => {
   if (isClient) {
     const ReactQuill = require('react-quill')
     const { text, onChange } = props
-
     return (
       <main>
         <style>{$globalStyle}</style>

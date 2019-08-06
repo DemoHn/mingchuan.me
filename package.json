@@ -10,7 +10,10 @@
   "license": "MIT",
   "scripts": {
     "test": "jest --runInBand",
-    "start:docker": "lerna run start:docker"
+    "start:docker": "lerna run start:docker",
+    "dev:local": "node -r dotenv/config ./node_modules/.bin/lerna run dev:local --stream",
+    "start:local": "node -r dotenv/config ./node_modules/.bin/lerna run start:local --stream",
+    "migration:up": "node -r dotenv/config ./node_modules/.bin/lerna run migration:up --stream"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
