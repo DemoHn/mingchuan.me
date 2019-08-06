@@ -1,6 +1,6 @@
 import React from 'react'
 import hljs from 'highlight.js'
-import 'highlight.js/styles/mono-blue.css'
+import 'highlight.js/styles/atom-one-light.css'
 
 //// styles
 const $globalStyle = `
@@ -12,6 +12,7 @@ const $globalStyle = `
   
 .ql-snow.ql-container {
   font-size: 16px;
+  color: black;
   line-height: 1.2;
 }
 
@@ -23,12 +24,22 @@ const $globalStyle = `
 .ql-snow p {
   margin-bottom: 6px;
 }
+
+pre.ql-syntax {
+  font-size: 13px;
+  background-color: #f0f5ffaa !important;
+  color: #111 !important;
+}
+
+pre.ql-syntax * {
+  font-family: Monaco, Consolas, Courier New, monospace;
+}
 `
 
 //// options
 hljs.configure({
   // optionally configure hljs
-  languages: ['javascript', 'ruby', 'python'],
+  languages: ['javascript', 'ruby', 'python', 'C', 'C++'],
 })
 
 const $quillToolbar = {
