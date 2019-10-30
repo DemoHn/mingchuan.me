@@ -9588,13 +9588,15 @@ seq-queue@^0.0.5:
   version "0.0.5"
   resolved "https://registry.npm.taobao.org/seq-queue/download/seq-queue-0.0.5.tgz#d56812e1c017a6e4e7c3e3a37a1da6d78dd3c93e"
 
-sequelize-pool@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npm.taobao.org/sequelize-pool/download/sequelize-pool-2.2.0.tgz#fd4eb05ccefb5df5c23d2cc6fd934c20fd9c5dab"
+sequelize-pool@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/sequelize-pool/-/sequelize-pool-2.3.0.tgz#64f1fe8744228172c474f530604b6133be64993d"
+  integrity sha512-Ibz08vnXvkZ8LJTiUOxRcj1Ckdn7qafNZ2t59jYHMX1VIebTAOYefWdRYFt6z6+hy52WGthAHAoLc9hvk3onqA==
 
 sequelize@^5.8.12:
-  version "5.8.12"
-  resolved "https://registry.npm.taobao.org/sequelize/download/sequelize-5.8.12.tgz#91f46f16789307d40c68f8c039c10d1d0f230ad2"
+  version "5.15.1"
+  resolved "https://registry.yarnpkg.com/sequelize/-/sequelize-5.15.1.tgz#f130ded17e74395ae7f5e265277c99577e895afb"
+  integrity sha512-DCzzJYvJLMKnyf8G3at2A+yM9M2fSQmTmuOYIpCWM8Gjqx3XfgNTd1NkuyPWFoi1/d1AXQsN2VDPXkPczida8A==
   dependencies:
     bluebird "^3.5.0"
     cls-bluebird "^2.1.0"
@@ -9606,7 +9608,7 @@ sequelize@^5.8.12:
     moment-timezone "^0.5.21"
     retry-as-promised "^3.1.0"
     semver "^6.1.1"
-    sequelize-pool "^2.2.0"
+    sequelize-pool "^2.3.0"
     toposort-class "^1.0.1"
     uuid "^3.2.1"
     validator "^10.11.0"
