@@ -5,13 +5,14 @@
   "license": "ISC",
   "scripts": {
     "migration:up": "db-migrate up",
+    "migration:down": "db-migrate down",
     "migration:new": "db-migrate create",
     "dev:local": "NODE_ENV=development nodemon src/index.ts --exec ts-node",
     "dev:now": "now dev",
     "type-check": "tsc --noEmit true",
     "build": "tsc",
     "test": "jest --runInBand --forceExit",
-    "start:local": "yarn build && node dist/index.js"    
+    "start:local": "yarn build && node dist/index.js"
   },
   "dependencies": {
     "@godaddy/terminus": "^4.1.2",

@@ -1,6 +1,7 @@
 import { AppError } from '../utils/errors'
+import console = require('console');
 
-export default function(error: any, _: any, res: any, __: any) {
+export default function (error: any, _: any, res: any, __: any) {
   if (error instanceof AppError) {
     const e = error
     res.status(e.statusCode).json({
@@ -10,6 +11,7 @@ export default function(error: any, _: any, res: any, __: any) {
     })
   } else {
     // unknown error
+    console.log(error)
     res.status(500).json({
       message: error.message,
       name: 'UnknownError',
