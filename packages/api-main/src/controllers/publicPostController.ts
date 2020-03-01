@@ -17,7 +17,7 @@ const getPublicPostSchema = {
 
 async function getPublicPostFunc(req: AppRequest) {
   const { id } = req.params
-  const post = await getPublicPostByID(id)
+  const post = await getPublicPostByID(parseInt(id))
 
   return getPublicPost(post)
 }

@@ -79,7 +79,7 @@ async function updatePostContentFunc(req: AppRequest) {
   const { id } = req.params
   const { title, content } = req.body
 
-  const post = await getPostByID(id)
+  const post = await getPostByID(parseInt(id))
   const newPost = await updatePostContent(post, { title, content })
 
   return getPostResponse(newPost)
@@ -110,7 +110,7 @@ async function updateStatusFunc(req: AppRequest) {
   const { id } = req.params
   const { status } = req.body
 
-  const post = await getPostByID(id)
+  const post = await getPostByID(parseInt(id))
   const newPost = await updatePostStatus(post, status)
 
   return getPostResponse(newPost)
@@ -141,7 +141,7 @@ async function updatePermissionFunc(req: AppRequest) {
   const { id } = req.params
   const { permission } = req.body
 
-  const post = await getPostByID(id)
+  const post = await getPostByID(parseInt(id))
   const newPost = await updatePostPermission(post, permission)
 
   return getPostResponse(newPost)
@@ -163,7 +163,7 @@ const deleteSchema = {
 async function deletePostFunc(req: AppRequest) {
   const { id } = req.params
 
-  const post = await getPostByID(id)
+  const post = await getPostByID(parseInt(id))
   const delPost = await removePost(post)
 
   return getPostResponse(delPost)
@@ -185,7 +185,7 @@ const getOneSchema = {
 }
 async function getOnePostFunc(req: AppRequest) {
   const { id } = req.params
-  const post = await getPostByID(id)
+  const post = await getPostByID(parseInt(id))
   return getPostResponse(post)
 }
 

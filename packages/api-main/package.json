@@ -29,6 +29,7 @@
     "mysql2": "^1.6.5",
     "sequelize": "^5.8.12",
     "ts-node": "^8.3.0",
+    "typescript": "^3.8.3",
     "uuid": "^3.3.2",
     "winston": "^3.2.1"
   },
