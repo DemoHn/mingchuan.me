@@ -22,7 +22,12 @@ const $globalStyle = `
 }
 
 .ql-snow p {
-  margin-bottom: 6px;
+  margin-bottom: 1em;
+}
+
+.sql-snow pre {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 pre.ql-syntax {
