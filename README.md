@@ -11,14 +11,9 @@ This site is hosted on [Zeit Now](https://zeit.co), thanks to its amazing buildi
 
 ## Notes
 
-1. Build docker image:
+1. Build packages & upload artifacts to remote server:
 
-```
-docker build -t demohn/mingchuan.me:1 .
+```sh
+$ ./build.sh && ./upload.sh
 ```
 
-2. Run docker image:
-
-```
-docker run -it --rm -v "$(pwd)"/Caddyfile:/etc/Caddyfile --env-file .env -p 80:80 -p 443:443 -p 8080:8080 demohn/mingchuan.me:1
-```
