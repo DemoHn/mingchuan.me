@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "preserve",
+    "lib": ["dom", "es2018"],
+    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true
+  }
+}
