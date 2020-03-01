@@ -5,10 +5,9 @@
   "license": "ISC",
   "scripts": {
     "dev:local": "NODE_ENV=development nodemon server.js",
-    "build": "RUN_MODE=server next build",
-    "start": "next start",
-    "start:docker": "next start",
-    "start:local": "tsc && yarn build && RUN_MODE=server node server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js",
+    "start:local": "tsc && yarn build && NODE_ENV=production node server.js",
     "type-check": "tsc"
   },
   "dependencies": {

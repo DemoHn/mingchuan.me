@@ -13,8 +13,8 @@ async function main() {
   /**
    * Get port from environment and store in Express.
    */
-
-  const port = normalizePort(process.env.PORT || '4000')
+  const host = '127.0.0.1'
+  const port = parseInt(process.env.PORT) || 4000
   app.set('port', port)
 
   /**
@@ -27,7 +27,7 @@ async function main() {
    * Listen on provided port, on all network interfaces.
    */
 
-  server.listen(port, () => {
+  server.listen(port, host, () => {
     const addr = server.address()
     const bind = addr
       ? typeof addr === 'string'
@@ -82,26 +82,6 @@ async function main() {
       return Promise.resolve(null)
     },
   })
-}
-
-/**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val: string) {
-  const port = parseInt(val, 10)
-
-  if (isNaN(port)) {
-    // named pipe
-    return val
-  }
-
-  if (port >= 0) {
-    // port number
-    return port
-  }
-
-  return false
 }
 
 /**

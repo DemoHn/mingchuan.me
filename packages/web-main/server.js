@@ -10,6 +10,7 @@ const devProxy = {
   },
 }
 
+const host = '127.0.0.1'
 const port = process.env.PORT || 3000
 const env = process.env.NODE_ENV
 const dev = env !== 'production'
@@ -28,7 +29,7 @@ app
 
     // Set up the proxy.
     if (dev && devProxy) {
-      Object.keys(devProxy).forEach(function(context) {
+      Object.keys(devProxy).forEach(function (context) {
         server.use(proxyMiddleware(context, devProxy[context]))
       })
     }
@@ -44,7 +45,7 @@ app
     // Default catch-all handler to allow Next.js to handle all other routes
     server.all('*', (req, res) => handle(req, res))
 
-    server.listen(port, err => {
+    server.listen(port, host, err => {
       if (err) {
         throw err
       }
