@@ -6,6 +6,7 @@ import PostContent from 'components/PostContent'
 import styled from 'styled-components'
 import { Request } from 'express'
 import { getPublicPost } from 'services/postService'
+import { displayTimestamp } from 'utils/formatDate'
 
 //// styles
 const Content = styled.div`
@@ -18,9 +19,16 @@ const Content = styled.div`
 
 const Title = styled.div`
   font-size: 30px;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  line-height: 1.25;
+  margin-bottom: 0.5em;
 `
+const PostMeta = styled.div`
+  font-size: 17px;
+  font-style: italic;
+  color: #999;
+  margin-bottom: 2.25em;
+`
+
 //// props
 export interface PostPageProps {
   post?: {
@@ -33,11 +41,16 @@ export interface PostPageProps {
 
 const PostPage: NextFunctionComponent<PostPageProps> = props => {
   const post = props.post as any
+  const current = Date.now()
+  const timeStr = post.lastUpdateTime === post.createTime
+    ? `创建于 ${displayTimestamp(post.createTime, current)}`
+    : `最后编辑于 ${displayTimestamp(post.lastUpdateTime, current)}`
   return (
     <section>
       <Header />
       <Content>
         <Title>{post.title}</Title>
+        <PostMeta>{timeStr}</PostMeta>
         <PostContent content={post.content} contentType="html"></PostContent>
       </Content>
     </section>
