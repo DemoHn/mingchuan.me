@@ -3,7 +3,7 @@ import { NextFunction } from 'connect'
 import { verifyLoginJwt } from '../services/accountService'
 import Errors from '../utils/errors'
 
-export default async function(req: AppRequest, _: AppResponse, next: NextFunction) {
+export default async function (req: AppRequest, _: AppResponse, next: NextFunction) {
   const authHeader = req.get('authorization')
   const re = /Bearer (.+)$/
 
@@ -12,9 +12,14 @@ export default async function(req: AppRequest, _: AppResponse, next: NextFunctio
   }
 
   const [, jwt] = re.exec(authHeader) as RegExpExecArray
-  const payload = await verifyLoginJwt(jwt)
-  // add payload & raw jwt
-  req.authPayload = payload
-  req.authToken = jwt
-  return next()
+
+  try {
+    const payload = await verifyLoginJwt(jwt)
+    // add payload & raw jwt
+    req.authPayload = payload
+    req.authToken = jwt
+    return next()
+  } catch (err) {
+    return next(err)
+  }
 }

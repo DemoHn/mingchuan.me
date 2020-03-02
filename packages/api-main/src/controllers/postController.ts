@@ -15,8 +15,6 @@ import { getPostResponse, getPostsList } from '../transformers/post'
 // admin create post
 const createPostSchema = {
   body: {
-    type: 'object',
-    additionalProperties: false,
     required: ['title', 'content', 'type'],
     properties: {
       title: {
@@ -53,8 +51,6 @@ async function createPostFunc(req: AppRequest) {
 // update content
 const updatePostSchema = {
   params: {
-    type: 'object',
-    additionalProperties: false,
     required: ['id'],
     properties: {
       id: {
@@ -63,8 +59,6 @@ const updatePostSchema = {
     },
   },
   body: {
-    type: 'object',
-    additionalProperties: false,
     properties: {
       title: {
         type: 'string',
@@ -87,8 +81,6 @@ async function updatePostContentFunc(req: AppRequest) {
 // update status
 const updateStatusSchema = {
   params: {
-    type: 'object',
-    additionalProperties: false,
     required: ['id'],
     properties: {
       id: {
@@ -97,8 +89,6 @@ const updateStatusSchema = {
     },
   },
   body: {
-    type: 'object',
-    additionalProperties: false,
     properties: {
       status: {
         enum: ['PUBLISHED', 'DRAFTED', 'REMOVED'],
@@ -118,8 +108,6 @@ async function updateStatusFunc(req: AppRequest) {
 
 const updatePermissionSchema = {
   params: {
-    type: 'object',
-    additionalProperties: false,
     required: ['id'],
     properties: {
       id: {
@@ -128,8 +116,6 @@ const updatePermissionSchema = {
     },
   },
   body: {
-    type: 'object',
-    additionalProperties: false,
     properties: {
       permission: {
         enum: ['PUBLIC', 'PRIVATE'],
@@ -150,8 +136,6 @@ async function updatePermissionFunc(req: AppRequest) {
 // delete post
 const deleteSchema = {
   params: {
-    type: 'object',
-    additionalProperties: false,
     required: ['id'],
     properties: {
       id: {
@@ -173,8 +157,6 @@ async function deletePostFunc(req: AppRequest) {
 // delete post
 const getOneSchema = {
   params: {
-    type: 'object',
-    additionalProperties: false,
     required: ['id'],
     properties: {
       id: {
@@ -192,8 +174,6 @@ async function getOnePostFunc(req: AppRequest) {
 // list posts
 const listPostsSchema = {
   query: {
-    type: 'object',
-    additionalProperties: false,
     required: [],
     properties: {
       limit: {

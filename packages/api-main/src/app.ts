@@ -12,6 +12,7 @@ import authHandler from './middlewares/authHandler'
 import accountController from './controllers/accountController'
 import postController from './controllers/postController'
 import publicPostController from './controllers/publicPostController'
+import albumController from './controllers/albumController'
 
 export async function createApiServer() {
   const app = express()
@@ -54,6 +55,8 @@ export async function createApiServer() {
   app.get('/api/posts/:id', publicPostController.getPublicPost)
   app.get('/api/posts', publicPostController.listPublicPosts)
 
+  // album
+  app.post('/api/admin/album/dir', authHandler, albumController.createDirectory)
   app.use(errorHandler)
   return app
 }

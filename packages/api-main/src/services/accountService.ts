@@ -1,6 +1,5 @@
 // components
-//import { generateKeyPair } from 'crypto'
-const crypto = require('crypto')
+import { generateKeyPair } from 'crypto'
 import { promisify } from 'util'
 import { v4 as uuid } from 'uuid'
 import { sign, decode, verify } from 'jsonwebtoken'
@@ -110,7 +109,7 @@ export async function generateLoginJwt(
   deviceIdentifier?: string
 ): Promise<string> {
   // generate key pair  
-  const { publicKey, privateKey } = await promisify(crypto.generateKeyPair)('rsa', {
+  const { publicKey, privateKey } = await promisify(generateKeyPair)('rsa', {
     modulusLength: 1024,
     publicKeyEncoding: {
       type: 'spki',

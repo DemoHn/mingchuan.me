@@ -9,7 +9,7 @@ export interface AppRequest extends Request {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppResponse extends Response {}
+export interface AppResponse extends Response { }
 
 export interface RequestSchema {
   body?: {}
@@ -31,7 +31,13 @@ export const wrapRoute = (
 
   for (var [sch, data] of schTuples) {
     if (sch) {
-      const validate = ajv.compile(sch) as any
+      const newSch = {
+        ...sch,
+        type: 'object',
+        additionalProperties: false
+      }
+
+      const validate = ajv.compile(newSch) as any
       if (!validate(data)) {
         const path = `${req.method} ${req.path}`
         return next(Errors.newValidationError(path, validate.errors))
