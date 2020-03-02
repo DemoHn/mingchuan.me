@@ -19,6 +19,9 @@ const defaultConfig: any = {
       },
     },
   },
+  album: {
+    rootDir: process.env.ALBUM_ROOT_DIR || __dirname
+  }
 }
 
 export default defaultConfig
