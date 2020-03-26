@@ -4,9 +4,6 @@
   "author": "DemoHn <demohn2016@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "migration:up": "db-migrate up",
-    "migration:down": "db-migrate down",
-    "migration:new": "db-migrate create",
     "dev:local": "nodemon src/index.ts --exec ts-node",
     "dev:now": "now dev",
     "type-check": "tsc --noEmit true",
