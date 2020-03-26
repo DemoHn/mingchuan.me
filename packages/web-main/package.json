@@ -4,7 +4,7 @@
   "author": "DemoHn <demohn2016@gmail.com>",
   "license": "ISC",
   "scripts": {
-    "dev:local": "NODE_ENV=development nodemon server.js",
+    "dev:local": "nodemon server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "start:local": "tsc && yarn build && NODE_ENV=production node server.js",

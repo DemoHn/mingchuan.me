@@ -17,6 +17,7 @@ const dev = env !== 'production'
 const app = next({
   dir: '.', // base directory where everything is, could move to src later
   dev,
+  quiet: false
 })
 
 const handle = app.getRequestHandler()

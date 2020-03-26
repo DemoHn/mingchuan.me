@@ -7,7 +7,7 @@
     "migration:up": "db-migrate up",
     "migration:down": "db-migrate down",
     "migration:new": "db-migrate create",
-    "dev:local": "NODE_ENV=development nodemon src/index.ts --exec ts-node",
+    "dev:local": "nodemon src/index.ts --exec ts-node",
     "dev:now": "now dev",
     "type-check": "tsc --noEmit true",
     "build": "tsc",
@@ -44,7 +44,6 @@
     "@types/jsonwebtoken": "^8.3.2",
     "@types/lodash": "^4.14.135",
     "@types/uuid": "^3.4.4",
-    "nodaemon": "^0.0.5",
     "nodemon": "^1.19.1",
     "ts-node": "^8.3.0"
   }
