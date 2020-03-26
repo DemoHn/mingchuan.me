@@ -17,3 +17,13 @@ This site is hosted on [Zeit Now](https://zeit.co), thanks to its amazing buildi
 $ ./build.sh && ./upload.sh
 ```
 
+IN THE FUTURE, we will just run `node ./start.js build && node ./start.js upload`
+
+PLANNED `./start.js` commands:
+
+```
+build: build artifacts for all packages to get ready for upload
+upload: upload artifacts to main server
+monitor: monitor web applications
+monitor-server: monitor server status (need to run as root user)
+```
