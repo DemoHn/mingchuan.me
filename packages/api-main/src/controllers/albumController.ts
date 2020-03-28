@@ -1,6 +1,6 @@
 import { wrapRoute, AppRequest } from './_routes'
 import AlbumService from '../services/albumService'
-import { getAlbumDir } from '../transformers/album'
+import { getAlbumDir, getAlbumFile } from '../transformers/album'
 
 const albumService = new AlbumService();
 
@@ -21,22 +21,32 @@ async function createDirFunc(req: AppRequest) {
   return getAlbumDir(dir)
 }
 
-// upload file
 const uploadFileSchema = {
   body: {
-    required: ['name'],
+    required: ['directoryId'],
     properties: {
-      name: { type: 'string' }
+      directoryId: {
+        type: 'string',
+        pattern: '[0-9]+'
+      }
     }
   }
 }
 
 async function uploadFileFunc(req: AppRequest) {
-  console.log(req.file)
-  return {
-    'test': 1
-  }
+  const file = req.file
+  const { directoryId } = req.body
+
+  const fileInfo = await albumService.uploadFile(
+    file['filename'],
+    file['size'],
+    file['originalname'],
+    directoryId,
+    file['mimetype']
+  )
+  return getAlbumFile(fileInfo)
 }
+
 export default {
   createDirectory: wrapRoute(createDirFunc, createDirSchema),
   uploadFile: wrapRoute(uploadFileFunc, uploadFileSchema)

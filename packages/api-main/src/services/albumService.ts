@@ -1,7 +1,8 @@
 import AlbumDirectory, { AlbumDirectoryPayload } from '../models/AlbumDirectory'
-//import AlbumFile, { AlbumFilePayload } from 'models/AlbumFile'
+import AlbumFile, { AlbumFilePayload } from '../models/AlbumFile'
 import Errors from '../utils/errors'
-
+import config from '../config/default'
+import { unlinkSync } from 'fs'
 
 /**
  * AlbumService - manage files & directories via a pesudo-tree structure.
@@ -29,11 +30,48 @@ class AlbumService {
         }
       })
   }
-  /**
-  async uploadFile(name: string, dirNode: number, file: File): Promise<AlbumFile> {
 
+  async uploadFile(key: string, size: number, name: string, dir: number, mimeType: string): Promise<AlbumFile> {
+    const payload: AlbumFilePayload = {
+      directoryId: dir,
+      hashKey: key,
+      mimeType: 0,
+      size: size,
+      name: name
+    }
+    // validate directoryId
+    const res = await AlbumFile.findOne({
+      where: { directoryId: dir }
+    })
+    if (!res) {
+      throw Errors.newLogicError('EmptyDirError', `no such directoryId: ${dir}`)
+    }
+
+    return AlbumFile.create(payload)
+      .catch(err => {
+        // delete file
+        this.unlinkFile(key, false)
+        if (err.name && err.name == 'SequelizeUniqueConstraintError') { // unique key error
+          throw Errors.newLogicError('UniqueNameError', `upload file name should be unique`)
+        } else {
+          throw err
+        }
+      })
   }
-  */
+
+  async unlinkFile(file: string, throwError: boolean) {
+    const p = `${config.album.rootDir}/${file}`
+    try {
+      unlinkSync(p)
+    } catch (e) {
+      if (throwError) {
+        throw e
+      } else {
+        console.log('--unlinkFile--')
+        console.log(e)
+      }
+    }
+  }
 }
 
 export default AlbumService
