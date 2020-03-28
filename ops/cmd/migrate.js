@@ -10,7 +10,7 @@ class MigrateCommand {
       'DATABASE_URL': 'mysql://general-user:password@127.0.0.1:3306/mce_main?multipleStatements=true'
     }
 
-    new Executor(env, './packages/api-main').run(`node ./node_modules/.bin/db-migrate ${subcmd}`)
+    new Executor(env, './packages/api-main').run(`node ./node_modules/db-migrate/bin/db-migrate ${subcmd}`)
   }
 }
 
