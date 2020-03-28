@@ -3,6 +3,6 @@
 
 /storage/*
 !/storage/.gitkeep
-
+files
 node_modules
 .env

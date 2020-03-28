@@ -21,8 +21,25 @@ async function createDirFunc(req: AppRequest) {
   return getAlbumDir(dir)
 }
 
+// upload file
+const uploadFileSchema = {
+  body: {
+    required: ['name'],
+    properties: {
+      name: { type: 'string' }
+    }
+  }
+}
+
+async function uploadFileFunc(req: AppRequest) {
+  console.log(req.file)
+  return {
+    'test': 1
+  }
+}
 export default {
-  createDirectory: wrapRoute(createDirFunc, createDirSchema)
+  createDirectory: wrapRoute(createDirFunc, createDirSchema),
+  uploadFile: wrapRoute(uploadFileFunc, uploadFileSchema)
 }
 
 /**

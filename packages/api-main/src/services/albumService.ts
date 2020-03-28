@@ -1,5 +1,7 @@
 import AlbumDirectory, { AlbumDirectoryPayload } from '../models/AlbumDirectory'
+//import AlbumFile, { AlbumFilePayload } from 'models/AlbumFile'
 import Errors from '../utils/errors'
+
 
 /**
  * AlbumService - manage files & directories via a pesudo-tree structure.
@@ -27,6 +29,11 @@ class AlbumService {
         }
       })
   }
+  /**
+  async uploadFile(name: string, dirNode: number, file: File): Promise<AlbumFile> {
+
+  }
+  */
 }
 
 export default AlbumService

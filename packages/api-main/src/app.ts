@@ -2,6 +2,8 @@
 // This is the main file for `api-main` for local deploy
 import express from 'express'
 import cors from 'cors'
+import mkdirp from 'mkdirp'
+import multer from 'multer'
 import helmet from 'helmet'
 import compression from 'compression'
 // middlewares
@@ -14,9 +16,15 @@ import postController from './controllers/postController'
 import publicPostController from './controllers/publicPostController'
 import albumController from './controllers/albumController'
 
+// config
+import config from './config/default'
+
 export async function createApiServer() {
   const app = express()
 
+  const upload = multer({
+    dest: config.album.rootDir
+  })
   const corsInstance = cors({
     // FIXME: better config!?
     exposedHeaders: ['Content-Type', 'Authorization'],
@@ -30,7 +38,8 @@ export async function createApiServer() {
   app.use(express.urlencoded({ extended: false }))
   app.disable('x-powered-by')
   app.options('*', corsInstance)
-
+  // mkdirp dir
+  mkdirp.sync(config.album.rootDir)
   // accounts
   app.post('/api/accounts/register', accountController.register)
   app.post('/api/accounts/login', accountController.login)
@@ -57,6 +66,10 @@ export async function createApiServer() {
 
   // album
   app.post('/api/admin/album/dir', authHandler, albumController.createDirectory)
+  app.post('/api/admin/album/upload',
+    authHandler,
+    upload.single('uploadFile'),
+    albumController.uploadFile)
   app.use(errorHandler)
   return app
 }
