@@ -10,6 +10,7 @@ const getPublicPostSchema = {
     properties: {
       id: {
         type: 'string',
+        pattern: '[0-9]+'
       },
     },
   },

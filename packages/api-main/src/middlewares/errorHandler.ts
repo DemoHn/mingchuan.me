@@ -3,6 +3,7 @@ import console = require('console');
 
 export default function (error: any, _: any, res: any, __: any) {
   if (error instanceof AppError) {
+    console.log(error)
     const e = error
     res.status(e.statusCode).json({
       data: e.data,

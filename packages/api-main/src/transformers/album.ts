@@ -11,6 +11,7 @@ export function getAlbumDir(dir: AlbumDirectory) {
 
 export function getAlbumFile(file: AlbumFile) {
   return {
+    id: file.id,
     directoryId: file.directoryId,
     name: file.name,
     key: file.hashKey,

@@ -8,6 +8,10 @@ import { unlinkSync } from 'fs'
  * AlbumService - manage files & directories via a pesudo-tree structure.
  */
 class AlbumService {
+
+  static MIME_IMAGE = 1;
+  static MIME_PDF = 2;
+  static MIME_OTHERS = 10;
   /**
    * createDirectory - create new directory node.
    * @param name directory name. notice dirname should be unique within the same parentNode.
@@ -35,7 +39,7 @@ class AlbumService {
     const payload: AlbumFilePayload = {
       directoryId: dir,
       hashKey: key,
-      mimeType: 0,
+      mimeType: this.findMimeHandler(mimeType),
       size: size,
       name: name
     }
@@ -59,6 +63,34 @@ class AlbumService {
       })
   }
 
+  async listFiles(page: number, count: number, directoryId?: number): Promise<[number, Array<AlbumFile>]> {
+    const offset = (page - 1) * count
+    const query: any = {
+      limit: count,
+      offset: offset,
+      where: {}
+    }
+    if (directoryId != null) {
+      query.where.directoryId = directoryId
+    }
+
+    const results = await AlbumFile.findAndCountAll(query)
+    return [results.count, results.rows]
+  }
+
+  async getFileInfoByKey(key: string): Promise<AlbumFile> {
+    const result = await AlbumFile.findOne({
+      where: {
+        hashKey: key
+      }
+    })
+
+    if (!result) {
+      throw Errors.newNotFoundError('FileNotFoundError', `file ${key} not found!`)
+    }
+    return result
+  }
+
   async unlinkFile(file: string, throwError: boolean) {
     const p = `${config.album.rootDir}/${file}`
     try {
@@ -70,6 +102,14 @@ class AlbumService {
         console.log('--unlinkFile--')
         console.log(e)
       }
+    }
+  }
+
+  findMimeHandler(mimeType: string): number {
+    if (mimeType.startsWith('images')) {
+      return AlbumService.MIME_IMAGE
+    } else {
+      return AlbumService.MIME_OTHERS
     }
   }
 }

@@ -40,6 +40,7 @@ export async function createApiServer() {
   app.options('*', corsInstance)
   // mkdirp dir
   mkdirp.sync(config.album.rootDir)
+
   // accounts
   app.post('/api/accounts/register', accountController.register)
   app.post('/api/accounts/login', accountController.login)
@@ -70,6 +71,11 @@ export async function createApiServer() {
     authHandler,
     upload.single('uploadFile'),
     albumController.uploadFile)
+
+  app.get('/api/admin/album/files', authHandler, albumController.listFiles)
+  // public accessable resource
+  app.get('/resource/:key', albumController.getResource)
   app.use(errorHandler)
+
   return app
 }

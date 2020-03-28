@@ -28,4 +28,7 @@ export default {
   newAuthError(error: Error | string): AppError {
     return new AppError(401, 'AuthError', error instanceof Error ? error.message : error)
   },
+  newNotFoundError(name: string, error: Error | string): AppError {
+    return new AppError(404, name, error instanceof Error ? error.message : error)
+  },
 }
