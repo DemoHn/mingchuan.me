@@ -8,6 +8,11 @@ const devProxy = {
     pathRewrite: { '^/api': '/' },
     changeOrigin: true,
   },
+  '/resource': {
+    target: 'http://localhost:4000/resource',
+    pathRewrite: { '^/resource': '/' },
+    changeOrigin: true,
+  }
 }
 
 const host = '127.0.0.1'

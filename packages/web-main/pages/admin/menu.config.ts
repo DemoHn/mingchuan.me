@@ -18,6 +18,11 @@ export default {
       ],
     },
     {
+      name: '资料',
+      icon: 'folder',
+      key: 'documents'
+    },
+    {
       name: '用户',
       icon: 'user',
       key: 'accounts',

@@ -14,13 +14,17 @@ export interface JSONResponse {
   body?: Record<string, any>
 }
 
+export function getToken(serverReq?: ExpressRequest) {
+  return serverReq ? getTokenFromCookie(serverReq) : getTokenFromLocalStorage()
+}
+
 export async function baseRequest(
   method: string,
   url: string,
   payload?: RequestPayload,
   serverReq?: ExpressRequest
 ): Promise<Response> {
-  const token = serverReq ? getTokenFromCookie(serverReq) : getTokenFromLocalStorage()
+  const token = getToken(serverReq)
 
   var requestURL = serverReq ? `${process.env.API_ROOT}${url}` : url
 

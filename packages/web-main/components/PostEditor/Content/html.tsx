@@ -62,7 +62,7 @@ const $quillToolbar = {
     ],
     syntax: {
       highlight: text => hljs.highlightAuto(text).value,
-    }, // Include syntax module
+    } // Include syntax module
   },
 }
 
@@ -77,6 +77,7 @@ const QuillEditor: React.FC<QuillEditorProps> = props => {
   if (isClient) {
     const ReactQuill = require('react-quill')
     const { text, onChange } = props
+    console.log(ReactQuill)
     return (
       <main>
         <style>{$globalStyle}</style>

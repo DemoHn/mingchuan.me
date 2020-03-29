@@ -116,8 +116,8 @@ const ListPostPage: NextFunctionComponent<ListPostPageProps> = props => {
               <img src={loaderSVG} height={16} />
             </LoaderContainer>
           ) : (
-            <PostList posts={displayPosts} onOperationAction={handleOperationActions} />
-          )}
+              <PostList posts={displayPosts} onOperationAction={handleOperationActions} />
+            )}
         </PostListContainer>
         <PaginationContainer>
           <Pagination

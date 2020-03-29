@@ -43,12 +43,14 @@ class AlbumService {
       size: size,
       name: name
     }
-    // validate directoryId
-    const res = await AlbumFile.findOne({
-      where: { directoryId: dir }
-    })
-    if (!res) {
-      throw Errors.newLogicError('EmptyDirError', `no such directoryId: ${dir}`)
+    // validate directoryId if directoryId isn't 0
+    if (dir != 0) {
+      const res = await AlbumFile.findOne({
+        where: { directoryId: dir }
+      })
+      if (!res) {
+        throw Errors.newLogicError('EmptyDirError', `no such directoryId: ${dir}`)
+      }
     }
 
     return AlbumFile.create(payload)
