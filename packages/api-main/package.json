@@ -24,7 +24,7 @@
     "cors": "^2.8.5",
     "db-migrate": "^0.11.6",
     "db-migrate-mysql": "^1.1.10",
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "helmet": "^3.18.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
