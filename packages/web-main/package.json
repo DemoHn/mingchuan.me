@@ -15,7 +15,7 @@
     "@zeit/next-sass": "^1.0.1",
     "@zeit/next-typescript": "^1.1.1",
     "antd": "^3.20.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "global": "^4.4.0",
     "highlight.js": "^9.15.9",
     "html-react-parser": "^0.9.1",
