@@ -72,11 +72,9 @@ const composeMenuMap = (
 
     return (
       <Menu.Item key={key}>
-        <Link href={`/admin/${key}`}>
-          <a>
-            {submenuIcon}
-            <span>{title}</span>
-          </a>
+        <Link href={`/admin/${key}`}>          
+          {submenuIcon}
+          <span>{title}</span>
         </Link>
       </Menu.Item>
     )

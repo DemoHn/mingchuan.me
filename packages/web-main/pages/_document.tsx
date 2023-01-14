@@ -3,27 +3,12 @@ import Document, {
   Head,
   Main,
   NextScript,
-  NextDocumentContext,
+  DocumentContext,
 } from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
-const globalStyle = `
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;  
-}
-
-@font-face{
-  font-family: OCR-A;
-  src: url(/static/OCR-A.ttf);
-  font-weight: normal;
-  font-style: normal;
-}
-`
 class MyDocument extends Document {
-  static async getInitialProps(ctx: NextDocumentContext) {
+  static async getInitialProps(ctx: DocumentContext) {
     const sheet = new ServerStyleSheet()
     const originalRenderPage = ctx.renderPage
 
@@ -51,11 +36,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html>
-        <Head>
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <meta charSet="utf-8" />
-          <style>{globalStyle}</style>
-        </Head>
+        <Head />
         <body>
           <Main />
           <NextScript />

@@ -1,7 +1,6 @@
 import React from 'react'
 import parse from 'html-react-parser'
 import 'highlight.js/styles/atom-one-light.css'
-import './styles.scss'
 
 export interface PostContentProps {
   content: string
