@@ -25,8 +25,8 @@ async function getPublicPostFunc(req: AppRequest) {
 ///// list recent published posts
 async function listPublicPostsFunc(req: AppRequest) {
   const { limit, cursor } = req.query
-  const Qlimit = limit ? parseInt(limit, 10) : undefined
-  const Qcursor = cursor ? parseInt(cursor, 10) : undefined
+  const Qlimit = limit ? parseInt(limit as string, 10) : undefined
+  const Qcursor = cursor ? parseInt(cursor as string, 10) : undefined
   const [posts, hasMore, newCursor] = await listPublicPosts(Qlimit, Qcursor)
 
   return getPublicPostsList(posts, hasMore, newCursor)
