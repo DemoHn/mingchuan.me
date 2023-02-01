@@ -30,7 +30,7 @@ export default class MyApp extends App {
   static async getInitialProps({ Component, ctx }: any) {
     let pageProps = {}
 
-    if (Component.getInitialProps) {
+    if (Component.getInitialgiProps) {
       pageProps = await Component.getInitialProps(ctx)
     }
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { NextFunctionComponent } from 'next'
+import { NextPage } from 'next'
 import 'antd/dist/antd.css'
 // components
 import LoginForm from 'components/LoginForm'
@@ -82,7 +82,7 @@ const redirectToAdminPage = (
     Router.push(adminURL)
   }, timeout)
 }
-const LoginPage: NextFunctionComponent = () => {
+const LoginPage: NextPage = () => {
   return (
     <MainContainer>
       <Banner>Admin Login</Banner>

@@ -1,4 +1,3 @@
-const withSass = require('@zeit/next-sass')
 const withImage = require('next-images')
 const path = require('path')
 const webpack = require('webpack')

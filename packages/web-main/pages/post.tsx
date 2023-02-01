@@ -1,5 +1,5 @@
 import React from 'react'
-import { NextFunctionComponent, NextContext } from 'next'
+import { NextPage } from 'next'
 import Header from 'components/Header'
 import PostContent from 'components/PostContent'
 
@@ -39,7 +39,7 @@ export interface PostPageProps {
   }
 }
 
-const PostPage: NextFunctionComponent<PostPageProps> = props => {
+const PostPage: NextPage<PostPageProps> = props => {
   const post = props.post as any
   const current = Date.now()
   const timeStr = post.lastUpdateTime === post.createTime
@@ -57,7 +57,7 @@ const PostPage: NextFunctionComponent<PostPageProps> = props => {
   )
 }
 
-PostPage.getInitialProps = async (ctx: NextContext) => {
+PostPage.getInitialProps = async (ctx) => {
   const req = ctx.req as Request
   const query = ctx.query as any
   const result = await getPublicPost(query.id, req)

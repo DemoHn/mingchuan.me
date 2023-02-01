@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { NextFunctionComponent, NextContext } from 'next'
+import { NextPage } from 'next'
 import styled from 'styled-components'
 import { Pagination, message } from 'antd'
 import Router from 'next/router'
@@ -82,7 +82,7 @@ export interface ListPostPageProps {
 
 const PAGE_LIMIT = 10
 
-const ListPostPage: NextFunctionComponent<ListPostPageProps> = props => {
+const ListPostPage: NextPage<ListPostPageProps> = props => {
   const { page, posts, totalCount } = props
   //// states
   const [displayPosts, setDisplayPosts] = useState(posts)
@@ -131,7 +131,7 @@ const ListPostPage: NextFunctionComponent<ListPostPageProps> = props => {
   )
 }
 
-ListPostPage.getInitialProps = async (ctx: NextContext) => {
+ListPostPage.getInitialProps = async (ctx) => {
   const req = ctx.req as Request
 
   const page = req && req.query.page ? parseInt(req.query.page, 10) : 1

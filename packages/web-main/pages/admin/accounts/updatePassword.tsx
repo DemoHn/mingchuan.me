@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react'
-import { NextFunctionComponent } from 'next'
+import { NextPage } from 'next'
 import styled from 'styled-components'
 import AdminLayout from '../_layout'
 import { decode } from 'jsonwebtoken'
@@ -35,7 +35,7 @@ const UsernameLabel = styled.span`
 export interface PageProps {
   name: string
 }
-const UpdatePasswordPage: NextFunctionComponent<PageProps> = props => {
+const UpdatePasswordPage: NextPage<PageProps> = props => {
   const { name } = props
   // edit password flag
   const [editPasswod, setEditPassword] = useState(false)

@@ -1,11 +1,11 @@
 import React from 'react'
-import { NextFunctionComponent } from 'next'
+import { NextPage } from 'next'
 import AdminLayout from '../_layout'
 import PostEditor, { SubmitPayload } from 'components/PostEditor'
 import { adminCreatePost } from 'services/postService'
 import { message } from 'antd'
 
-const NewPostPage: NextFunctionComponent = () => {
+const NewPostPage: NextPage = () => {
   const handleSubmit = async (data: SubmitPayload) => {
     return adminCreatePost(data)
       .then(resp => {

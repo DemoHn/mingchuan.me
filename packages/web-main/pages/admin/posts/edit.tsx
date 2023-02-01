@@ -1,5 +1,5 @@
 import React from 'react'
-import { NextFunctionComponent, NextContext } from 'next'
+import { NextPage } from 'next'
 //// components
 import AdminLayout from '../_layout'
 import PostEditor, { SubmitPayload } from 'components/PostEditor'
@@ -31,7 +31,7 @@ export interface EditPostPageProps {
   post?: PostResponse
 }
 
-const EditPostPage: NextFunctionComponent<EditPostPageProps> = props => {
+const EditPostPage: NextPage<EditPostPageProps> = props => {
   const postID = props.id as any
   const post = props.post as any
   const initialValue = {
@@ -54,7 +54,7 @@ const EditPostPage: NextFunctionComponent<EditPostPageProps> = props => {
   )
 }
 
-EditPostPage.getInitialProps = async (ctx: NextContext) => {
+EditPostPage.getInitialProps = async (ctx) => {
   const query = ctx.query as any
   const postID = query.id ? parseInt(query.id, 10) : null
   if (postID) {

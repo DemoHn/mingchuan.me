@@ -1,8 +1,8 @@
 import React from 'react'
-import { NextFunctionComponent } from 'next'
+import { NextPage } from 'next'
 import AdminLayout from './_layout'
 
-const AdminHome: NextFunctionComponent = () => {
+const AdminHome: NextPage = () => {
   return <AdminLayout routeKey="posts">233</AdminLayout>
 }
 

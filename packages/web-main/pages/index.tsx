@@ -1,5 +1,5 @@
 import React from 'react'
-import { NextFunctionComponent, NextContext } from 'next'
+import { NextPageContext, NextPage } from 'next'
 import styled from 'styled-components'
 import PostTitle from 'components/PostTitle'
 import { Request } from 'express'
@@ -58,8 +58,11 @@ export interface IndexPageProps {
   }[]
 }
 
-const IndexPage: NextFunctionComponent<IndexPageProps> = props => {
-  const { posts } = props
+const IndexPage: NextPage<IndexPageProps> = props => {
+  var { posts } = props
+  if (!posts) {
+    posts = []
+  }
   return (
     <MainContainer>
       <VerticalContainer>
@@ -78,7 +81,7 @@ const IndexPage: NextFunctionComponent<IndexPageProps> = props => {
   )
 }
 
-IndexPage.getInitialProps = async (ctx: NextContext) => {
+IndexPage.getInitialProps = async (ctx) => {
   const req = ctx.req as Request
   const result = await getPublicPostsList(
     {
